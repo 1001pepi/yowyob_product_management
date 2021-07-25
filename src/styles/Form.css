@@ -1,0 +1,82 @@
+/*mise en forme des formulaires*/
+.form-div{
+    margin-top: 10px;
+}
+
+.form-section{
+    margin: 20px;
+}
+
+/*mise en forme des menus de sélection*/
+.select-input{
+    border:none;
+}
+
+.select-input:focus{
+    border:none;
+    box-shadow: none;
+}
+
+/*mise en forme du bouton d'ajout*/
+.add-button{
+    background-color: white;
+    border: none;
+    color: #351FBC;
+    font-weight: bold;
+}
+
+.add-button:hover{
+    background-color: #F1F3F4;
+    border-radius: 5px;
+}
+
+/*mise en forme du bouton pour l'enregistrement*/
+.save-button{
+    background-color: #341fbc1e;
+    border: none;
+    color: #351FBC;
+    font-weight: bold;
+    font-size: larger;
+    border-radius: 5px;
+}
+
+.save-button:hover{
+    background-color: #F1F3F4;
+    border-radius: 5px;
+}
+
+
+
+.workspace-div{
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+
+
+.ligne{
+    background-color:red;
+}
+
+
+
+.label{
+    color:#404449;
+}
+
+.text-input{
+    border:none;
+    border-bottom: solid 2px #7c828b;
+}
+
+.text-input:hover{
+    border:none;
+    box-shadow: none;
+    border-bottom: solid 2px #351FBC;
+}
+
+.text-input:focus{
+    border:none;
+    box-shadow: none;
+    border-bottom: solid 2px #351FBC;
+}

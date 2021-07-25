@@ -1,0 +1,131 @@
+/*header des workspaces*/
+.headSection{
+    background-color: #F1F3F4;
+    padding-left: 20px;
+}
+
+/*centrer verticalement le composant*/
+.vertical-center{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/*mettre le texte en gras centré dans un div*/
+.bold-center{
+    font-weight: bold;
+    text-align: center;
+}
+
+/*mettre le texte en gras*/
+.bold{
+    font-weight: bold;
+}
+
+/*mise en forme de l'alerte pour le mauvais remplissage des formulaires*/
+.form-alert{
+    background-color: rgba(255, 0, 0, 0.2);
+    font-weight: bold;
+    text-align: center;
+}
+
+/*mise en forme de l'alerte succès*/
+.success-alert{
+    background-color: rgba(234, 137, 41, 0.3);
+    width: 18vw;
+    font-weight: bold;
+    border-radius: 5px;
+    position:fixed;
+    bottom: 10px;
+    left: 10px;
+}
+
+/*mise en forme de l'alerte de confirmation de suppression*/
+.confirm-delete-alert{
+    bottom: 25px;
+    left: 10px;
+    width: 18vw;
+    background-color: white;
+    position: fixed;
+    border-radius: 5px;
+    transition: all 5s ease-in-out;
+}
+
+/*mettre le texte du contenu en gras*/
+.bold{
+    font-weight: bold;
+}
+
+/*changer le curseur en pointeur au survol*/
+.hover-pointer:hover{
+    cursor:pointer;
+}
+
+/*mise en forme du popup d'alerte pour les confirmations*/
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+/*mise en forme du popup pour les paramètres de la barre de recherche*/
+.search-settings-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.2);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+    order: -1;
+}
+
+.search-settings-overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.search-settings{
+    top: 20px;
+    left: 0px;
+    right:0px;
+    width: 25vw;
+    background-color: white;
+    position: fixed;
+    border-radius: 5px;
+    transition: all 5s ease-in-out;
+}
+
+/*mise en forme des liens devant rester noirs*/
+.black-link{
+    color: black;
+}
+
+.black-link:visited{
+    color:black;
+}
+
+/*mise en forme du contenu de l'affichage*/
+.section{
+    margin: 20px;
+}
+
+/*mise en forme du bouton d'ajout*/
+.add-button{
+    background-color: white;
+    border: none;
+    color: #351FBC;
+    font-weight: bold;
+}

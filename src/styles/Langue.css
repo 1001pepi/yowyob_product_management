@@ -1,0 +1,9 @@
+/*mise en forme des menus de sélection*/
+.select-input{
+    border:none;
+}
+
+.select-input:focus{
+    border:none;
+    box-shadow: none;
+}

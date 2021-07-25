@@ -1,0 +1,48 @@
+/*mise en forme des lignes de la liste*/
+.list-item:hover{
+    background-color: #F1F3F4;
+}
+
+/*mise en forme de la liste*/
+.table .text {
+    position: relative;
+}
+  
+.table .text span {
+overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
+position: absolute;
+width: 100%;
+}
+
+.text:before {
+content: '';
+display: inline-block;
+}
+
+/*mise en forme du bouton de suppression d'un élément de la liste*/
+.item-delete{
+    visibility:hidden;
+}
+
+.delete-icon{
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.item-delete:hover{
+    cursor:pointer;
+}
+
+/*mise en forme du bouton de mise à jour d'un élément de la liste*/
+.item-update{
+    visibility:hidden;
+}
+
+.update-icon{
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.item-update:hover{
+    cursor:pointer;
+}
