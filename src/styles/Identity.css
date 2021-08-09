@@ -1,0 +1,16 @@
+.disconnect-button-div{
+    margin-left: auto;
+    margin-top: auto;
+}
+
+.name-div{
+    margin-top: auto;
+    margin-bottom: 5px;
+}
+
+.disconnect-button{
+    border-radius: 6px;
+    border: none;
+    background-color: rgb(245, 243, 243);
+    box-shadow: 4px 4px #F1F3F4;
+}

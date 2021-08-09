@@ -1,0 +1,11 @@
+/*mise en forme de l'image d'illustration de l'affichage d'un élément*/
+.illustration-image{
+    width: 20vw;
+    border: solid 1px;
+    border-radius: 10px;
+}
+
+.cardLink:hover{
+   cursor: pointer;
+   border: solid 2px;
+}

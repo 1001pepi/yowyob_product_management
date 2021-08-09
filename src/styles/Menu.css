@@ -1,0 +1,22 @@
+/*mise en forme des boutons du menu*/
+.menu-button{
+    background-color: white;
+    border:none;
+    text-align: left;
+}
+
+.link-item{
+    padding-right: 11px;
+   
+}
+
+.menu-button:hover{
+    background-color:#F1F3F4;
+    border-radius: 10px;
+}
+
+.menu-button:focus{
+    background-color:#F1F3F4;
+    border-radius: 10px;
+}
+
