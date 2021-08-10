@@ -49,7 +49,7 @@ function Conditioning({type, conditioningsList, conditioningId, purchaseConditio
                             <label className="col-3 col-form-label label">Illustration: </label>
                         </div>
                         {
-                            packagingItem ? <img src={packagingItem['image']} alt="image" style={{height:"90px"}}/> : null
+                            packagingItem ? <img src={packagingItem['picture']} alt="image" style={{height:"90px"}}/> : null
                         }
                         <div className="col-5">
                             <input type="file" accept="image video" className="form-control-file" id={"illustration_" + conditioningId}/> 

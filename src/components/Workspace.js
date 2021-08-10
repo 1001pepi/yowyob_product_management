@@ -526,7 +526,7 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
 
                 case 'conditionings':
                     return(
-                        <Details itemType={itemType} setItemType={setItemType} item={item} setItem={setItem} data={conditioningsList} setData={setConditioningsList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={canDeleteCategory} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}/>
+                        <Details itemType={itemType} setItemType={setItemType} item={item} setItem={setItem} data={conditioningsList} setData={setConditioningsList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={canDeleteCategory} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} packagingsList={packagingsList} setPackagingsList={setPackagingsList}/>
                     );
                     break
             }

@@ -166,40 +166,45 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                                 var tmpNbConditionings = nbConditionings
                                 
                                 for(let i = 0; i < response3.length; i++){
+
+                                    if(!(response3.findIndex(conditionning => conditionning['name'] === response3[i]['name']) < i)){
+                                        //si la première occurende du conditionnement dans la liste
+                                    
             
-                                    //traitement du conditionnement
-                                    //on cherche dans la liste des packagings pour savoir s'il s'agit d'un conditionnement d'achat
-                                    var packagingIndex = packagingsList.findIndex(item => (item['product'] === itemToUpdate['id'] && item['conditioning'] === response3[i]['id'] && item['type_packaging'] == "PURCHASE"))
+                                        //traitement du conditionnement
+                                        //on cherche dans la liste des packagings pour savoir s'il s'agit d'un conditionnement d'achat
+                                        var packagingIndex = packagingsList.findIndex(item => (item['product'] === itemToUpdate['id'] && item['conditioning'] === response3[i]['id'] && item['type_packaging'] == "PURCHASE"))
 
-                                    if(packagingIndex >= 0 && packagingIndex < packagingsList.length){
-                                        //le packaging a été trouvé comme packaging d'achat
-                                        var packaging = packagingsList[packagingIndex]
-                                       
-                                        tmpPurchaseConditionningsKeys.push({
-                                            value: tmpNbConditionings,
-                                            conditionings: conditioningsList,
-                                            conditioningItem: response3[i],
-                                            packagingItem: packaging
-                                        });
+                                        if(packagingIndex >= 0 && packagingIndex < packagingsList.length){
+                                            //le packaging a été trouvé comme packaging d'achat
+                                            var packaging = packagingsList[packagingIndex]
+                                        
+                                            tmpPurchaseConditionningsKeys.push({
+                                                value: tmpNbConditionings,
+                                                conditionings: conditioningsList,
+                                                conditioningItem: response3[i],
+                                                packagingItem: packaging
+                                            });
 
-                                        tmpNbConditionings++
-                                    }
+                                            tmpNbConditionings++
+                                        }
 
-                                    //on cherche dans la liste des packagings pour savoir s'il s'agit d'un conditionnement de vente
-                                    packagingIndex = packagingsList.findIndex(item => (item['product'] === itemToUpdate['id'] && item['conditioning'] === response3[i]['id'] && item['type_packaging'] == "SALE"))
+                                        //on cherche dans la liste des packagings pour savoir s'il s'agit d'un conditionnement de vente
+                                        packagingIndex = packagingsList.findIndex(item => (item['product'] === itemToUpdate['id'] && item['conditioning'] === response3[i]['id'] && item['type_packaging'] == "SALE"))
 
-                                    if(packagingIndex >= 0 && packagingIndex < packagingsList.length){
-                                        //le packaging a été trouvé comme packaging de vente
-                                        var packaging = packagingsList[packagingIndex]
+                                        if(packagingIndex >= 0 && packagingIndex < packagingsList.length){
+                                            //le packaging a été trouvé comme packaging de vente
+                                            var packaging = packagingsList[packagingIndex]
 
-                                        tmpSaleConditionningsKeys.push({
-                                            value: tmpNbConditionings,
-                                            conditionings: conditioningsList,
-                                            conditioningItem: response3[i],
-                                            packagingItem: packaging
-                                        });
+                                            tmpSaleConditionningsKeys.push({
+                                                value: tmpNbConditionings,
+                                                conditionings: conditioningsList,
+                                                conditioningItem: response3[i],
+                                                packagingItem: packaging
+                                            });
 
-                                        tmpNbConditionings++
+                                            tmpNbConditionings++
+                                        }
                                     }
                                 }
 
@@ -528,6 +533,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
             var formData = new FormData()
 
             if(item['image']){
+                console.log(item['image'])
                 formData.append("picture", item['image'])
             }
 
@@ -567,6 +573,13 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                 }else if(request.status === 200){
                     //la mise à jour du conditionnement a réussi
                     console.log("mise à jour du conditionnement réussi")
+
+                    //on remplace le packaging dans la liste des packagings
+                    const packagingIndex = packagingsList.findIndex(packaging => packaging['id'] === item['packagingItem']['id'])
+
+                    if(packagingIndex >= 0){
+                        packagingsList[packagingIndex] = request.response
+                    }
 
                     //on enregistre le conditionnement suivant
                     savePurchaseConditioning(productId, index + 1)
@@ -634,6 +647,13 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                     //la mise à jour du conditionnement a réussi
                     console.log("mise à jour du conditionnement réussi")
 
+                    //on remplace le packaging dans la liste des packagings
+                    const packagingIndex = packagingsList.findIndex(packaging => packaging['id'] === item['packagingItem']['id'])
+
+                    if(packagingIndex >= 0){
+                        packagingsList[packagingIndex] = request.response
+                    }
+
                     //on enregistre le conditionnement suivant
                     saveSaleConditioning(productId, index + 1)
                 }
@@ -658,6 +678,9 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
 
             if(!item['illustrationItem']){
                 formData.append("product", productId)
+                formData.append("illustration", item['illustration'])
+
+            }else if(item['illustration']){
                 formData.append("illustration", item['illustration'])
             }
             

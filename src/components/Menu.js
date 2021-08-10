@@ -204,7 +204,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                 if(next != null){
                     tmpList = getPackagings(next, tmpList)
                 }else{
-                    console.log("hi")
+                    console.log("packagings loaded")
                 }
             }
         }
@@ -444,6 +444,10 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                         if(updateConditioningsList){
                             getConditionings(conditioningsRequestURL, [])
                             setUpdateConditioningsList(false)
+                        }
+                        if(updatePackagings){
+                            getPackagings(packagingsRequestURL, [])
+                            setUpdatePackagings(false)
                         }
                         setDisplaySuccessAlert(false)
                         setSpaceName("listConditionings")

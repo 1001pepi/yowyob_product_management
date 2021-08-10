@@ -1250,8 +1250,8 @@ function List({ data, setData,
     return(
         <div className="container">
             <div className="row headSection" style={{fontSize:"large"}}>
-                <h4 className="col-4">{listTitle}</h4>
-                <div className="col-8 d-flex justify-content-end vertical-center hover-pointer">
+                <h4 className="col-5">{listTitle}</h4>
+                <div className="col-7 d-flex justify-content-end vertical-center hover-pointer">
                 <a id="delete" style={{color:"black"}} onClick={() => {
                         setDisplaySuccessfulDeleteAlert(false)
                         
@@ -1299,11 +1299,11 @@ function List({ data, setData,
                         }
 
                     }}
-                    style={{marginRight:"30px"}}>
+                    style={{marginRight:"20px"}}>
                         <span style={{color:"black"}} className="material-icons md-48" title="supprimer">delete</span>
                     </a>
 
-                    <span className="fa fa-refresh" title="rafraîchir" style={{fontSize:"x-large", marginRight:"30px"}} onClick={() =>{
+                    <span className="fa fa-refresh" title="rafraîchir" style={{fontSize:"x-large", marginRight:"20px"}} onClick={() =>{
                         //on rafraîchi la liste
                         switch(listType){
                             case 'categories':
@@ -1326,15 +1326,15 @@ function List({ data, setData,
                     }}></span>
 
                     <div>
-                        Trier par &nbsp;&nbsp;
-                        <select className="select-sort-input" style={{marginRight:"30px"}} id="select-sort-criterion">
+                        Trier par &nbsp;
+                        <select className="select-sort-input" style={{marginRight:"20px"}} id="select-sort-criterion">
                             <option value="1">Nom</option>
                             <option value="2">Date de création</option>
                         </select>
                     </div>
 
                     <div>
-                        Ordre &nbsp;&nbsp;
+                        Ordre &nbsp;
                         <select className="select-sort-input" style={{marginRight:"30px"}} id="select-sort-order">
                             <option value="1">Croissant</option>
                             <option value="2">Décroissant</option>

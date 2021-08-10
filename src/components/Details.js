@@ -4,7 +4,7 @@ import '../styles/Details.css'
 import {useState} from 'react'
 import React, {useEffect} from 'react'
 
-function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem, data, setData, isASearchResult, setIsASearchResult, languagesList, displaySuccessAlert, setDisplaySuccessAlert, canDeleteItem, setUpdate, setItemToUpdate, updateFromDetails, setUpdateFromDetails}){
+function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem, data, setData, isASearchResult, setIsASearchResult, languagesList, displaySuccessAlert, setDisplaySuccessAlert, canDeleteItem, setUpdate, setItemToUpdate, updateFromDetails, setUpdateFromDetails, packagingsList, setPackagingsList}){
     //categories request url
     var categoriesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/categories/'
 
@@ -14,10 +14,13 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
     var [category_descriptions, setCategory_descriptons] = useState([])
     var [list_of_subcategories, setList_of_subcategories] = useState([])
     const [list_of_products_in_a_category, setList_of_products_in_a_category] = useState([])
+    const [products_illustrations, setProducts_illustrations] = useState(new Map())
 
     //informations relatives à l'affichage des détails d'un conditionnement
     const [packaged_products_at_purchase, setPackaged_products_at_purchase] = useState([])
     const [packaged_products_for_sale, setPackaged_products_for_sale] = useState([])
+    const [packaged_products_at_purchase_illustrations, setPackaged_products_at_purchase_illustrations] = useState(new Map())
+    const [packaged_products_for_sale_illustrations, setPackaged_products_for_sale_illustrations] = useState(new Map())
 
     //etat contenant le message à afficher dans l'alerte de confirmation
     const [confirmAlertMsg, setConfirmAlertMsg] = useState('')
@@ -65,6 +68,22 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
         var hash = btoa(token); 
 
         return "Basic " + hash;
+    }
+
+    //fonction pour réinitialiser les variables d'état des détails
+    function resetData(){
+        setCategory_parent({})
+        setCategory_descriptons([])
+        setList_of_subcategories([])
+        setList_of_products_in_a_category([])
+        setProducts_illustrations(new Map())
+
+        setPackaged_products_at_purchase([])
+        setPackaged_products_for_sale([])
+        setPackaged_products_at_purchase_illustrations(new Map())
+        setPackaged_products_for_sale_illustrations(new Map())
+
+        setLoadData(true)
     }
 
     switch(itemType){
@@ -128,13 +147,34 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
 
     }
 
-    //fonction pour réinitialiser les variables d'état des détails
-    function resetData(){
-        setList_of_products_in_a_category([])
-        setList_of_subcategories([])
-        setCategory_parent({})
-        setCategory_descriptons([])
-        setLoadData(true)
+    //fonction permettant de charger les illustrations d'une liste de produits
+    function loadproductsIllustrations(productsList, index){
+        if(index < productsList.length){
+            //chargement des illustrations du produit
+            var product = productsList[index]
+
+            var requestURL = product["product_illustration_list"]
+    
+            var request = new XMLHttpRequest();
+            request.open('GET', requestURL);
+            request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+            request.responseType = 'json';
+            request.send();
+
+            request.onload = function(){
+               
+                if(request.status === 200){
+                    products_illustrations.set(product['id'], request.response[0]['illustration'])
+
+                    var tmpMap = new Map(products_illustrations)
+
+                    setProducts_illustrations(tmpMap)
+
+                    //chargement de l'illustration du produit suivant
+                    loadproductsIllustrations(productsList, index + 1)
+                }
+            }
+        }
     }
 
     //fonction pour afficher l'élément reçu
@@ -204,29 +244,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                                     setList_of_products_in_a_category(request4.response)
 
                                                     //chargement des différentes illustrations du produit
-                                                    for(let i = 0; i < response4.length; i++){
-                                                        //chargement des illustrations du produit
-                                                        var product = response4[i]
-
-                                                        var requestURL = product["product_illustration_list"]
-                                                
-                                                        var request5 = new XMLHttpRequest();
-                                                        request5.open('GET', requestURL);
-                                                        request5.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
-                                                        request5.responseType = 'json';
-                                                        request5.send();
-                    
-                                                        request5.onload = function(){
-                                                           
-                                                            if(request5.status === 200){
-                                                                var img = document.querySelector("#img_" + product['id'])
-
-                                                                if(img && request5.response.length){
-                                                                    img.src=request5.response[0]['illustration']
-                                                                }
-                                                            }
-                                                        }
-                                                    }   
+                                                    loadproductsIllustrations(request4.response, 0)
                                                 }
                                             }
                                         }
@@ -276,7 +294,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                 showDescriptions && <div className="d-flex flex-wrap">
                                     {
                                         category_descriptions.map((description) => (
-                                            <div className="card col-3" style={{marginRight:"4vw", marginBottom:"15px", paddingLeft:"25px"}}>
+                                            <div className="card col-3" key={description['id']} style={{marginRight:"4vw", marginBottom:"15px", paddingLeft:"25px"}}>
                                                 <div className="row">
                                                     <span className="bold">Description:&nbsp; </span> {description['description']}
                                                 </div><br/>
@@ -306,7 +324,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                 showSubCategories && <div className="d-flex flex-wrap">
                                     {
                                         list_of_subcategories.map((category) => (
-                                            <div className="card col-3 cardLink" style={{marginRight:"4vw", marginBottom:"15px"}} onClick={() =>{
+                                            <div className="card col-3 cardLink" key={category['id']} style={{marginRight:"4vw", marginBottom:"15px"}} onClick={() =>{
                                                 setVisitedItems([...visitedItems, {
                                                     item: item,
                                                     type: itemType
@@ -342,7 +360,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                 showProductsList && <div className="d-flex flex-wrap">
                                     {
                                         list_of_products_in_a_category.map((product) => (
-                                            <div className="card cardLink" style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
+                                            <div className="card cardLink" key={product['id']} style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
                                                 setVisitedItems([...visitedItems, {
                                                     item: item,
                                                     type: itemType
@@ -354,7 +372,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                                
                                             }}>
                                                 
-                                                <img className="card-img-top" id={"img_" + product['id']} src="" alt="image"/>
+                                                <img className="card-img-top" id={"img_" + product['id']} src={products_illustrations.get(product['id'])} alt="image" style={{height:"20vh"}}/>
                                                 <div className="card-body">
                                                     <span className="bold">{product['name']}</span>
                                                 </div>
@@ -372,6 +390,8 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
             
             case 'conditionings':
                 if(loadData){
+                    setLoadData(false)
+
                     //chargement de la liste des produits conditionnés à l'achat
                     //création de la requête
                     var requestURL = item['packaged_products_at_purchase']
@@ -391,68 +411,60 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
 
                             //chargement des illustrations du produit
                             for(let i = 0; i < response.length; i++){
-                                //chargement des illustrations du produit
+
                                 var product = response[i]
 
-                                var requestURL = product["product_illustration_list"]
-                        
-                                var request2 = new XMLHttpRequest();
-                                request2.open('GET', requestURL);
-                                request2.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
-                                request2.responseType = 'json';
-                                request2.send();
+                                //recherche du packaging du prduit
+                                const packagingIndex = packagingsList.findIndex(packaging => (packaging['product'] === product['id'] && packaging['conditioning'] === item['id'] && packaging['type_packaging'] === "PURCHASE"))
 
-                                request2.onload = function(){
-                                   
-                                    if(request2.status === 200){
-                                        var img = document.querySelector(".img_" + product['id'])
+                                if(packagingIndex >= 0){
+                                    //le packaging a été trouvé
+                                    const packaging = packagingsList[packagingIndex]
 
-                                        if(img && request2.response.length > 0){
-                                            img.src=request2.response[0]['illustration']
-                                        }
-                                    }
+                                    packaged_products_at_purchase_illustrations.set(product['id'], packaging['picture'])
+
+                                    const tmpMap = new Map(packaged_products_at_purchase_illustrations)
+
+                                    setPackaged_products_at_purchase_illustrations(tmpMap)
                                 }
                             }
 
                             //chargement de la liste des produits conditionnés à la vente
                             requestURL = item['packaged_products_for_sale']
 
-                            var request3 = new XMLHttpRequest();
+                            var request2 = new XMLHttpRequest();
                 
-                            request3.open('GET', requestURL);
-                            request3.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
-                            request3.responseType = 'json';
-                            request3.send();
+                            request2.open('GET', requestURL);
+                            request2.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+                            request2.responseType = 'json';
+                            request2.send();
 
-                            request3.onload = function(){
-                                if(request3.status === 200){
+                            request2.onload = function(){
+                                if(request2.status === 200){
                                     //la requête a réussi
-                                    var response3 = request3.response
+                                    var response2 = request2.response
 
-                                    setPackaged_products_for_sale(response3)
+                                    setPackaged_products_for_sale(response2)
 
                                     //chargement des illustrations du produit
-                                    for(let i = 0; i < response3.length; i++){
-                                        //chargement des illustrations du produit
-                                        var product = response3[i]
-
-                                        var requestURL = product["product_illustration_list"]
-                                
-                                        var request4 = new XMLHttpRequest();
-                                        request4.open('GET', requestURL);
-                                        request4.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
-                                        request4.responseType = 'json';
-                                        request4.send();
-
-                                        request4.onload = function(){
+                                    for(let i = 0; i < response2.length; i++){
                                         
-                                            if(request4.status === 200){
-                                                var img = document.querySelector(".img_" + product['id'])
+                                        var product = response2[i]
 
-                                                if(img && request4.response.length > 0){
-                                                    img.src=request4.response[0]['illustration']
-                                                }
-                                            }
+                                        //recherche du packaging du prduit
+                                        const packagingIndex = packagingsList.findIndex(packaging => (packaging['product'] === product['id'] && packaging['conditioning'] === item['id'] && packaging['type_packaging'] === "SALE"))
+
+                                       
+
+                                        if(packagingIndex >= 0){
+                                            //le packaging a été trouvé
+                                            const packaging = packagingsList[packagingIndex]
+                                            console.log(packaging['picture'])
+
+                                            packaged_products_for_sale_illustrations.set(product['id'], packaging['picture'])
+
+                                            const tmpMap = new Map(packaged_products_for_sale_illustrations)
+                                            setPackaged_products_for_sale_illustrations(tmpMap)
                                         }
                                     }
                                 }
@@ -494,7 +506,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                 showPackaged_products_at_purchase && <div className="d-flex flex-wrap">
                                     {
                                         packaged_products_at_purchase.map((product) => (
-                                            <div className="card cardLink" style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
+                                            <div className="card cardLink" key={product['id']} style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
                                                 setVisitedItems([...visitedItems, {
                                                     item: item,
                                                     type: itemType
@@ -506,7 +518,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                                
                                             }}>
                                                 
-                                                <img className={"card-img-top " + "img_" + product['id']} src="" alt="image"/>
+                                                <img className={"card-img-top " + "img_" + product['id']} src={packaged_products_at_purchase_illustrations.get(product['id'])} alt="image" style={{height:"20vh"}}/>
                                                 <div className="card-body">
                                                     <span className="bold">{product['name']}</span>
                                                 </div>
@@ -531,7 +543,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                 showPackaged_products_for_sale && <div className="d-flex flex-wrap">
                                     {
                                         packaged_products_for_sale.map((product) => (
-                                            <div className="card cardLink" style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
+                                            <div className="card cardLink" key={product['id']} style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
                                                 setVisitedItems([...visitedItems, {
                                                     item: item,
                                                     type: itemType
@@ -543,7 +555,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                                
                                             }}>
                                                 
-                                                <img className={"card-img-top " + "img_" + product['id']} src="" alt="image"/>
+                                                <img className={"card-img-top " + "img_" + product['id']} src={packaged_products_for_sale_illustrations.get(product['id'])} alt="image" style={{height:"20vh"}}/>
                                                 <div className="card-body">
                                                     <span className="bold">{product['name']}</span>
                                                 </div>
@@ -577,6 +589,9 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                 switch(itemType){
                                     case "categories":
                                         setSpaceName('listCategories')
+                                        break
+                                    case "conditionings":
+                                        setSpaceName("listConditionings")
                                         break
                                 }
                             }else{
