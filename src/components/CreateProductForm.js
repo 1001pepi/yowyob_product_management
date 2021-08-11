@@ -10,7 +10,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
     conditioningsList, canDeleteConditioning, setCanDeleteConditioning,
     languagesList, canDeleteLanguage, setCanDeleteLanguage,
     productsList, setProducsList, packagingsList, setPackagingsList,  productsCategories, setProductsCategories,
-    setDisplaySuccessAlert, update, setUpdate, itemToUpdate, setItemToUpdate
+    setDisplaySuccessAlert, update, setUpdate, itemToUpdate, setItemToUpdate, updateFromDetails
 }){
     //products request url
     var productsRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/products/'
@@ -948,9 +948,15 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
      
                 <div className="col-7 d-flex justify-content-end vertical-center hover-pointer">
                     <a id="delete" style={{color:"black", fontSize:"larger"}} onClick={() => {
-                        setDisplaySuccessAlert(false)
                         setUpdate(false)
-                        setSpaceName('listProducts')
+                        setDisplaySuccessAlert(false)
+                        if(updateFromDetails){
+                            //on retourne sur la liste des détails
+                            setSpaceName('details')
+
+                        }else{
+                            setSpaceName('listProducts')
+                        }
                     }}
                     style={{marginRight:"60px"}}>
                         <span style={{color:"black", fontSize:"larger"}} className="fa fa-arrow-left" title="Retour à la liste"></span>

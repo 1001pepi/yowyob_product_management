@@ -6,7 +6,7 @@ import '../styles/Common.css'
 import '../styles/Form.css'
 
 function CreateConditioningForm({setSpaceName, setDisplaySuccessAlert, 
-    conditioningsList, setConditioningsList, update, setUpdate, itemToUpdate, setItemToUpdate, canDeleteConditioning, setCanDeleteConditioning
+    conditioningsList, setConditioningsList, update, setUpdate, itemToUpdate, setItemToUpdate, canDeleteConditioning, updateFromDetails, setUpdateFromDetails, item, setItem
 }){
     //conditionings request URL
     var conditioningsRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/conditionings/'
@@ -174,8 +174,16 @@ function CreateConditioningForm({setSpaceName, setDisplaySuccessAlert,
                 }
                 <div className="col-7 d-flex justify-content-end vertical-center hover-pointer">
                     <a id="delete" style={{color:"black", fontSize:"larger"}} onClick={() => {
+                        setUpdate(false)
                         setDisplaySuccessAlert(false)
-                        setSpaceName('listConditionings')
+                        if(updateFromDetails){
+                            //on retourne sur la liste des détails
+                            setItem(itemToUpdate)
+                            setSpaceName('details')
+
+                        }else{
+                            setSpaceName('listConditionings')
+                        }
                     }}
                     style={{marginRight:"150px"}}>
                         <span style={{color:"black", fontSize:"larger"}} className="fa fa-arrow-left" title="Retour à la liste"></span>

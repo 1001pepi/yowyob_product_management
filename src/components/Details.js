@@ -1,10 +1,12 @@
 import '../styles/Common.css'
 import '../styles/Details.css'
 
+import image_not_found from '../assets/image_not_found.png'
+
 import {useState} from 'react'
 import React, {useEffect} from 'react'
 
-function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem, data, setData, isASearchResult, setIsASearchResult, languagesList, displaySuccessAlert, setDisplaySuccessAlert, canDeleteItem, setUpdate, setItemToUpdate, updateFromDetails, setUpdateFromDetails, packagingsList, setPackagingsList}){
+function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem, data, setData, isASearchResult, setIsASearchResult, languagesList, displaySuccessAlert, setDisplaySuccessAlert, canDeleteItem, setUpdate, setItemToUpdate, updateFromDetails, setUpdateFromDetails, packagingsList, setPackagingsList, productsCategories}){
     //categories request url
     var categoriesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/categories/'
 
@@ -21,6 +23,15 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
     const [packaged_products_for_sale, setPackaged_products_for_sale] = useState([])
     const [packaged_products_at_purchase_illustrations, setPackaged_products_at_purchase_illustrations] = useState(new Map())
     const [packaged_products_for_sale_illustrations, setPackaged_products_for_sale_illustrations] = useState(new Map())
+
+    //informations relatives à l'affichage des détails d'un produit
+    const [productIllustrations, setProductIllustrations] = useState([])
+    const [productDetails, setProductDetails] = useState({})
+    const [productDescriptions, setProductDescriptions] = useState([])
+    const [productConditionings, setProductConditionings] = useState([])
+    const [productPurchaseConditionings, setProductPurchaseConditionings] = useState([])
+    const [productSaleConditionings, setProductSaleConditionings] = useState([])
+    const [conditioningsIllustrations, setConditioningsillustrations] = useState(new Map())
 
     //etat contenant le message à afficher dans l'alerte de confirmation
     const [confirmAlertMsg, setConfirmAlertMsg] = useState('')
@@ -42,6 +53,15 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
 
     //état indiquant si on doit afficher la iste des produits conditionnés à la vente pour un conditionnemnt
     const [showPackaged_products_for_sale, setShowPackaged_products_for_sale] = useState(true)
+
+    //état indiquant si on doit afficher la liste des détails d'un produit
+    const [showProductDetails, setShowwProductDetails] = useState(true)
+
+    //état indiquant si on doit afficher la liste des conditionnemnts d'achat d'un produit
+    const [showPurchaseConditionings, setShowPurchaseConditionings] = useState(true)
+
+    //état indiquant si on doit afficher la liste des conditionnemnts de vente d'un produit
+    const [showSaleConditionings, setShowSaleConditionings] = useState(true)
 
     //état contenant la liste des éléments visités
     const [visitedItems, setVisitedItems] = useState([])
@@ -83,6 +103,14 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
         setPackaged_products_at_purchase_illustrations(new Map())
         setPackaged_products_for_sale_illustrations(new Map())
 
+        setProductIllustrations([])
+        setProductDetails({})
+        setProductDescriptions([])
+        setProductConditionings([])
+        setProductPurchaseConditionings([])
+        setProductSaleConditionings([])
+        setConditioningsillustrations(new Map())
+
         setLoadData(true)
     }
 
@@ -94,6 +122,11 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
         case 'conditionings':
             titleType = "Conditionnement " + item['name']
             break;
+        
+        case 'products':
+            titleType = "Produit " + item['name']
+            break;
+
     }
 
     useEffect(() => {
@@ -134,6 +167,11 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                             setSuccessfulDeleteAlertMsg("Catégorie supprimée")
                             setDisplaySuccessfulDeleteAlert(true)
                             break;
+
+                        case "conditionings":
+                            setSuccessfulDeleteAlertMsg("Conditionnement supprimé")
+                            setDisplaySuccessfulDeleteAlert(true)
+                            break;
                     }
                     
                     setData(itemsList)
@@ -164,11 +202,13 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
             request.onload = function(){
                
                 if(request.status === 200){
-                    products_illustrations.set(product['id'], request.response[0]['illustration'])
+                    if(request.response.length > 0){
+                        products_illustrations.set(product['id'], request.response[0]['illustration'])
 
-                    var tmpMap = new Map(products_illustrations)
+                        var tmpMap = new Map(products_illustrations)
 
-                    setProducts_illustrations(tmpMap)
+                        setProducts_illustrations(tmpMap)
+                    }
 
                     //chargement de l'illustration du produit suivant
                     loadproductsIllustrations(productsList, index + 1)
@@ -259,7 +299,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                     <div className="container overflow-auto" style={{marginTop: "10px", height:"80vh"}}>
                         <div className="row d-flex justify-content-center">
                             <div className="col-4">
-                                <img className="illustration-image" src={item['image']} alt="image"></img>
+                                <img className="illustration-image" src={item['image'] ? item['image'] : image_not_found} alt="image" style={{height:"30vh"}}></img>
                             </div>
                             <div className="col-6">
                                 <div className="row">
@@ -282,8 +322,8 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
 
                         <div className="section">
                             <div className="row">
-                                <h6>Descriptions</h6>
-                                <div className="col-10 d-flex justify-content-end vertical-center hover-pointer">
+                                <h6 className="col-9">Descriptions</h6>
+                                <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showDescriptions ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowDescriptions(!showDescriptions)
                                     }}></span>
@@ -312,8 +352,8 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                         </div>
                         <div className="section">
                             <div className="row">
-                                <h6>Sous catégories</h6>
-                                <div className="col-10 d-flex justify-content-end vertical-center hover-pointer">
+                                <h6 className="col-9">Sous catégories</h6>
+                                <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showSubCategories ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowSubCategories(!showSubCategories)
                                     }}></span>
@@ -335,7 +375,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                                
                                             }}>
                                                 
-                                                <img className="card-img-top" src={category['image']} alt="image"/>
+                                                <img className="card-img-top" src={category['image'] ? category['image'] : image_not_found} alt="image"/>
                                                 <div className="card-body">
                                                     <span className="bold">{category['name']}</span>
                                                 </div>
@@ -348,8 +388,8 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                         </div>
                         <div className="section">
                             <div className="row">
-                                <h6>Liste des produits</h6>
-                                <div className="col-10 d-flex justify-content-end vertical-center hover-pointer">
+                                <h6 className="col-9">Liste des produits</h6>
+                                <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showProductsList ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowProductsList(!showProductsList)
                                     }}></span>
@@ -372,7 +412,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                                
                                             }}>
                                                 
-                                                <img className="card-img-top" id={"img_" + product['id']} src={products_illustrations.get(product['id'])} alt="image" style={{height:"20vh"}}/>
+                                                <img className="card-img-top" id={"img_" + product['id']} src={products_illustrations.get(product['id']) ? products_illustrations.get(product['id']) : image_not_found} alt="image" style={{height:"20vh"}}/>
                                                 <div className="card-body">
                                                     <span className="bold">{product['name']}</span>
                                                 </div>
@@ -494,8 +534,8 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                         </div>
                         <div className="section">
                             <div className="row">
-                                <h6>Produits conditionnés à l'achat</h6>
-                                <div className="col-8 d-flex justify-content-end vertical-center hover-pointer">
+                                <h6 className="col-9">Produits conditionnés à l'achat</h6>
+                                <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showPackaged_products_at_purchase ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowPackaged_products_at_purchase(!showPackaged_products_at_purchase)
                                     }}></span>
@@ -531,8 +571,8 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                         </div>
                         <div className="section">
                             <div className="row">
-                                <h6>Produits conditionnés à la vente</h6>
-                                <div className="col-8 d-flex justify-content-end vertical-center hover-pointer">
+                                <h6 className="col-9">Produits conditionnés à la vente</h6>
+                                <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showPackaged_products_for_sale ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowPackaged_products_for_sale(!showPackaged_products_for_sale)
                                     }}></span>
@@ -569,6 +609,328 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                     </div>
                 );
                 break;
+
+            case "products":
+                if(loadData){
+                    setLoadData(false)
+
+                    //récupération de la liste des illustrations du produit
+                    var requestURL = item["product_illustration_list"]
+            
+                    var request = new XMLHttpRequest();
+                    request.open('GET', requestURL);
+                    request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+                    request.responseType = 'json';
+                    request.send();
+
+                    request.onload = function(){
+                    
+                        if(request.status === 200){
+                        
+                            setProductIllustrations(request.response)
+                            
+                            //chargment des détails du produit
+                            requestURL = item['product_detail']
+                            var request2 = new XMLHttpRequest();
+                            request2.open('GET', requestURL);
+                            request2.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                            request2.responseType = 'json';
+
+                            request2.send();
+
+                            request2.onload = function(){
+                                var response2 = request2.response
+                                const requestStatus2 = request2.status
+                                
+                                if(requestStatus2 === 200){
+                                    //la requête a réussi
+                                    //on enregistre les détails
+                                    setProductDetails(response2)
+
+                                    //chargement de la liste des descriptions du produit
+                                    requestURL = item['product_description_list']
+                                    var request3 = new XMLHttpRequest();
+                                    request3.open('GET', requestURL);
+                                    request3.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                                    request3.responseType = 'json';
+
+                                    request3.send();
+
+                                    request3.onload = function(){
+                                        var response3 = request3.response
+                                        const requestStatus3 = request3.status
+                                        
+                                        if(requestStatus3 === 200){
+                                            //la requête a réussi
+                                            //on enregistre les détails
+                                            setProductDescriptions(response3)
+
+                                            //chargement des conditionnements du produit
+                                            requestURL = item['conditionnings_list']
+                                            var request4 = new XMLHttpRequest();
+                                            request4.open('GET', requestURL);
+                                            request4.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                                            request4.responseType = 'json';
+        
+                                            request4.send();
+        
+                                            request4.onload = function(){
+                                                var response4 = request4.response
+                                                const requestStatus4 = request4.status
+                                                
+                                                if(requestStatus4 === 200){
+                                                    //la requête a réussi
+                                                    //on enregistre les conditionnements
+                                                    setProductConditionings(response4)
+
+                                                    const tmpPurchaseConditionings = []
+                                                    const tmpSaleConditionings = []
+                                                    const tmpConditioningsIllustrations = new Map(conditioningsIllustrations)
+
+                                                    for(let i = 0; i < response4.length; i++){
+                                                        const conditioning = response4[i]
+
+                                                        if(response4.findIndex(item => item['id'] === conditioning['id']) === i){
+                                                            
+                                                            //vérification s'il s'agit d'un conditionnemt d'achat
+                                                            var packagingIndex = packagingsList.findIndex(packaging => packaging['product'] === item['id'] && packaging['conditioning'] === conditioning['id'] && packaging['type_packaging'] === "PURCHASE")
+
+                                                            if(packagingIndex >= 0){
+                                                                const packaging = packagingsList[packagingIndex]
+
+                                                                tmpPurchaseConditionings.push(conditioning)
+
+                                                                tmpConditioningsIllustrations.set(conditioning['id'], packaging['picture'])
+                                                            }
+
+                                                            //vérification s'il s'agit d'un conditionnement de vente
+                                                            packagingIndex = packagingsList.findIndex(packaging => packaging['product'] === item['id'] && packaging['conditioning'] === conditioning['id'] && packaging['type_packaging'] === "SALE")
+
+                                                            if(packagingIndex >= 0){
+                                                                const packaging = packagingsList[packagingIndex]
+
+                                                                tmpSaleConditionings.push(conditioning)
+
+                                                                tmpConditioningsIllustrations.set(conditioning['id'], packaging['picture'])
+                                                            }
+                                                        }
+                                                    }
+
+                                                    setConditioningsillustrations(tmpConditioningsIllustrations)
+                                                    setProductPurchaseConditionings(tmpPurchaseConditionings)
+                                                    setProductSaleConditionings(tmpSaleConditionings)
+                                                    
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } 
+
+                return(
+                    <div className="container overflow-auto" style={{marginTop: "10px", height:"80vh"}}>
+                        <div className="row d-flex justify-content-center">
+                            {
+                                productIllustrations.length ?
+
+                                <div id="illustrations" className="col-4 illustration-image carousel slide" data-ride="carousel" style={{height:"30vh", marginRight:"50px"}}>
+                                    <ol className="carousel-indicators">
+                                        {
+                                            productIllustrations.map((illustration, index) => (
+                                            <li data-target="#illustrations" key={index} data-slide-to={index} className={!index ? "active" : ""}></li>))
+                                        }
+                                    </ol>
+                                    <div className="carousel-inner">
+                                        {
+                                            productIllustrations.map((illustration, index) => (
+                                                <div className={"carousel-item " + (!index ? "active" : "")} key={illustration['id']}> 
+                                                    <img className="d-block w-100" src={illustration['illustration']} alt="illustration" style={{height:"29vh"}}/>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                    <a class="carousel-control-prev" href="#illustrations" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#illustrations" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div> :
+
+                                <div className="col-4">
+                                    <img className="illustration-image" src={image_not_found} alt="image" style={{height:"30vh"}}/>
+                                </div>
+                            }
+
+                            <div className="col-6">
+                                <div className="row">
+                                    <span className="bold">Nom:&nbsp; </span> {item['name']}
+                                </div>
+                                <div className="row">
+                                    <span className="bold">Code:&nbsp; </span> {item['code']}
+                                </div>
+                                <div className="row">
+                                    <span className="bold">Catégorie:&nbsp; </span>{productsCategories.get(item['id'])}
+                                </div>
+                                <div className="row">
+                                    <span className="bold">Date de création:&nbsp; </span>  {item['created_at']}
+                                </div>
+                                <div className="row">
+                                    <span className="bold">Dernière modification:&nbsp; </span>  {item['update_at']}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="section">
+                            <div className="row">
+                                <h6 className="col-9">Détails</h6>
+                                <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
+                                    <span style={{color:"black", fontSize:"larger"}} className={showPackaged_products_at_purchase ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
+                                        setShowwProductDetails(!showProductDetails)
+                                    }}></span>
+                                </div>
+                            </div>
+                            <hr></hr>
+                            {
+                                showProductDetails &&
+
+                                <div style={{marginLeft:"40px"}}>
+                                    <div className="row">
+                                        <span className="bold">Modèle:&nbsp;&nbsp; </span>{productDetails['model']}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Marque:&nbsp;&nbsp; </span>{productDetails['mark']}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Poids:&nbsp;&nbsp; </span>{productDetails['weight']}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Conservation:&nbsp;&nbsp; </span>{productDetails['conservation']}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Origine:&nbsp;&nbsp; </span>{productDetails['origin']}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Composition:&nbsp;&nbsp; </span>{productDetails['composition']}
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        
+                        <div className="section">
+                            <div className="row">
+                                <h6 className="col-9">Descriptions</h6>
+                                <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
+                                    <span style={{color:"black", fontSize:"larger"}} className={showDescriptions ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
+                                        setShowDescriptions(!showDescriptions)
+                                    }}></span>
+                                </div>
+                            </div>
+                            <hr></hr>
+                            {
+                                showDescriptions && <div className="d-flex flex-wrap">
+                                    {
+                                        productDescriptions.map((description) => (
+                                            <div className="card col-3" key={description['id']} style={{marginRight:"4vw", marginBottom:"15px", paddingLeft:"25px"}}>
+                                                <div className="row">
+                                                    <span className="bold">Description:&nbsp; </span> {description['description']}
+                                                </div><br/>
+                                                <div className="row">
+                                                    <span className="bold">Specification:&nbsp; </span> {description['specification']}
+                                                </div><br></br>
+                                                <div className="row">
+                                                    <span className="bold">Langue:&nbsp; </span> {languagesList[languagesList.findIndex(item => item['id'] === description['language'])]['name']}
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <div className="section">
+                            <div className="row">
+                                <h6 className="col-9">Conditionnements d'achat</h6>
+                                <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
+                                    <span style={{color:"black", fontSize:"larger"}} className={showPackaged_products_at_purchase ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
+                                        setShowPurchaseConditionings(!showPurchaseConditionings)
+                                    }}></span>
+                                </div>
+                            </div>
+                            <hr></hr>
+                            {
+                                showPurchaseConditionings && <div className="d-flex flex-wrap">
+                                    {
+                                        productPurchaseConditionings.map((conditioning) => (
+                                            <div className="card cardLink" key={conditioning['id']} style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
+                                                setVisitedItems([...visitedItems, {
+                                                    item: item,
+                                                    type: itemType
+                                                }])
+
+                                                resetData()
+                                                setItemType("conditionings")
+                                                setItem(conditioning)
+                                               
+                                            }}>
+                                                
+                                                <img className="card-img-top" src={conditioningsIllustrations.get(conditioning['id'])} alt="image" style={{height:"20vh"}}/>
+                                                <div className="card-body">
+                                                    <span className="bold">{conditioning['name']}</span>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <div className="section">
+                            <div className="row">
+                                <h6 className="col-9">Conditionnements de vente</h6>
+                                <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
+                                    <span style={{color:"black", fontSize:"larger"}} className={showPackaged_products_at_purchase ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
+                                        setShowSaleConditionings(!showSaleConditionings)
+                                    }}></span>
+                                </div>
+                            </div>
+                            <hr></hr>
+                            {
+                                showSaleConditionings && <div className="d-flex flex-wrap">
+                                    {
+                                        productSaleConditionings.map((conditioning) => (
+                                            <div className="card cardLink" key={conditioning['id']} style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
+                                                setVisitedItems([...visitedItems, {
+                                                    item: item,
+                                                    type: itemType
+                                                }])
+
+                                                resetData()
+                                                setItemType("conditionings")
+                                                setItem(conditioning)
+                                               
+                                            }}>
+                                                
+                                                <img className="card-img-top" src={conditioningsIllustrations.get(conditioning['id'])} alt="image" style={{height:"20vh"}}/>
+                                                <div className="card-body">
+                                                    <span className="bold">{conditioning['name']}</span>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                )
+                break;
         }
     }
 
@@ -576,11 +938,11 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
         <div className="container">
              <div className="row headSection" style={{fontSize:"large"}}>
                 {
-                isASearchResult ? <h4 className="col-4">Résultats de la recherche</h4> :
-                <h4 className="col-4">{titleType}</h4>
+                isASearchResult ? <h4>Résultats de la recherche</h4> :
+                <h4 className="col-6">{titleType}</h4>
                 }
                         
-                <div className="col-8 d-flex justify-content-end vertical-center hover-pointer">
+                <div className="col-6 d-flex justify-content-end vertical-center hover-pointer">
                     <div className="col-7 d-flex justify-content-end vertical-center hover-pointer">
                         <a style={{color:"black", fontSize:"larger"}} onClick={() => {
                             if(visitedItems.length == 0){
@@ -592,6 +954,9 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                         break
                                     case "conditionings":
                                         setSpaceName("listConditionings")
+                                        break
+                                    case "products":
+                                        setSpaceName("listProducts")
                                         break
                                 }
                             }else{
@@ -618,6 +983,10 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                         case 'categories':
                                             setConfirmAlertMsg("Voulez-vous supprimer la catégorie " + item['name'] + " ?")
                                             break;
+
+                                        case 'conditionings':
+                                            setConfirmAlertMsg("Voulez-vous supprimer le conditionnement " + item['name'] + " ?")
+                                            break;
                                     }
                                 }
                                 }>  
@@ -634,6 +1003,12 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                             case "categories":
                                                 setSpaceName('createCategory')
                                                 break
+                                            case "conditionings":
+                                                setSpaceName("createConditioning")
+                                                break;
+                                            case "products":
+                                                setSpaceName("createProduct")
+                                                break;
                                         }
                                         
                                         event.preventDefault()

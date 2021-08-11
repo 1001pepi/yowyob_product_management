@@ -412,7 +412,7 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
                 {
                     update ? <h4>Editer la catégorie {itemToUpdate['name']}</h4> : <h4>Créer une nouvelle catégorie</h4>
                 }
-                <div className="col-7 d-flex justify-content-end vertical-center hover-pointer">
+                <div className="col-5 d-flex justify-content-end vertical-center hover-pointer">
                     <a id="delete" style={{color:"black", fontSize:"larger"}} onClick={() => {
                         setUpdate(false)
                         setDisplaySuccessAlert(false)

@@ -907,16 +907,6 @@ function List({ data, setData,
                                             if(document.getElementById(getUpdateButtonId(language))){
                                                 document.getElementById(getUpdateButtonId(language)).style.visibility = "hidden"
                                             }  
-                                        }}
-                                        onClick={(event)=>{
-                                            const parentTagName = event.target.parentElement.tagName
-
-                                            if(parentTagName === "TR" || parentTagName === "TD"){
-                                                setItem(language)
-                                                setItemType(listType)
-                                                setSpaceName('details')
-                                            }
-                                        
                                         }}>
                                             <td className="col-1" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
                                                 <span>
@@ -1335,7 +1325,7 @@ function List({ data, setData,
 
                     <div>
                         Ordre &nbsp;
-                        <select className="select-sort-input" style={{marginRight:"30px"}} id="select-sort-order">
+                        <select className="select-sort-input" style={{marginRight:"20px"}} id="select-sort-order">
                             <option value="1">Croissant</option>
                             <option value="2">Décroissant</option>
                         </select>
