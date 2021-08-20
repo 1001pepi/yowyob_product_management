@@ -322,7 +322,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
 
                         <div className="section">
                             <div className="row">
-                                <h6 className="col-9">Descriptions</h6>
+                                <h6 className="col-9" style={{color:"#351FBC", fontWeight:"bolder"}}>Descriptions</h6>
                                 <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showDescriptions ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowDescriptions(!showDescriptions)
@@ -352,7 +352,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                         </div>
                         <div className="section">
                             <div className="row">
-                                <h6 className="col-9">Sous catégories</h6>
+                                <h6 className="col-9" style={{color:"#351FBC", fontWeight:"bolder"}}>Sous catégories</h6>
                                 <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showSubCategories ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowSubCategories(!showSubCategories)
@@ -388,7 +388,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                         </div>
                         <div className="section">
                             <div className="row">
-                                <h6 className="col-9">Liste des produits</h6>
+                                <h6 className="col-9" style={{color:"#351FBC", fontWeight:"bolder"}}>Liste des produits</h6>
                                 <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showProductsList ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowProductsList(!showProductsList)
@@ -534,7 +534,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                         </div>
                         <div className="section">
                             <div className="row">
-                                <h6 className="col-9">Produits conditionnés à l'achat</h6>
+                                <h6 className="col-9" style={{color:"#351FBC", fontWeight:"bolder"}}>Produits conditionnés à l'achat</h6>
                                 <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showPackaged_products_at_purchase ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowPackaged_products_at_purchase(!showPackaged_products_at_purchase)
@@ -571,7 +571,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                         </div>
                         <div className="section">
                             <div className="row">
-                                <h6 className="col-9">Produits conditionnés à la vente</h6>
+                                <h6 className="col-9" style={{color:"#351FBC", fontWeight:"bolder"}}>Produits conditionnés à la vente</h6>
                                 <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showPackaged_products_for_sale ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowPackaged_products_for_sale(!showPackaged_products_for_sale)
@@ -789,7 +789,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
 
                         <div className="section">
                             <div className="row">
-                                <h6 className="col-9">Détails</h6>
+                                <h6 className="col-9" style={{color:"#351FBC", fontWeight:"bolder"}}>Détails</h6>
                                 <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showPackaged_products_at_purchase ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowwProductDetails(!showProductDetails)
@@ -825,7 +825,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                         
                         <div className="section">
                             <div className="row">
-                                <h6 className="col-9">Descriptions</h6>
+                                <h6 className="col-9" style={{color:"#351FBC", fontWeight:"bolder"}}>Descriptions</h6>
                                 <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showDescriptions ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowDescriptions(!showDescriptions)
@@ -856,7 +856,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
 
                         <div className="section">
                             <div className="row">
-                                <h6 className="col-9">Conditionnements d'achat</h6>
+                                <h6 className="col-9" style={{color:"#351FBC", fontWeight:"bolder"}}>Conditionnements d'achat</h6>
                                 <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showPackaged_products_at_purchase ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowPurchaseConditionings(!showPurchaseConditionings)
@@ -893,7 +893,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
 
                         <div className="section">
                             <div className="row">
-                                <h6 className="col-9">Conditionnements de vente</h6>
+                                <h6 className="col-9" style={{color:"#351FBC", fontWeight:"bolder"}}>Conditionnements de vente</h6>
                                 <div className="col-3 d-flex justify-content-end vertical-center hover-pointer">
                                     <span style={{color:"black", fontSize:"larger"}} className={showPackaged_products_at_purchase ?"fa fa-chevron-up" : "fa fa-chevron-down"} onClick={() => {
                                         setShowSaleConditionings(!showSaleConditionings)

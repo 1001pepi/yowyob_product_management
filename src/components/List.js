@@ -4,6 +4,7 @@ import React, {useEffect} from 'react'
 import '../styles/Common.css'
 import '../styles/List.css'
 import '../styles/Form.css'
+import '../styles/smallDisplay.css'
 
 function List({ data, setData, 
     canDeleteCategory, setCanDeleteCategory, 
@@ -88,8 +89,6 @@ function List({ data, setData,
             setSortCriterion(event.target.value)
             console.log(event.target.value)
         })
-
-        setData(data.sort((a, b) => (a['created_at'] > b['created_at'] ? 1 : (b['created_at'] > a['created_at'] ? -1 : 0))))
 
         var selectSortOrder = document.querySelector('#select-sort-order')
         selectSortOrder.addEventListener('change', (event) => {
@@ -609,7 +608,7 @@ function List({ data, setData,
                     <div className="table-responsive">
                         <table className="table">
                             <thead>
-                                <tr className="no-gutters">
+                                <tr className="no-gutters not-display-on-small-screens">
                                     <th className="col-1 text bold" style={{paddingLeft:"15px"}}>
                                         <input type="checkbox" id="selectAll" title="tout sélectionner" value="1" onClick={selectAll}></input>
                                     </th>
@@ -635,7 +634,7 @@ function List({ data, setData,
 
                 <div className="row overflow-auto form-div" style={{height:"60vh"}}>
                     <div class="table-responsive">
-                        <table className="table">
+                        <table className="table list-small-screen">
                             <tbody>
                                 {
                                     data.map((category) => (
@@ -671,19 +670,19 @@ function List({ data, setData,
                                             }
                                         
                                         }}>
-                                            <td className="col-1" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
+                                            <td className="col-1 not-display-on-small-screens" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
                                                 <span>
                                                     {
                                                         canDeleteCategory.get(category['id']) ? <input type="checkbox" id={getCheckboxId(category)} onClick={(event)=>handleCheckboxClick(event, category['id'])}></input> : null
                                                     }
                                                 </span>
                                             </td>
-                                            <td className="col-3 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['name']}</span></td>
-                                            <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['code']}</span></td>
-                                            <td className="col-3 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['created_at']}</span></td>
-                                            <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['update_at']}</span></td>
+                                            <td className="col-md-3 text " style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['name']}</span></td>
+                                            <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['code']}</span></td>
+                                            <td className="col-3 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['created_at']}</span></td>
+                                            <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['update_at']}</span></td>
 
-                                            <td className="col-1 vertical-center" style={{paddingTop:"2px", paddingBottom:"2px"}}>
+                                            <td className="col-1 vertical-center not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}>
                                                 {
                                                     canDeleteCategory.get(category['id']) ? <a className="item-delete material-icons md-48 delete-icon" id={getDeleteButtonId(category)}  title="supprimer" onClick={(event) =>{
 
@@ -731,7 +730,7 @@ function List({ data, setData,
                     <div class="table-responsive">   
                         <table className="table">
                             <thead>
-                                <tr className="no-gutters">
+                                <tr className="no-gutters not-display-on-small-screens">
                                     <th className="col-1 text bold" style={{paddingLeft:"15px"}}>
                                             <input type="checkbox" id="selectAll" title="tout sélectionner" value="1" onClick={selectAll}></input>
                                     </th>
@@ -761,7 +760,7 @@ function List({ data, setData,
 
                 <div className="row overflow-auto form-div" style={{height:"60vh"}}>
                     <div class="table-responsive">
-                        <table className="table">
+                        <table className="table list-small-screen">
                             <tbody>
                                 {
                                     data.map((conditioning) => (
@@ -797,7 +796,7 @@ function List({ data, setData,
                                             }
                                         
                                         }}>
-                                            <td className="col-1" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
+                                            <td className="col-1 not-display-on-small-screens" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
                                                 <span>
                                                     {
                                                         canDeleteConditioning.get(conditioning['id']) ? <input type="checkbox" id={getCheckboxId(conditioning)} onClick={(event)=>handleCheckboxClick(event, conditioning['id'])}></input> : null
@@ -805,11 +804,11 @@ function List({ data, setData,
                                                 </span>
                                             </td>
                                             <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{conditioning['name']}</span></td>
-                                            <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{conditioning['description']}</span></td>
-                                            <td className="col-1 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{conditioning['quantity']}</span></td>
-                                            <td className="col-3 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{conditioning['created_at']}</span></td>
-                                            <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{conditioning['update_at']}</span></td>
-                                            <td className="col-1" style={{paddingTop:"2px", paddingBottom:"2px"}}>
+                                            <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{conditioning['description']}</span></td>
+                                            <td className="col-1 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{conditioning['quantity']}</span></td>
+                                            <td className="col-3 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{conditioning['created_at']}</span></td>
+                                            <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{conditioning['update_at']}</span></td>
+                                            <td className="col-1 not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}>
                                                 {
                                                     canDeleteConditioning.get(conditioning['id']) ? <a className="item-delete" id={getDeleteButtonId(conditioning)} title="supprimer" onClick={(event) =>{
                                                         setDisplaySuccessfulDeleteAlert(false)
@@ -857,7 +856,7 @@ function List({ data, setData,
                     <div class="table-responsive">
                         <table className="table">
                             <thead>
-                                <tr className="no-gutters">
+                                <tr className="no-gutters not-display-on-small-screens">
                                     <th className="col-1 text bold" style={{paddingLeft:"15px"}}>
                                             <input type="checkbox" id="selectAll" title="tout sélectionner" value="1" onClick={selectAll}></input>
                                     </th>
@@ -884,7 +883,7 @@ function List({ data, setData,
 
                 <div className="row overflow-auto form-div" style={{height:"60vh"}}>
                     <div class="table-responsive">
-                        <table className="table">
+                        <table className="table list-small-screen">
                             <tbody>
                                 {
                                     data.map((language) => (
@@ -908,7 +907,7 @@ function List({ data, setData,
                                                 document.getElementById(getUpdateButtonId(language)).style.visibility = "hidden"
                                             }  
                                         }}>
-                                            <td className="col-1" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
+                                            <td className="col-1 not-display-on-small-screens" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
                                                 <span>
                                                     {
                                                         canDeleteLanguage.get(language['id']) ? <input type="checkbox" id={getCheckboxId(language)} onClick={(event)=>handleCheckboxClick(event, language['id'])}></input> : null
@@ -916,10 +915,10 @@ function List({ data, setData,
                                                 </span>
                                             </td>
                                             <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{language['name']}</span></td>
-                                            <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{language['code']}</span></td>
-                                            <td className="col-3 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{language['created_at']}</span></td>
-                                            <td className="col-3 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{language['update_at']}</span></td>
-                                            <td className="col-1" style={{paddingTop:"2px", paddingBottom:"2px"}}>
+                                            <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{language['code']}</span></td>
+                                            <td className="col-3 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{language['created_at']}</span></td>
+                                            <td className="col-3 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{language['update_at']}</span></td>
+                                            <td className="col-1 not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}>
                                                 {
                                                     canDeleteLanguage.get(language['id']) ? <a className="item-delete" id={getDeleteButtonId(language)} title="supprimer" onClick={(event) =>{
                                                         setDisplaySuccessfulDeleteAlert(false)
@@ -967,7 +966,7 @@ function List({ data, setData,
             <div>
                 <div className="row">
                     <div className="table-responsive">
-                        <table className="table">
+                        <table className="table not-display-on-small-screens">
                             <thead>
                                 <tr className="no-gutters">
                                     <th className="col-1 text bold" style={{paddingLeft:"15px"}}>
@@ -998,7 +997,7 @@ function List({ data, setData,
 
                 <div className="row overflow-auto form-div" style={{height:"60vh"}}>
                     <div class="table-responsive">
-                        <table className="table">
+                        <table className="table list-small-screen">
                             <tbody>
                                 {
                                     data.map((product) => (
@@ -1020,15 +1019,15 @@ function List({ data, setData,
                                             }
                                            
                                         }}>
-                                            <td className="col-1" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
+                                            <td className="col-1 not-display-on-small-screens" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
                                                
                                             </td>
                                             <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{product['name']}</span></td>
-                                            <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{product['code']}</span></td>
-                                            <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{productsCategories.get(product['id'])}</span></td>
-                                            <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{product['created_at']}</span></td>
-                                            <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{product['update_at']}</span></td>
-                                            <td className="col-1 vertical-center" style={{paddingTop:"2px", paddingBottom:"2px"}}>
+                                            <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{product['code']}</span></td>
+                                            <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{productsCategories.get(product['id'])}</span></td>
+                                            <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{product['created_at']}</span></td>
+                                            <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{product['update_at']}</span></td>
+                                            <td className="col-1 vertical-center not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}>
                                             <a className="update-icon item-update" id={getUpdateButtonId(product)} onClick={(event) =>{
                                                             setUpdate(true)
                                                             setItemToUpdate(product)
@@ -1207,25 +1206,25 @@ function List({ data, setData,
 
    switch(listType){
        case 'categories':
-           listTitle = "Liste des catégories"
+           listTitle = "Catégories"
            addButtonTitle="Créer une nouvelle catégorie"
            successfulCreatedMsg = "Catégorie enregistrée!"
            break;
 
         case 'conditionings':
-           listTitle = "Liste des conditionnements"
+           listTitle = "Conditionnements"
            addButtonTitle="Créer un nouveau conditionnement"
            successfulCreatedMsg = "Conditionnement enregistré!"
            break;
         
         case 'languages':
-            listTitle="Liste des langues"
+            listTitle="Langues"
             addButtonTitle="Créer une nouvelle langue"
             successfulCreatedMsg = "Langue enregistrée!"
             break;
         
         case 'products':
-            listTitle="Liste des produits"
+            listTitle="Produits"
             addButtonTitle="Créer une nouveau produit"
             successfulCreatedMsg = "Produit enregistré!"
             break;
@@ -1238,11 +1237,11 @@ function List({ data, setData,
    }
 
     return(
-        <div className="container">
+        <div className="container-fluid">
             <div className="row headSection" style={{fontSize:"large"}}>
-                <h4 className="col-5">{listTitle}</h4>
-                <div className="col-7 d-flex justify-content-end vertical-center hover-pointer">
-                <a id="delete" style={{color:"black"}} onClick={() => {
+                <h4 className="col-10 col-md-5">{listTitle}</h4>
+                <div className="col-2 col-md-7 d-flex justify-content-end vertical-center hover-pointer">
+                <a id="delete" className="not-display-on-small-screens" style={{color:"black"}} onClick={() => {
                         setDisplaySuccessfulDeleteAlert(false)
                         
                         if(checkedItems.length > 0){
@@ -1294,6 +1293,7 @@ function List({ data, setData,
                     </a>
 
                     <span className="fa fa-refresh" title="rafraîchir" style={{fontSize:"x-large", marginRight:"20px"}} onClick={() =>{
+                        setData([])
                         //on rafraîchi la liste
                         switch(listType){
                             case 'categories':
@@ -1315,17 +1315,17 @@ function List({ data, setData,
                         }  
                     }}></span>
 
-                    <div>
+                    <div className="not-display-on-small-screens">
                         Trier par &nbsp;
-                        <select className="select-sort-input" style={{marginRight:"20px"}} id="select-sort-criterion">
+                        <select className="select-sort-input" defaultValue="1" style={{marginRight:"20px"}} id="select-sort-criterion">
                             <option value="1">Nom</option>
                             <option value="2">Date de création</option>
                         </select>
                     </div>
 
-                    <div>
+                    <div  className="not-display-on-small-screens">
                         Ordre &nbsp;
-                        <select className="select-sort-input" style={{marginRight:"20px"}} id="select-sort-order">
+                        <select className="select-sort-input" defaultValue="1" style={{marginRight:"20px"}} id="select-sort-order">
                             <option value="1">Croissant</option>
                             <option value="2">Décroissant</option>
                         </select>

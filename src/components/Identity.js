@@ -2,7 +2,7 @@ import '../styles/Identity.css'
 
 function Identity(){
     return(
-        <div className="col">
+        <div className="col not-display-on-small-screens">
             <div className="container">
                 <div className="row name-div">
                     <div className="col-1">

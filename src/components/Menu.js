@@ -1,4 +1,5 @@
 import '../styles/Menu.css'
+import '../styles/smallDisplay.css'
 
 function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDeleteCategory, updateCategoriesList, setUpdateCategoriesList,
 
@@ -8,7 +9,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
 
     productsList, setProductsList,updateProductsList, setUpdateProductsList, updatePackagings, setUpdatePackagings, canDeleteProduct, setCanDeleteProduct, productsCategories, setProductsCategories, packagingsList, setPackagingsList,
     
-    displaySuccessAlert, setDisplaySuccessAlert, 
+    displaySuccessAlert, setDisplaySuccessAlert, smallScreen,
     
      taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList,  spaceName, setSpaceName
 }){    
@@ -29,6 +30,8 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
 
     //languages request url
     var taxesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/taxes/'
+
+    const breakPoint = 767;
 
     //paramètres de connexion à l'API
     var userName = "zang";
@@ -419,8 +422,26 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
         }
     }
 
+    /* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
+    function openNav() {
+        if(document.getElementById("mySidebar"))
+            document.getElementById("mySidebar").style.width = "250px";
+
+        if(document.getElementById("main"))
+            document.getElementById("main").style.marginLeft = "250px";
+    }
+    
+    /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
+    function closeNav() {
+        if(document.getElementById("mySidebar"))
+            document.getElementById("mySidebar").style.width = "0";
+
+        if(document.getElementById("main"))
+            document.getElementById("main").style.marginLeft = "0";
+    }
+
     return(
-        <div className="col-2">
+        <div className="col-12 col-md-2">
             <div className="row d-flex justify-content-center" 
                     style={{marginBottom:"15px", marginTop:"15px"}}>
                 <button className="col-12 menu-button" onClick={() => {
@@ -432,10 +453,14 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                         if(updateCategoriesList){
                             getCategories(categoriesRequestURL, [])
                             setUpdateCategoriesList(false)
+                            
                         }
+                        
                         setDisplaySuccessAlert(false)
                         setSpaceName("listCategories")
-                        }}><i className="fa fa-list-ul link-item" ></i>Catégories</button>
+
+                        closeNav();
+                    }}><i className="fa fa-list-ul link-item" ></i>Catégories</button>
             </div>
 
             <div className="row d-flex justify-content-center" 
@@ -451,6 +476,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                         }
                         setDisplaySuccessAlert(false)
                         setSpaceName("listConditionings")
+                        closeNav();
                         }}><i className="fa fa-product-hunt link-item" ></i>Conditionnements</button>
             </div>
 
@@ -464,6 +490,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
 
                         setDisplaySuccessAlert(false)
                         setSpaceName("listLanguages")
+                        closeNav();
                         }}><i className="fa fa-language link-item" ></i>Langues</button>
             </div>
 
@@ -489,7 +516,8 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
 
                         setDisplaySuccessAlert(false)
                         setSpaceName("listProducts")
-                        }}><i className="fa fa-product-hunt link-item" ></i>Produits</button>
+                        closeNav();
+                    }}><i className="fa fa-product-hunt link-item" ></i>Produits</button>
             </div>
 
             <div className="row d-flex justify-content-left" 
@@ -502,7 +530,8 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                         
                         setDisplaySuccessAlert(false)
                         setSpaceName("listTaxes")
-                        }}><i className="fa fa-money link-item" ></i>Taxes</button>
+                        closeNav();
+                    }}><i className="fa fa-money link-item" ></i>Taxes</button>
             </div>
         </div> 
   );

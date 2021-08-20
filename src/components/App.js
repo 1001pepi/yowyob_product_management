@@ -7,6 +7,7 @@ import Banner from './Banner'
 import Contenu from './Contenu'
 
 import {useState} from 'react'
+import React, {useEffect} from 'react'
 
 function App() {
 
@@ -88,6 +89,12 @@ function App() {
   //état contenant la chaîne à chercher
   const [stringToSearch, setStringToSearch] = useState('')
 
+  //état indiquant le type de recherche
+  const [searchType, setSearchType] = useState("defaultSearch")
+
+  //etat pour l'affichage de l'alerte de confirmation de l'ajout d'une catégorie
+  const [displaySuccessAlert, setDisplaySuccessAlert] = useState(false)
+
   
 
   //etat contenant la liste des taxes
@@ -106,6 +113,15 @@ function App() {
   function unCheckOption(optionId){
     document.getElementById(optionId).checked = false
   }
+
+  //ajout d'un eventListener pour le choix du type de recherche
+  useEffect(() => {
+    var defaultSearchRadio = document.getElementById("searchChoice1");
+
+    defaultSearchRadio.addEventListener('click', (event)=>{
+      setSearchType(event.target.value)
+    })
+  }, [])
   
   return (
     <div className="container-fluid">
@@ -116,7 +132,13 @@ function App() {
 
         conditioningsList={conditioningsList} setConditioningsList={setConditioningsList} updateConditioningsList={updateConditioningsList} setUpdateConditioningsList={setUpdateConditioningsList} conditioningsResult={conditioningsResult} setConditioningsResult={setConditioningsResult} canDeleteConditioning={canDeleteConditioning} setCanDeleteConditioning={setCanDeleteConditioning}
 
-        setSpaceName={setSpaceName} stringToSearch={stringToSearch} setStringToSearch={setStringToSearch}
+        languagesResult={languagesResult} setLanguagesResult={setLanguagesResult} languagesList={languagesList} setLanguagesList={setLanguagesList} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage} updateLanguagesList={updateLanguagesList} setUpdateLanguagesList={setUpdateLanguagesList}
+
+        productsList={productsList} setProductsList={setProductsList} packagingsList={packagingsList} setPackagingsList={setPackagingsList} updatePackagings={updatePackagings} setUpdatePackagings={setUpdatePackagings} productsResult={productsResult} setProductsResult={setProductsResult} canDeleteProduct={canDeleteProduct} setCanDeleteProduct={setCanDeleteProduct} updateProductsList={updateProductsList} setUpdateProductsList={setUpdateProductsList} productsCategories={productsCategories} setProductsCategories={setProductsCategories}
+
+        displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert}
+
+        setSpaceName={setSpaceName} stringToSearch={stringToSearch} setStringToSearch={setStringToSearch} searchType={searchType} setSearchType={setSearchType}
         />
 
         <Contenu findInCategories={findInCategories} findInConditionings={findInConditionings} findInLanguages={findInLanguages} findInProducts={findInProducts} findInTaxes={findInTaxes}
@@ -129,6 +151,8 @@ function App() {
 
         productsList={productsList} setProductsList={setProductsList} packagingsList={packagingsList} setPackagingsList={setPackagingsList} updatePackagings={updatePackagings} setUpdatePackagings={setUpdatePackagings} productsResult={productsResult} setProductsResult={setProductsResult} canDeleteProduct={canDeleteProduct} setCanDeleteProduct={setCanDeleteProduct} updateProductsList={updateProductsList} setUpdateProductsList={setUpdateProductsList} productsCategories={productsCategories} setProductsCategories={setProductsCategories}
 
+        displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert}
+
           taxesList={taxesList} setTaxesList={setTaxesList} updateTaxesList={updateTaxesList}  setUpdateTaxesList={setUpdateTaxesList}    spaceName={spaceName} setSpaceName={setSpaceName} stringToSearch={stringToSearch}
         />
       </div>
@@ -138,6 +162,19 @@ function App() {
             <div className="container search-settings" style={{fontSize:"large"}}>
                 <div className="bold-center">
                     <span>Paramètres de recherche</span>
+                </div>
+                <hr></hr>
+
+                <div>
+                  <input type="radio" id="searchChoice1" name="searchChoice" value="defaultSearch"></input>
+                  <label for="searchChoice1">&nbsp;Paramètres par défaut</label>
+                  <p>(Recherche dans la liste courante)</p>
+                </div>
+                <hr></hr>
+                
+                <div>
+                  <input type="radio" id="searchChoice2" name="searchChoice" value="advancedSearch"></input>
+                  <label for="searchChoice2">&nbsp;Recherche avancée:</label>
                 </div>
                 <div>
                   &nbsp;&nbsp;Rechercher dans:

@@ -280,7 +280,7 @@ function SearchResults({findInCategories, findInConditionnements, findInLangues,
 
         return(
             <div className="section">
-                <h6>Catégories</h6>
+                <h6 style={{color:"#351FBC", fontWeight:"bolder"}}>Catégories</h6>
                 <hr></hr>
                 {
                     displayCategoriesList()
@@ -390,25 +390,7 @@ function SearchResults({findInCategories, findInConditionnements, findInLangues,
     return(
         <div className="container">
              <div className="row headSection" style={{fontSize:"large"}}>
-                <h4 className="col-4">Résultats de la recherche</h4>
-                <div className="col-8 d-flex justify-content-end vertical-center hover-pointer">
-                    <a id="delete" className="black-link" onClick={() => {
-                    
-                        if(checkedItems.length > 0){
-                            document.getElementById('delete').href="#confirm-delete-alert"
-
-                            if(checkedItems.length === 1){
-                                setConfirmAlertMsg("Voulez-vous supprimer la catégorie sélectionnée?")
-                            }else{
-                                setConfirmAlertMsg("Voulez-vous supprimer les catégories sélectionnées?")
-                            }   
-                        }
-
-                    }}
-                    style={{marginRight:"10px"}}>
-                        <span className="material-icons md-48" title="supprimer">delete</span>
-                    </a>
-                </div>
+                <h4>{'Résultats de la recherche "' + stringToSearch + '"'}</h4>
             </div>
 
             <div className="overflow-auto form-div" style={{height:"80vh"}}>
