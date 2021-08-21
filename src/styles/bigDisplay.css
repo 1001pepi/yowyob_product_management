@@ -1,0 +1,25 @@
+@media all and (min-device-width: 768px) {
+    /*mise en forme des formulaires*/
+    .description-close-button{
+        margin-right: 100px;
+    }
+
+    .description-form{
+        margin-left: 40px;
+    }
+
+    .product-details-form{
+        margin-left: 40px;
+    }
+
+    /*mise en forme de l'alerte succès*/
+    .success-alert{
+        background-color: rgba(234, 137, 41, 0.3);
+        width: 18vw;
+        font-weight: bold;
+        border-radius: 5px;
+        position:fixed;
+        bottom: 50px;
+        left: 10px;
+    }
+}

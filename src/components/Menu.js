@@ -8,34 +8,20 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
     languagesList, setLanguagesList, canDeleteLanguage, setCanDeleteLanguage, updateLanguagesList, setUpdateLanguagesList, 
 
     productsList, setProductsList,updateProductsList, setUpdateProductsList, updatePackagings, setUpdatePackagings, canDeleteProduct, setCanDeleteProduct, productsCategories, setProductsCategories, packagingsList, setPackagingsList,
+
+    categoriesRequestURL, conditioningsRequestURL, languagesRequestURL, productsRequestURL, packagingsRequestURL,
+
+    userName, passWord,
     
     displaySuccessAlert, setDisplaySuccessAlert, smallScreen,
     
      taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList,  spaceName, setSpaceName
 }){    
-    //categories request url
-    var categoriesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/categories/'
-
-    //conditionings request url
-    var conditioningsRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/conditionings/'
-
-    //languages request url
-    var languagesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/languages/'
-
-    //products request url
-    var productsRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/products/'
-
-    //packagings request url
-    var packagingsRequestURL = "https://yowyob-apps-api.herokuapp.com/product-api/product_packagings/"
-
+    
     //languages request url
     var taxesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/taxes/'
 
     const breakPoint = 767;
-
-    //paramètres de connexion à l'API
-    var userName = "zang";
-    var passWord = "harazangsuperuser";
 
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){

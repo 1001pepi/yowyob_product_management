@@ -11,6 +11,43 @@ import React, {useEffect} from 'react'
 
 function App() {
 
+  //lien vers les catégories
+  const categoriesRequestURL = 'https://anselme.pythonanywhere.com/product-api/categories/'
+
+  //categories descriptions request url
+  const categoriesDescriptionsRequestURL = "https://anselme.pythonanywhere.com/product-api/category_descriptions/"
+
+  //conditionings request url
+  const conditioningsRequestURL = 'https://anselme.pythonanywhere.com/product-api/conditionings/'
+
+  //languages request url
+  const languagesRequestURL = 'https://anselme.pythonanywhere.com/product-api/languages/'
+
+  //produit request url
+  const productsRequestURL = 'https://anselme.pythonanywhere.com/product-api/products/'
+
+  //products details request url
+  const productsDetailsRequestURL = "https://anselme.pythonanywhere.com/product-api/product_details/"
+
+  //products description request url
+  const productsDescriptionsRequestURL = "https://anselme.pythonanywhere.com/product-api/product_descriptions/"
+
+  //product packaging request url
+  const productsPackaginsRequestURL = "https://anselme.pythonanywhere.com/product-api/product_packagings/"
+
+  //products illustrations request url
+  const productsIllustrationsRequestURL = 'https://anselme.pythonanywhere.com/product-api/product_illustrations/'
+
+  //packagings request url
+  const packagingsRequestURL = "https://anselme.pythonanywhere.com/product-api/product_packagings/"
+
+  //languages request url
+  var taxesRequestURL = 'https://anselme.pythonanywhere.com/product-api/taxes/'
+
+  //paramètres de connexion à l'API
+  const userName = "ksm_system";
+  const passWord = "w1C#sgdet@app#*&6deploy";
+
   //liste des ids des checkoxes des options de paramétre de la recherche
   const searchParamsCheckboxesIds=["categories_checkbox", "conditionings_checkbox", "languages_checkbox", "products_checkbox", "taxes_checkbox"]
 
@@ -136,12 +173,20 @@ function App() {
 
         productsList={productsList} setProductsList={setProductsList} packagingsList={packagingsList} setPackagingsList={setPackagingsList} updatePackagings={updatePackagings} setUpdatePackagings={setUpdatePackagings} productsResult={productsResult} setProductsResult={setProductsResult} canDeleteProduct={canDeleteProduct} setCanDeleteProduct={setCanDeleteProduct} updateProductsList={updateProductsList} setUpdateProductsList={setUpdateProductsList} productsCategories={productsCategories} setProductsCategories={setProductsCategories}
 
+        categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL} packagingsRequestURL={packagingsRequestURL}
+
+        userName={userName} passWord={passWord}
+
         displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert}
 
         setSpaceName={setSpaceName} stringToSearch={stringToSearch} setStringToSearch={setStringToSearch} searchType={searchType} setSearchType={setSearchType}
         />
 
         <Contenu findInCategories={findInCategories} findInConditionings={findInConditionings} findInLanguages={findInLanguages} findInProducts={findInProducts} findInTaxes={findInTaxes}
+
+        categoriesRequestURL={categoriesRequestURL} categoriesDescriptionsRequestURL={categoriesDescriptionsRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL} packagingsRequestURL={packagingsRequestURL} productsDetailsRequestURL={productsDetailsRequestURL} productsDescriptionsRequestURL={productsDescriptionsRequestURL} productsPackaginsRequestURL={productsPackaginsRequestURL} productsIllustrationsRequestURL={productsIllustrationsRequestURL}
+
+        userName={userName} passWord={passWord}
 
         categoriesResult={categoriesResult} setCategoriesResult={setCategoriesResult} categoriesList={categoriesList} setCategoriesList={setCategoriesList} canDeleteCategory={canDeleteCategory} setCanDeleteCategory={setCanDeleteCategory} updateCategoriesList={updateCategoriesList} setUpdateCategoriesList={setUpdateCategoriesList}
 

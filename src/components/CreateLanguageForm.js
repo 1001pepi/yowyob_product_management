@@ -1,14 +1,14 @@
 import '../styles/Form.css'
 import "../styles/Common.css"
+import "../styles/smallDisplay.css"
 
 import React, {useState} from 'react'
 
 function CreateLanguageForm({setSpaceName, setDisplaySuccessAlert, 
-   setLanguagesList, languagesList, canDeleteLanguage, setCanDeleteLanguage, update, setUpdate, itemToUpdate, setItemToUpdate}){
+   setLanguagesList, languagesList, canDeleteLanguage, setCanDeleteLanguage, update, setUpdate, itemToUpdate, setItemToUpdate,
 
-    //languages request url
-    var languagesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/languages/'
-
+   languagesRequestURL
+}){
     //etat pour contrôler l'affichage du message d'alerte pour le bon remplissage du formulaire
     const [displayAlert, setDisplayAlert] = useState(false)
 
@@ -159,11 +159,6 @@ function CreateLanguageForm({setSpaceName, setDisplaySuccessAlert,
                     }
                 }
             }
-            //création de la requête
-            
-            
-            
-
         }
         
         event.preventDefault()
@@ -173,10 +168,10 @@ function CreateLanguageForm({setSpaceName, setDisplaySuccessAlert,
         <div className="container">
             <div className="row headSection">
                 {
-                    update ? <h4>Editer la langue {itemToUpdate['name']}</h4> : <h4>Créer une nouvelle langue</h4> 
+                    update ? <h4>Editer la langue {itemToUpdate['name']}</h4> : <h4>Nouvelle langue</h4> 
                 }
 
-                <div className="col-7 d-flex justify-content-end vertical-center hover-pointer">
+                <div className="col-5 d-flex justify-content-end vertical-center hover-pointer">
                     <a id="delete" style={{color:"black", fontSize:"larger"}} onClick={() => {
                         setDisplaySuccessAlert(false)
                         setSpaceName('listLanguages')
@@ -187,19 +182,19 @@ function CreateLanguageForm({setSpaceName, setDisplaySuccessAlert,
                 </div>
             </div>
 
-            <div className="overflow-auto form-div" style={{height:"76vh"}}>
+            <div className="overflow-auto form-div contenu-form-small-screen" style={{height:"76vh"}}>
                 
                 <form>
                     <div className="form-section">
                         <div className="form-group row">
                                 <label for="name" className="col-3 col-form-label label">Nom</label>
-                                <div className="col-6">
+                                <div className="col-9 col-md-6">
                                     <input type="text" className="form-control text-input" id="name" placeholder="nom de la langue" defaultValue={update ? itemToUpdate['name'] : ''}></input>                         
                                 </div>
                         </div>
                         <div className="form-group row">
                             <label for="code" className="col-3 col-form-label label">Code</label>
-                            <div className="col-6">
+                            <div className="col-9 col-md-6">
                                 <input type="text" className="form-control text-input" id="code" placeholder="code de la langue" defaultValue={update ? itemToUpdate['code'] : ''}></input>
                             </div>
                         </div>

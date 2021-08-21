@@ -1,4 +1,6 @@
 import '../styles/Form.css'
+import '../styles/smallDisplay.css'
+import '../styles/bigDisplay.css'
 
 import React, {useState} from 'react'
 
@@ -10,23 +12,12 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
     conditioningsList, canDeleteConditioning, setCanDeleteConditioning,
     languagesList, canDeleteLanguage, setCanDeleteLanguage,
     productsList, setProducsList, packagingsList, setPackagingsList,  productsCategories, setProductsCategories,
-    setDisplaySuccessAlert, update, setUpdate, itemToUpdate, setItemToUpdate, updateFromDetails
+    setDisplaySuccessAlert, update, setUpdate, itemToUpdate, setItemToUpdate, updateFromDetails,
+
+    productsRequestURL, productsDetailsRequestURL, productsDescriptionsRequestURL, productsPackaginsRequestURL, productsIllustrationsRequestURL,
+
+    userName, passWord
 }){
-    //products request url
-    var productsRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/products/'
-
-    //products details request url
-    var productsDetailsRequestURL = "https://yowyob-apps-api.herokuapp.com/product-api/product_details/"
-
-    //products description request url
-    var productsDescriptionsRequestURL = "https://yowyob-apps-api.herokuapp.com/product-api/product_descriptions/"
-
-    //product packaging request url
-    var productsPackaginsRequestURL = "https://yowyob-apps-api.herokuapp.com/product-api/product_packagings/"
-
-    //products illustrations request url
-    var productsIllustrationsRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/product_illustrations/'
-
     //liste des clés des descriptions de produits
     const [descriptionsKeys, setDescriptionsKeys] = useState([])
 
@@ -75,10 +66,6 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
     var saleConditioningsData = []
     var illustrationsData = []
 
-    //paramètres de connexion à l'API
-    var userName = "zang";
-    var passWord = "harazangsuperuser";
- 
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
         var token = user + ":" + password;
@@ -264,12 +251,21 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
             return true
         })
 
-        setDescriptionsKeys([...descriptionsKeys, {
-            value: nbDescriptions,
-            languages: tmpList
-        }]);
-        
-        setNbDescriptions(nbDescriptions + 1);
+        if(tmpList.length){
+            setDescriptionsKeys([...descriptionsKeys, {
+                value: nbDescriptions,
+                languages: tmpList
+            }]);
+            
+            setNbDescriptions(nbDescriptions + 1);
+
+        }else{
+            var addDescriptionButton = document.getElementById("add-description-buton")
+
+            if(addDescriptionButton){
+                addDescriptionButton.disabled = true;
+            }
+        }
 
         event.preventDefault();
     }
@@ -288,12 +284,21 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
             return true
         })
 
-        setPurchaseConditioningsKeys([...purchaseConditioningsKeys, {
-            value: nbConditionings,
-            conditionings: tmpList
-        }]);
-        
-        setNbConditionings(nbConditionings + 1);
+        if(tmpList.length){
+            setPurchaseConditioningsKeys([...purchaseConditioningsKeys, {
+                value: nbConditionings,
+                conditionings: tmpList
+            }]);
+            
+            setNbConditionings(nbConditionings + 1);
+
+        }else{
+            var addPurchaseConditioningButton = document.getElementById("add-purchase-conditioning-button");
+
+            if(addPurchaseConditioningButton){
+                addPurchaseConditioningButton.disabled = true;
+            }
+        }
 
         event.preventDefault();
     }
@@ -313,12 +318,21 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
             return true
         })
 
-        setSaleConditioningsKeys([...saleConditioningsKeys, {
-            value: nbConditionings,
-            conditionings: tmpList
-        }]);
-        
-        setNbConditionings(nbConditionings + 1);
+        if(tmpList.length){
+            setSaleConditioningsKeys([...saleConditioningsKeys, {
+                value: nbConditionings,
+                conditionings: tmpList
+            }]);
+            
+            setNbConditionings(nbConditionings + 1);
+
+        }else{
+            var addSaleConditioningButton = document.getElementById("add-sale-conditioning-button");
+
+            if(addSaleConditioningButton){
+                addSaleConditioningButton.disabled = true;
+            }
+        }
 
         event.preventDefault();
     }
@@ -943,10 +957,10 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
         <div className="container">
             <div className="row headSection">
                 {
-                    update ? <h4>Editer le produit {itemToUpdate['name']}</h4> : <h4>Créer un nouveau produit</h4>
+                    update ? <h4>Editer le produit {itemToUpdate['name']}</h4> : <h4>Nouveau produit</h4>
                 }
      
-                <div className="col-7 d-flex justify-content-end vertical-center hover-pointer">
+                <div className="col-5 d-flex justify-content-end vertical-center hover-pointer">
                     <a id="delete" style={{color:"black", fontSize:"larger"}} onClick={() => {
                         setUpdate(false)
                         setDisplaySuccessAlert(false)
@@ -958,18 +972,18 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                             setSpaceName('listProducts')
                         }
                     }}
-                    style={{marginRight:"60px"}}>
+                    style={{marginRight:"90px"}}>
                         <span style={{color:"black", fontSize:"larger"}} className="fa fa-arrow-left" title="Retour à la liste"></span>
                     </a>
                 </div>
             </div>
 
-            <div className="overflow-auto form-div" style={{height:"76vh"}}>
+            <div className="overflow-auto form-div contenu-form-small-screen" style={{height:"76vh"}}>
                 <form>
                     <div className="form-section">
                         <div className="form-group row">
                             <label for="name" className="col-3 col-form-label label">Nom</label>
-                            <div className="col-4">
+                            <div className="col-9 col-md-4">
                                 {
                                     update ? <input type="text" className="form-control text-input" id="name" placeholder="nom du produit" defaultValue={itemToUpdate['name']} disabled></input> :
                                     <input type="text" className="form-control text-input" id="name" placeholder="nom du produit"></input>
@@ -979,7 +993,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                         
                         <div className="form-group row">
                                 <label for="category" className="col-3 col-form-label label">Catégorie</label>
-                                <div className="col-2">
+                                <div className="col-9 col-md-2">
                                     {
                                         update ? <select id="category" className="form-control select-input" disabled>
                                             <option selected value={categoriesList[categoriesList.findIndex(item => item['id'] === itemToUpdate['category'])]['id']} key={categoriesList[categoriesList.findIndex(item => item['id'] === itemToUpdate['category'])]['id']}>{categoriesList[categoriesList.findIndex(item => item['id'] === itemToUpdate['category'])]['name']}</option>
@@ -998,41 +1012,41 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                         <h6>Détails du produit</h6>
                         <hr></hr>
 
-                        <div style={{marginLeft:"40px"}}>
+                        <div className="product-details-form">
                             <div className="form-group row">
                                 <label for="model" className="col-3 col-form-label label">Modèle</label>
-                                <div className="col-6">
+                                <div className="col-9 col-md-6">
                                     <input type="text" className="form-control text-input" id="model" placeholder="model du produit" defaultValue={update ? details['model'] : ''}></input>
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <label for="mark" className="col-3 col-form-label label">Marque *</label>
-                                <div className="col-6">
+                                <label for="mark" className="col-3 col-md-3 col-form-label label">Marque *</label>
+                                <div className="col-9 col-md-6">
                                     <input type="text" className="form-control text-input" id="mark" placeholder="marque du produit" defaultValue={update ? details['mark'] : ''}></input>
                                 </div>
                             </div>
                             <div className="form-group row">
                                 <label for="weight" className="col-3 col-form-label label">Poids</label>
-                                <div className="col-3">
+                                <div className="col-7 col-md-3">
                                     <input type="number" className="form-control text-input" id="weight" placeholder="poids du produit" defaultValue={update ? details['weight'] : ''}></input>
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <label for="conservation" className="col-3 col-form-label label">Conservation</label>
-                                <div className="col-6">
-                                    <input type="text" className="form-control text-input" id="conservation" placeholder="conservation du produit" defaultValue={update ? details['conservation'] : ''}></input>
+                                <label for="conservation" className="col-4 col-md-3 col-form-label label">Conservation</label>
+                                <div className="col-8 col-md-6">
+                                    <textarea className="form-control text-input" id="conservation" placeholder="conservation du produit" defaultValue={update ? details['conservation'] : ''}></textarea>
                                 </div>
                             </div>
                             <div className="form-group row">
                                 <label for="origin" className="col-3 col-form-label label">Origine *</label>
-                                <div className="col-6">
+                                <div className="col-9 col-md-6">
                                     <input type="text" className="form-control text-input" id="origin" placeholder="origine du produit" defaultValue={update ? details['origin'] : ''}></input>
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <label for="composition" className="col-3 col-form-label label">Composition</label>
-                                <div className="col-6">
-                                    <input type="text" className="form-control text-input" id="composition" placeholder="composition du produit" defaultValue={update ? details['composition'] : ''}></input>
+                                <label for="composition" className="col-4 col-md-3 col-form-label label">Composition</label>
+                                <div className="col-8 col-md-6">
+                                    <textarea className="form-control text-input" id="composition" placeholder="composition du produit" defaultValue={update ? details['composition'] : ''}></textarea>
                                 </div>
                             </div>
                             <hr></hr>
@@ -1055,7 +1069,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                         }
 
                         <div className="d-flex flex-row-reverse">
-                            <button className="add-button" onClick={(event) => addDescription(event)}>
+                            <button className="add-button" id="add-description-buton" onClick={(event) => addDescription(event)}>
                                 <span className="fa fa-plus form-control-feedback font-weight-bold"></span>
                                 <span> Ajouter une description</span>
                             </button>
@@ -1074,7 +1088,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                         }
  
                         <div className="d-flex flex-row-reverse">
-                                <button className="add-button" onClick={(event) => addPurchaseConditioning(event)}>
+                                <button className="add-button" id="add-purchase-conditioning-button" onClick={(event) => addPurchaseConditioning(event)}>
                                     <span className="fa fa-plus form-control-feedback font-weight-bold" ></span>
                                     <span> Ajouter un conditionnement</span>
                                 </button>                               
@@ -1093,7 +1107,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                         }
 
                         <div className="d-flex flex-row-reverse">
-                            <button className="add-button" onClick={(event) => addSaleConditioning(event)}>
+                            <button className="add-button" id="add-sale-conditioning-button" onClick={(event) => addSaleConditioning(event)}>
                                 <span className="fa fa-plus form-control-feedback font-weight-bold" ></span>
                                 <span> Ajouter un conditionnement</span>
                             </button>                               

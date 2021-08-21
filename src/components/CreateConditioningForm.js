@@ -1,25 +1,24 @@
 import '../styles/Form.css'
+import '../styles/Common.css'
+import '../styles/Form.css'
+import '../styles/smallDisplay.css'
+import '../styles/bigDisplay.css'
 
 import React, {useState} from 'react'
 
-import '../styles/Common.css'
-import '../styles/Form.css'
-
 function CreateConditioningForm({setSpaceName, setDisplaySuccessAlert, 
-    conditioningsList, setConditioningsList, update, setUpdate, itemToUpdate, setItemToUpdate, canDeleteConditioning, updateFromDetails, setUpdateFromDetails, item, setItem
-}){
-    //conditionings request URL
-    var conditioningsRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/conditionings/'
+    conditioningsList, setConditioningsList, update, setUpdate, itemToUpdate, setItemToUpdate, canDeleteConditioning, updateFromDetails, setUpdateFromDetails, item, setItem,
 
+    conditioningsRequestURL,
+
+    userName, passWord
+}){
+    
     //etat pour contrôler l'affichage du message d'alerte pour le bon remplissage du formulaire
     const [displayAlert, setDisplayAlert] = useState(false)
 
     //etat contenant le message d'alerte à afficher pour le remplissage des formulaires
     const [alertMsg, setAlertMsg] = useState('')
-
-    //paramètres de connexion à l'API
-    var userName = "zang";
-    var passWord = "harazangsuperuser";
     
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
@@ -164,13 +163,11 @@ function CreateConditioningForm({setSpaceName, setDisplaySuccessAlert,
         event.preventDefault()
     }
     
-
-
     return(
         <div className="container">
             <div className="row headSection">
                 {
-                    update ? <h4>Editer le conditionnement {itemToUpdate['name']}</h4> : <h4>Créer un nouveau conditionnement</h4> 
+                    update ? <h4>Editer le conditionnement {itemToUpdate['name']}</h4> : <h4>Nouveau conditionnement</h4> 
                 }
                 <div className="col-7 d-flex justify-content-end vertical-center hover-pointer">
                     <a id="delete" style={{color:"black", fontSize:"larger"}} onClick={() => {
@@ -191,13 +188,13 @@ function CreateConditioningForm({setSpaceName, setDisplaySuccessAlert,
                 </div> 
             </div>
 
-            <div className="overflow-auto form-div" style={{height:"76vh"}}>
+            <div className="overflow-auto form-div contenu-form-small-screen" style={{height:"76vh"}}>
                
                 <form>
                     <div className="form-section">
                         <div className="form-group row">
                             <label for="label" className="col-2 col-form-label label">Nom </label>
-                            <div className="col-6">
+                            <div className="col-10 col-md-6">
                                 {
                                     (update && !canDeleteConditioning.get(itemToUpdate['id'])) ?
                                     <input type="text" className="form-control text-input" id="name" defaultValue={update ? itemToUpdate['name'] : "" } placeholder="nom du conditionnement" disabled></input> :
@@ -207,15 +204,15 @@ function CreateConditioningForm({setSpaceName, setDisplaySuccessAlert,
                         </div>
 
                         <div className="form-group row">
-                            <label for="description" className="col-2 col-form-label label">Description</label>
-                            <div className="col-6">
-                                <input type="text" className="form-control text-input" id="description" defaultValue={update ? itemToUpdate['description'] : "" } placeholder="description du conditionnement"></input>
+                            <label for="description" className="col-4 col-md-2 col-form-label label">Description</label>
+                            <div className="col-8 col-md-6">
+                                <textarea className="form-control text-input" id="description" defaultValue={update ? itemToUpdate['description'] : "" } placeholder="description du conditionnement"></textarea>
                             </div>
                         </div>
 
                         <div className="form-group row">
-                                <label for="value" className="col-2 col-form-label label">Quantité</label>
-                                <div className="col-2">
+                                <label for="value" className="col-3 col-md-2 col-form-label label">Quantité</label>
+                                <div className="col-6 col-md-2">
                                     {
                                         (update && !canDeleteConditioning.get(itemToUpdate['id'])) ?
                                         <input type="number" className="form-control text-input" id="quantity" defaultValue={update ? itemToUpdate['quantity'] : "" } placeholder="Quantité" disabled></input> :

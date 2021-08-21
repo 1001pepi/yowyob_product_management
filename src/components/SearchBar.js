@@ -16,18 +16,14 @@ function SearchBar({findInCategories, findInConditionings, findInLanguages, find
 
     productsList, setProductsList, packagingsList, setPackagingsList, updatePackagings, setUpdatePackagings, canDeleteProduct, setCanDeleteProduct, productsResult, setProductsResult, productsCategories, setProductsCategories, updateProductsList, setUpdateProductsList,
 
+    categoriesRequestURL, conditioningsRequestURL, languagesRequestURL, productsRequestURL, packagingsRequestURL,
+
+    userName, passWord,
+
     displaySuccessAlert, setDisplaySuccessAlert,
 
     spaceName, setSpaceName, stringToSearch,   taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList, setStringToSearch, searchType, setSearchType
 }){
-
-    //lien vers les catégories
-    const categoriesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/categories/'
-
-    //paramètres de connexion à l'API
-    var userName = "zang";
-    var passWord = "harazangsuperuser";
-
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
         var token = user + ":" + password;
@@ -120,6 +116,10 @@ conditioningsList={conditioningsList} setConditioningsList={setConditioningsList
 languagesList={languagesList} setLanguagesList={setLanguagesList} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage} updateLanguagesList={updateLanguagesList} setUpdateLanguagesList={setUpdateLanguagesList}
 
 productsList={productsList} setProductsList={setProductsList} packagingsList={packagingsList} setPackagingsList={setPackagingsList} updatePackagings={updatePackagings} setUpdatePackagings={setUpdatePackagings} updateProductsList={updateProductsList} setUpdateProductsList={setUpdateProductsList} canDeleteProduct={canDeleteProduct} setCanDeleteProduct={setCanDeleteProduct} productsCategories={productsCategories} setProductsCategories={setProductsCategories}
+
+                    categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL} packagingsRequestURL={packagingsRequestURL}
+
+                    userName={userName} passWord={passWord}
 
                     displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} smallScreen={true}
 

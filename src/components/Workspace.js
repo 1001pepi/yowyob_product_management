@@ -17,6 +17,10 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
     languagesList, setLanguagesList, canDeleteLanguage, setCanDeleteLanguage, updateLanguagesList, setUpdateLanguagesList, languagesResult, setLanguagesResult,
 
     productsList, setProductsList, packagingsList, setPackagingsList,  productsCategories, setProductsCategories, updateProductsList, setUpdateProductsList, canDeleteProduct, setCanDeleteProduct, productsResult, setProductsResult,
+
+    categoriesRequestURL, categoriesDescriptionsRequestURL, conditioningsRequestURL, languagesRequestURL, productsRequestURL, packagingsRequestURL, productsDetailsRequestURL, productsDescriptionsRequestURL,  productsPackaginsRequestURL, productsIllustrationsRequestURL,
+
+    userName, passWord,
     
     spaceName, setSpaceName, displaySuccessAlert, setDisplaySuccessAlert,
     
@@ -25,18 +29,6 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
     stringToSearch
 }){
 
-    //categories request url
-    var categoriesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/categories/'
-
-    //conditionings request url
-    var conditioningsRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/conditionings/'
-
-    //languages request url
-    var languagesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/languages/'
-
-    //products request url
-    var productsRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/products/'
- 
     //etat définissant le type d'élément à afficher dans la fenêtre des détails
     const [itemType, setItemType] = useState('')
 
@@ -54,10 +46,6 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
 
     //état permettant d'indiquer si l'update vient de la liste ou du détail pour savoir où aller lorsqu'on clique sur la flèche de retour
     const [updateFromDetails, setUpdateFromDetails] = useState(false)
-
-    //paramètres de connexion à l'API
-    var userName = "zang";
-    var passWord = "harazangsuperuser";
 
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
@@ -185,8 +173,6 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             var requestStatus = request.status
 
             if(requestStatus === 200){
-                var next = response['next']
-
                 //tri de la liste récupérée dans l'ordre croissant
                 tmpList.sort((a, b) => (a['name'] > b['name'] ? 1 : (b['name'] > a['name'] ? -1 : 0)))
     
@@ -194,8 +180,9 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                 
                 setProductsList(tmpList)
                
+                var next = response['next']
 
-                if(next != null){
+                if(next){
                     tmpList = getProducts(next, tmpList)
                 }
             }
@@ -380,6 +367,10 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                 item={item} setItem={setItem} 
                 update={update} setUpdate={setUpdate} 
                 itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
+
+                categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL}
+
+                userName={userName} passWord={passWord}
                 />
             );
             break;
@@ -392,7 +383,12 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             languagesList.sort((a, b) => (a['name'] > b['name'] ? 1 : (b['name'] > a['name'] ? -1 : 0)))
 
             return(
-                    <CreateCategoryForm setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert} categoriesList={categoriesList} setCategoriesList={setCategoriesList} canDeleteCategory={canDeleteCategory} setCanDeleteCategory={setCanDeleteCategory} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage} languagesList={languagesList} setLanguagesList={setLanguagesList} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} item={item} setItem={setItem}/>
+                    <CreateCategoryForm setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert} categoriesList={categoriesList} setCategoriesList={setCategoriesList} canDeleteCategory={canDeleteCategory} setCanDeleteCategory={setCanDeleteCategory} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage} languagesList={languagesList} setLanguagesList={setLanguagesList} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} item={item} setItem={setItem}
+                    
+                    categoriesDescriptionsRequestURL={categoriesDescriptionsRequestURL} categoriesRequestURL={categoriesRequestURL}
+
+                    userName={userName} passWord={passWord}
+                    />
             );
             break;
 
@@ -414,6 +410,10 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                 item={item} setItem={setItem} 
                 update={update} setUpdate={setUpdate} 
                 itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
+
+                categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL}
+
+                userName={userName} passWord={passWord}
             />
             );
             break;
@@ -421,6 +421,10 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
         case 'createConditioning':
             return(
                 <CreateConditioningForm setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert} conditioningsList={conditioningsList} setConditioningsList={setConditioningsList} canDeleteConditioning={canDeleteConditioning} setCanDeleteConditioning={setCanDeleteConditioning} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} canDeleteConditioning={canDeleteConditioning} setCanDeleteConditioning={setCanDeleteConditioning} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} item={item} setItem={setItem}
+
+                conditioningsRequestURL={conditioningsRequestURL}
+
+                userName={userName} passWord={passWord}
                 /> 
             );
             break;
@@ -444,13 +448,19 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                 item={item} setItem={setItem} 
                 update={update} setUpdate={setUpdate} 
                 itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
+
+                categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL}
+
+                userName={userName} passWord={passWord}
             />
             );
             break;
         
         case 'createLanguage': 
             return(
-                <CreateLanguageForm languagesList={languagesList} setLanguagesList={setLanguagesList} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage} setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert}  update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} 
+                <CreateLanguageForm languagesList={languagesList} setLanguagesList={setLanguagesList} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage} setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert}  update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate}
+                
+                languagesRequestURL={languagesRequestURL}
                 />
             );
             break;
@@ -483,6 +493,10 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                 spaceName={spaceName} setSpaceName={setSpaceName}
                 itemType={itemType} setItemType={setItemType}
                 item={item} setItem={setItem} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
+
+                categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL}
+
+                userName={userName} passWord={passWord}
                 />
             );
             break;
@@ -501,6 +515,10 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                     languagesList={languagesList} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage}
                     productsList={productsList} setProducsList={setProductsList} packagingsList={packagingsList} setPackagingsList={setPackagingsList} productsCategories={productsCategories} setProductsCategories={setProductsCategories}
                     update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
+
+                    productsRequestURL={productsRequestURL} productsDetailsRequestURL={productsDetailsRequestURL} productsDescriptionsRequestURL={productsDescriptionsRequestURL} productsPackaginsRequestURL={productsPackaginsRequestURL} productsIllustrationsRequestURL={productsIllustrationsRequestURL}
+
+                    userName={userName} passWord={passWord}
                     />
             );
             break;

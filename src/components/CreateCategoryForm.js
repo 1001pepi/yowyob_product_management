@@ -1,15 +1,17 @@
 import '../styles/Form.css'
 import "../styles/Common.css"
+import "../styles/smallDisplay.css"
 
 import React, {useState} from 'react'
 
 import CategoryDescriptionForm from './CategoryDescriptionForm'
 
-function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesList, setCategoriesList, canDeleteCategory, setCanDeleteCategory, canDeleteLanguage, setCanDeleteLanguage, languagesList, setLanguagesList, update, setUpdate, itemToUpdate, setItemToUpdate, updateFromDetails, setUpdateFromDetails, item, setItem}){
+function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesList, setCategoriesList, canDeleteCategory, setCanDeleteCategory, canDeleteLanguage, setCanDeleteLanguage, languagesList, setLanguagesList, update, setUpdate, itemToUpdate, setItemToUpdate, updateFromDetails, setUpdateFromDetails, item, setItem,
 
-    //categories descriptions request url
-    const categoriesDescriptionsRequestURL = "https://yowyob-apps-api.herokuapp.com/product-api/category_descriptions/"
-        
+    categoriesDescriptionsRequestURL, categoriesRequestURL,
+
+    userName, passWord
+}){     
     //liste des clés des descriptions
     const [descriptionsKeys, setDescriptionsKeys] = useState([])
 
@@ -30,10 +32,6 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
 
     //liste des descriptions enregistrées
     var descriptionsIds = []
-
-    //paramètres de connexion à l'API
-    var userName = "zang";
-    var passWord = "harazangsuperuser";
 
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
@@ -59,12 +57,21 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
             return true
         })
 
-        setDescriptionsKeys([...descriptionsKeys, {
-            value: nbDescriptions,
-            languages: tmpList
-        }]);
-        
-        setNbDescriptions(nbDescriptions + 1);
+        if(tmpList.length){
+            setDescriptionsKeys([...descriptionsKeys, {
+                value: nbDescriptions,
+                languages: tmpList
+            }]);
+            
+            setNbDescriptions(nbDescriptions + 1);
+
+        }else{
+            var addDescriptionButton = document.getElementById("add-description-buton")
+
+            if(addDescriptionButton){
+                addDescriptionButton.disabled = true;
+            }
+        }
 
         event.preventDefault();
     }
@@ -364,7 +371,7 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
                 }
                 
                 //création de la requête
-                var requestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/categories/';
+                var requestURL = categoriesRequestURL;
                 var request = new XMLHttpRequest();
                 request.open('POST', requestURL);
                 request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
@@ -410,7 +417,7 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
         <div className="container">
             <div className="row headSection">
                 {
-                    update ? <h4>Editer la catégorie {itemToUpdate['name']}</h4> : <h4>Créer une nouvelle catégorie</h4>
+                    update ? <h4>Editer la catégorie {itemToUpdate['name']}</h4> : <h4>Nouvelle catégorie</h4>
                 }
                 <div className="col-5 d-flex justify-content-end vertical-center hover-pointer">
                     <a id="delete" style={{color:"black", fontSize:"larger"}} onClick={() => {
@@ -424,19 +431,19 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
                         }else{
                             setSpaceName('listCategories')
                         }
-                    }}
+                    }}     
                     style={{marginRight:"90px"}}>
                         <span style={{color:"black", fontSize:"larger"}} className="fa fa-arrow-left" title="Retour à la liste"></span>
                     </a>
                 </div>      
             </div>
 
-            <div className="overflow-auto form-div" style={{height:"80vh"}}>
+            <div className="overflow-auto form-div contenu-form-small-screen" style={{height:"80vh"}}>
                 <form>
                     <div className="form-section">
                         <div className="form-group row">
                             <label for="name" className="col-3 col-form-label label">Nom</label>
-                            <div className="col-4">
+                            <div className="col-9 col-md-4">
                             {
                                 (canDeleteCategory.get(itemToUpdate['id']) || !update) ?
                                     <input type="text" className="form-control text-input" id="name" defaultValue={update ? itemToUpdate['name'] : "" } placeholder="nom de la catégorie"></input> :
@@ -446,7 +453,7 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
                         </div>
                         <div className="form-group row">
                                 <label for="parent" className="col-3 col-form-label label">Catégorie parent</label>
-                                <div className="col-3">
+                                <div className="col-9 col-md-3">
                                     {
                                         (canDeleteCategory.get(itemToUpdate['id']) || !update) ?
                                             <select id="parent" className="form-control select-input">
@@ -479,9 +486,16 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
                                 {
                                     update ? <img src={itemToUpdate['image']} alt="image" style={{height:"90px"}}/> : null
                                 }
-                                <div className="col-5" style={{marginTop:"auto", marginBottom:"auto"}}>
+                                <div className={"col-9 col-md-5" + (update ? " not-display-on-small-screens" : "")} style={{marginTop:"auto", marginBottom:"auto"}}>
                                     <input type="file" className="form-control-file" id="image" accept="image/*"/>                         
                                 </div>
+                        </div>
+                        <div className="form-group row">
+                            {
+                                update && <div className="display-on-small-screens" style={{marginTop:"auto", marginBottom:"auto", marginLeft:"40px"}}>
+                                    <input type="file" className="form-control-file" id="image" accept="image/*"/>                         
+                                </div>
+                            } 
                         </div>
                     </div>
 
@@ -495,7 +509,7 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
                             }
                             
                             <div className="d-flex flex-row-reverse">
-                                <button className="add-button" onClick={(event) => addDescription(event)}>
+                                <button className="add-button" id="add-description-buton" onClick={(event) => addDescription(event)}>
                                     <span className="fa fa-plus form-control-feedback font-weight-bold"></span>
                                     <span> Ajouter une description</span>
                                 </button>

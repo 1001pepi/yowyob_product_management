@@ -2,12 +2,18 @@ function CategoryDescriptionForm({descriptionId, descriptionsKeys, setDescriptio
 
     function deleteDescription(event){
         setDescriptionsKeys(descriptionsKeys.filter(item => item.value != event.target.id))
+
+        var addDescriptionButton = document.getElementById("add-description-buton")
+
+        if(addDescriptionButton){
+            addDescriptionButton.disabled = false;
+        }
     }
 
     return(
-        <div style={{marginLeft:"40px"}}>
+        <div className="description-form">
             
-            <div className="text-right" style={{paddingRight:"100px"}}>
+            <div className="text-right description-close-button">
                 <span className="fa fa-close form-control-feedback"
                     id={descriptionId} 
                     onClick={(event) => deleteDescription(event)}>
@@ -16,25 +22,25 @@ function CategoryDescriptionForm({descriptionId, descriptionsKeys, setDescriptio
             </div>
 
             <div className="form-group row">
-                <label for="description" className="col-3 col-form-label label">Description</label>
-                <div className="col-6">
-                    <input type="text" className="form-control text-input" id={"description_" + descriptionId} placeholder="description de la catégorie" defaultValue = {descriptionItem ? descriptionItem['description'] : ''}></input>
+                <label for="description" className="col-4 col-md-3 col-form-label label">Description</label>
+                <div className="col-8 col-md-6">
+                    <textarea className="form-control text-input" id={"description_" + descriptionId} placeholder="description de la catégorie" defaultValue = {descriptionItem ? descriptionItem['description'] : ''}></textarea>
                 </div>
             </div>
             <div className="form-group row">
-                <label for="specification" className="col-3 col-form-label label">Spécification</label>
-                <div className="col-6">
+                <label for="specification" className="col-4 col-md-3 col-form-label label">Spécification</label>
+                <div className="col-8 col-md-6">
                     {
                         descriptionItem ?
-                        <input type="text" className="form-control text-input" id={"specification_" + descriptionId} placeholder="spécification de la catégorie" defaultValue = {descriptionItem ? descriptionItem['specification'] : ''} disabled></input> : 
-                        <input type="text" className="form-control text-input" id={"specification_" + descriptionId} placeholder="spécification de la catégorie" defaultValue = {descriptionItem ? descriptionItem['specification'] : ''}></input>
+                        <textarea className="form-control text-input" id={"specification_" + descriptionId} placeholder="spécification de la catégorie" defaultValue = {descriptionItem ? descriptionItem['specification'] : ''} disabled></textarea> : 
+                        <textarea className="form-control text-input" id={"specification_" + descriptionId} placeholder="spécification de la catégorie" defaultValue = {descriptionItem ? descriptionItem['specification'] : ''}></textarea>
                     }
                     
                 </div>
             </div>
             <div className="form-group row">
                 <label for={descriptionId} className="col-3 col-form-label label">Langue</label>
-                <div className="col-3">
+                <div className="col-7 col-md-3">
                     {
                         descriptionItem ?
                         <select id={"language_" + descriptionId} className="form-control select-input" disabled>

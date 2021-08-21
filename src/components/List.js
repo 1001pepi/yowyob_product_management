@@ -5,6 +5,7 @@ import '../styles/Common.css'
 import '../styles/List.css'
 import '../styles/Form.css'
 import '../styles/smallDisplay.css'
+import '../styles/bigDisplay.css'
 
 function List({ data, setData, 
     canDeleteCategory, setCanDeleteCategory, 
@@ -17,24 +18,16 @@ function List({ data, setData,
     itemType, setItemType, 
     item, setItem,  
     update, setUpdate, 
-    itemToUpdate, setItemToUpdate, updateFromDetails, setUpdateFromDetails
+    itemToUpdate, setItemToUpdate, updateFromDetails, setUpdateFromDetails,
+
+    categoriesRequestURL, conditioningsRequestURL, languagesRequestURL, productsRequestURL,
+
+    userName, passWord
 }){
-    //lien vers les catégories
-    const categoriesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/categories/'
-
-    //conditionings request url
-    var conditioningsRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/conditionings/'
-
-    //languages request url
-    var languagesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/languages/'
-
-    //produit request url
-    var productsRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/products/'
 
     //languages request url
     var taxesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/taxes/'
-
-
+    
     //etat contenant le message à afficher dans l'alerte de confirmation
     const [confirmAlertMsg, setConfirmAlertMsg] = useState('')
 
@@ -68,10 +61,6 @@ function List({ data, setData,
 
     //définition du message de succès de création d'un nouvel élément
     let successfulCreatedMsg
-
-    //paramètres de connexion à l'API
-    var userName = "zang";
-    var passWord = "harazangsuperuser";
 
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
@@ -677,7 +666,7 @@ function List({ data, setData,
                                                     }
                                                 </span>
                                             </td>
-                                            <td className="col-md-3 text " style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['name']}</span></td>
+                                            <td className="col-md-3 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['name']}</span></td>
                                             <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['code']}</span></td>
                                             <td className="col-3 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['created_at']}</span></td>
                                             <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{category['update_at']}</span></td>

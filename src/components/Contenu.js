@@ -16,6 +16,10 @@ function Contenu({findInCategories, findInConditionings, findInLangues, findInPr
 
     productsList, setProductsList, packagingsList, setPackagingsList, updatePackagings, setUpdatePackagings, canDeleteProduct, setCanDeleteProduct, productsResult, setProductsResult, productsCategories, setProductsCategories, updateProductsList, setUpdateProductsList,
 
+    categoriesRequestURL, categoriesDescriptionsRequestURL, conditioningsRequestURL, languagesRequestURL, productsRequestURL, packagingsRequestURL, productsDetailsRequestURL, productsDescriptionsRequestURL,  productsPackaginsRequestURL, productsIllustrationsRequestURL,
+
+    userName, passWord,
+
     displaySuccessAlert, setDisplaySuccessAlert,
 
     spaceName, setSpaceName, stringToSearch,   taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList
@@ -34,6 +38,10 @@ function Contenu({findInCategories, findInConditionings, findInLangues, findInPr
 
             productsList={productsList} setProductsList={setProductsList} packagingsList={packagingsList} setPackagingsList={setPackagingsList} updatePackagings={updatePackagings} setUpdatePackagings={setUpdatePackagings} updateProductsList={updateProductsList} setUpdateProductsList={setUpdateProductsList} canDeleteProduct={canDeleteProduct} setCanDeleteProduct={setCanDeleteProduct} productsCategories={productsCategories} setProductsCategories={setProductsCategories}
 
+            categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL} packagingsRequestURL={packagingsRequestURL}
+
+            userName={userName} passWord={passWord}
+
             displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} smallScreen={false}
 
              taxesList={taxesList} setTaxesList={setTaxesList} updateTaxesList={updateTaxesList}  setUpdateTaxesList={setUpdateTaxesList}   spaceName={spaceName} setSpaceName={setSpaceName}
@@ -50,6 +58,10 @@ function Contenu({findInCategories, findInConditionings, findInLangues, findInPr
                 languagesList={languagesList} setLanguagesList={setLanguagesList} updateLanguagesList={updateLanguagesList} setUpdateLanguagesList={setUpdateLanguagesList} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage} languagesResult={languagesResult} setLanguagesResult={setLanguagesResult}
 
                 productsList={productsList} setProductsList={setProductsList} packagingsList={packagingsList} setPackagingsList={setPackagingsList} productsCategories={productsCategories} setProductsCategories={setProductsCategories} updateProductsList={updateProductsList} setUpdateProductsList={setUpdateProductsList} canDeleteProduct={canDeleteProduct} setCanDeleteProduct={setCanDeleteProduct} productsResult={productsResult} setProductsResult={setProductsResult}
+
+                categoriesRequestURL={categoriesRequestURL} categoriesDescriptionsRequestURL={categoriesDescriptionsRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL} packagingsRequestURL={packagingsRequestURL} productsDetailsRequestURL={productsDetailsRequestURL} productsDescriptionsRequestURL={productsDescriptionsRequestURL} productsPackaginsRequestURL={productsPackaginsRequestURL} productsIllustrationsRequestURL={productsIllustrationsRequestURL}
+
+                userName={userName} passWord={passWord}
 
                 spaceName={spaceName} setSpaceName={setSpaceName} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert}
                 

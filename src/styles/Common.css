@@ -28,17 +28,6 @@
     text-align: center;
 }
 
-/*mise en forme de l'alerte succès*/
-.success-alert{
-    background-color: rgba(234, 137, 41, 0.3);
-    width: 18vw;
-    font-weight: bold;
-    border-radius: 5px;
-    position:fixed;
-    bottom: 50px;
-    left: 10px;
-}
-
 /*mise en forme de l'alerte de confirmation de suppression*/
 .confirm-delete-alert{
     top: 30%;
