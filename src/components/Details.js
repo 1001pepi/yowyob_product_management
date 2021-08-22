@@ -806,10 +806,15 @@ userName, passWord
                                         </a>
                                     </div>
                                 </Fragment> :
+                                <Fragment>
+                                    <div className="col-10 illustration-image display-on-small-screens-portrait div-illustration-product-details">
+                                        <img className="img-illustration-product-details" src={image_not_found} alt="image"/>
+                                    </div>
 
-                                <div className="col-4">
-                                    <img className="illustration-image" src={image_not_found} alt="image" style={{height:"30vh"}}/>
-                                </div>
+                                    <div className="col-4 not-display-on-small-screens-portrait div-illustration-product-details">
+                                        <img className="illustration-image  img-illustration-product-details" src={image_not_found} alt="image"/>
+                                    </div>
+                                </Fragment>
                             }
 
                             <Fragment>
