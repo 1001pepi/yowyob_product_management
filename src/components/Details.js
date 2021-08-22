@@ -1,16 +1,19 @@
 import '../styles/Common.css'
 import '../styles/Details.css'
+import '../styles/bigDisplay.css'
+import '../styles/smallDisplay.css'
 
 import image_not_found from '../assets/image_not_found.png'
 
 import {useState} from 'react'
-import React, {useEffect} from 'react'
+import React, {useEffect, Fragment} from 'react'
 
-function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem, data, setData, isASearchResult, setIsASearchResult, languagesList, displaySuccessAlert, setDisplaySuccessAlert, canDeleteItem, setUpdate, setItemToUpdate, updateFromDetails, setUpdateFromDetails, packagingsList, setPackagingsList, productsCategories}){
-    //categories request url
-    var categoriesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/categories/'
+function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem, data, setData, isASearchResult, setIsASearchResult, languagesList, displaySuccessAlert, setDisplaySuccessAlert, canDeleteItem, setUpdate, setItemToUpdate, updateFromDetails, setUpdateFromDetails, packagingsList, setPackagingsList, productsCategories,
 
-    
+categoriesRequestURL,
+
+userName, passWord
+}){
     //informations relatives à l'affichage en détails d'une catégorie
     var [category_parent, setCategory_parent] = useState({})
     var [category_descriptions, setCategory_descriptons] = useState([])
@@ -74,10 +77,6 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
 
     //définition du titre de l'espace de travail
     let titleType
-    
-    //paramètres de connexion à l'API
-    var userName = "zang";
-    var passWord = "harazangsuperuser";
 
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
@@ -296,12 +295,34 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                 }
 
                 return(
-                    <div className="container overflow-auto" style={{marginTop: "10px", height:"80vh"}}>
+                    <div className="container overflow-auto details-small-screen" style={{marginTop: "10px", height:"80vh"}}>
                         <div className="row d-flex justify-content-center">
-                            <div className="col-4">
+                            <center className="col-12 display-on-small-screens-portrait">
+                                    <img className="illustration-image" src={item['image'] ? item['image'] : image_not_found} alt="image" style={{width:"60vw"}}></img>
+                            </center>
+                            <div className="col-4 not-display-on-small-screens-portrait">
                                 <img className="illustration-image" src={item['image'] ? item['image'] : image_not_found} alt="image" style={{height:"30vh"}}></img>
                             </div>
-                            <div className="col-6">
+
+                            <div className="col-6 not-display-on-small-screens-portrait">
+                                <div className="row">
+                                    <span className="bold">Nom:&nbsp; </span> {item['name']}
+                                </div>
+                                <div className="row">
+                                    <span className="bold">Code:&nbsp; </span> {item['code']}
+                                </div>
+                                <div className="row">
+                                    <span className="bold">Catégorie parent:&nbsp; </span>{category_parent['name']}
+                                </div>
+                                <div className="row">
+                                    <span className="bold">Date de création:&nbsp; </span>  {item['created_at']}
+                                </div>
+                                <div className="row">
+                                    <span className="bold">Dernière modification:&nbsp; </span>  {item['update_at']}
+                                </div>
+                            </div>
+
+                            <div className="col-10 display-on-small-screens-portrait">
                                 <div className="row">
                                     <span className="bold">Nom:&nbsp; </span> {item['name']}
                                 </div>
@@ -334,7 +355,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                 showDescriptions && <div className="d-flex flex-wrap">
                                     {
                                         category_descriptions.map((description) => (
-                                            <div className="card col-3" key={description['id']} style={{marginRight:"4vw", marginBottom:"15px", paddingLeft:"25px"}}>
+                                            <div className="card col-12 col-md-3" key={description['id']} style={{marginRight:"4vw", marginBottom:"15px", paddingLeft:"25px"}}>
                                                 <div className="row">
                                                     <span className="bold">Description:&nbsp; </span> {description['description']}
                                                 </div><br/>
@@ -361,10 +382,10 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                             </div>
                             <hr></hr>
                             {
-                                showSubCategories && <div className="d-flex flex-wrap">
+                                showSubCategories && <div className="d-flex flex-wrap card-section-small-screens-portrait">
                                     {
                                         list_of_subcategories.map((category) => (
-                                            <div className="card col-3 cardLink" key={category['id']} style={{marginRight:"4vw", marginBottom:"15px"}} onClick={() =>{
+                                            <div className="card cardLink card-display" key={category['id']} onClick={() =>{
                                                 setVisitedItems([...visitedItems, {
                                                     item: item,
                                                     type: itemType
@@ -372,14 +393,13 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
 
                                                 resetData()
                                                 setItem(category)
-                                               
+                                            
                                             }}>
                                                 
-                                                <img className="card-img-top" src={category['image'] ? category['image'] : image_not_found} alt="image"/>
+                                                <img className="card-img-top card-image" src={category['image'] ? category['image'] : image_not_found}  alt="image"/>
                                                 <div className="card-body">
-                                                    <span className="bold">{category['name']}</span>
+                                                    <span className="bold card-text-small-screens">{category['name']}</span>
                                                 </div>
-                                               
                                             </div>
                                         ))
                                     }
@@ -397,10 +417,10 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                             </div>
                             <hr></hr>
                             {
-                                showProductsList && <div className="d-flex flex-wrap">
+                                showProductsList && <div className="d-flex flex-wrap card-section-small-screens-portrait">
                                     {
                                         list_of_products_in_a_category.map((product) => (
-                                            <div className="card cardLink" key={product['id']} style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
+                                            <div className="card cardLink card-display" key={product['id']} onClick={() =>{
                                                 setVisitedItems([...visitedItems, {
                                                     item: item,
                                                     type: itemType
@@ -409,14 +429,13 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                                 resetData()
                                                 setItemType("products")
                                                 setItem(product)
-                                               
+                                            
                                             }}>
                                                 
-                                                <img className="card-img-top" id={"img_" + product['id']} src={products_illustrations.get(product['id']) ? products_illustrations.get(product['id']) : image_not_found} alt="image" style={{height:"20vh"}}/>
+                                                <img className="card-img-top card-image" id={"img_" + product['id']} src={products_illustrations.get(product['id']) ? products_illustrations.get(product['id']) : image_not_found} alt="image"/>
                                                 <div className="card-body">
-                                                    <span className="bold">{product['name']}</span>
+                                                    <span className="bold card-text-small-screens">{product['name']}</span>
                                                 </div>
-                                               
                                             </div>
                                         ))
                                     }
@@ -514,7 +533,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                 }
 
                 return(
-                    <div className="container overflow-auto" style={{marginTop: "10px", height:"80vh"}}>
+                    <div className="container overflow-auto details-small-screen" style={{marginTop: "10px", height:"80vh"}}>
                         <div style={{marginLeft:"40px"}}>
                             <div className="row">
                                 <span className="bold">Nom :&nbsp; </span> {item['name']}
@@ -543,10 +562,10 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                             </div>
                             <hr></hr>
                             {
-                                showPackaged_products_at_purchase && <div className="d-flex flex-wrap">
+                                showPackaged_products_at_purchase && <div className="d-flex flex-wrap card-section-small-screens-portrait">
                                     {
                                         packaged_products_at_purchase.map((product) => (
-                                            <div className="card cardLink" key={product['id']} style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
+                                            <div className="card cardLink card-display" key={product['id']} onClick={() =>{
                                                 setVisitedItems([...visitedItems, {
                                                     item: item,
                                                     type: itemType
@@ -558,9 +577,9 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                                
                                             }}>
                                                 
-                                                <img className={"card-img-top " + "img_" + product['id']} src={packaged_products_at_purchase_illustrations.get(product['id'])} alt="image" style={{height:"20vh"}}/>
+                                                <img className={"card-img-top card-image" + "img_" + product['id']} src={packaged_products_at_purchase_illustrations.get(product['id'])} alt="image"/>
                                                 <div className="card-body">
-                                                    <span className="bold">{product['name']}</span>
+                                                    <span className="bold card-text-small-screens">{product['name']}</span>
                                                 </div>
                                                
                                             </div>
@@ -580,10 +599,10 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                             </div>
                             <hr></hr>
                             {
-                                showPackaged_products_for_sale && <div className="d-flex flex-wrap">
+                                showPackaged_products_for_sale && <div className="d-flex flex-wrap card-section-small-screens-portrait">
                                     {
                                         packaged_products_for_sale.map((product) => (
-                                            <div className="card cardLink" key={product['id']} style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
+                                            <div className="card cardLink card-display" key={product['id']} onClick={() =>{
                                                 setVisitedItems([...visitedItems, {
                                                     item: item,
                                                     type: itemType
@@ -595,9 +614,9 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                                
                                             }}>
                                                 
-                                                <img className={"card-img-top " + "img_" + product['id']} src={packaged_products_for_sale_illustrations.get(product['id'])} alt="image" style={{height:"20vh"}}/>
+                                                <img className={"card-img-top card-image" + "img_" + product['id']} src={packaged_products_for_sale_illustrations.get(product['id'])} alt="image"/>
                                                 <div className="card-body">
-                                                    <span className="bold">{product['name']}</span>
+                                                    <span className="bold card-text-small-screens">{product['name']}</span>
                                                 </div>
                                                
                                             </div>
@@ -719,8 +738,6 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                                     setConditioningsillustrations(tmpConditioningsIllustrations)
                                                     setProductPurchaseConditionings(tmpPurchaseConditionings)
                                                     setProductSaleConditionings(tmpSaleConditionings)
-                                                    
-
                                                 }
                                             }
                                         }
@@ -732,59 +749,106 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                 } 
 
                 return(
-                    <div className="container overflow-auto" style={{marginTop: "10px", height:"80vh"}}>
+                    <div className="container overflow-auto details-small-screen" style={{marginTop: "10px", height:"80vh"}}>
                         <div className="row d-flex justify-content-center">
                             {
                                 productIllustrations.length ?
-
-                                <div id="illustrations" className="col-4 illustration-image carousel slide" data-ride="carousel" style={{height:"30vh", marginRight:"50px"}}>
-                                    <ol className="carousel-indicators">
-                                        {
-                                            productIllustrations.map((illustration, index) => (
-                                            <li data-target="#illustrations" key={index} data-slide-to={index} className={!index ? "active" : ""}></li>))
-                                        }
-                                    </ol>
-                                    <div className="carousel-inner">
-                                        {
-                                            productIllustrations.map((illustration, index) => (
-                                                <div className={"carousel-item " + (!index ? "active" : "")} key={illustration['id']}> 
-                                                    <img className="d-block w-100" src={illustration['illustration']} alt="illustration" style={{height:"29vh"}}/>
-                                                </div>
-                                            ))
-                                        }
+                                <Fragment>
+                                    <div id="illustrations-small-screens-portrait" className="col-10 illustration-image carousel slide display-on-small-screens-portrait div-illustration-product-details" data-ride="carousel" data-interval="2500">
+                                        <ol className="carousel-indicators">
+                                            {
+                                                productIllustrations.map((illustration, index) => (
+                                                <li data-target="#illustrations-small-screens-portrait" key={index} data-slide-to={index} className={!index ? "active" : ""}></li>))
+                                            }
+                                        </ol>
+                                        <div className="carousel-inner">
+                                            {
+                                                productIllustrations.map((illustration, index) => (
+                                                    <div className={"carousel-item " + (!index ? "active" : "")} key={illustration['id']}> 
+                                                        <img className="d-block img-illustration-product-details" src={illustration['illustration']} alt="illustration"/>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                        <a class="carousel-control-prev" href="#illustrations-small-screens-portrait" role="button" data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#illustrations-small-screens-portrait" role="button" data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
                                     </div>
-                                    <a class="carousel-control-prev" href="#illustrations" role="button" data-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#illustrations" role="button" data-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </div> :
+
+                                    <div id="illustrations" className="col-4 illustration-image carousel slide not-display-on-small-screens-portrait div-illustration-product-details" data-ride="carousel" data-interval="2500" style={{marginRight:"50px"}}>
+                                        <ol className="carousel-indicators">
+                                            {
+                                                productIllustrations.map((illustration, index) => (
+                                                <li data-target="#illustrations" key={index} data-slide-to={index} className={!index ? "active" : ""}></li>))
+                                            }
+                                        </ol>
+                                        <div className="carousel-inner">
+                                            {
+                                                productIllustrations.map((illustration, index) => (
+                                                    <div className={"carousel-item " + (!index ? "active" : "")} key={illustration['id']}> 
+                                                        <img className="d-block img-illustration-product-details" src={illustration['illustration']} alt="illustration"/>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                        <a class="carousel-control-prev" href="#illustrations" role="button" data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#illustrations" role="button" data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                </Fragment> :
 
                                 <div className="col-4">
                                     <img className="illustration-image" src={image_not_found} alt="image" style={{height:"30vh"}}/>
                                 </div>
                             }
 
-                            <div className="col-6">
-                                <div className="row">
-                                    <span className="bold">Nom:&nbsp; </span> {item['name']}
+                            <Fragment>
+                                <div className="col-10 display-on-small-screens-portrait">
+                                    <div className="row">
+                                        <span className="bold">Nom:&nbsp; </span> {item['name']}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Code:&nbsp; </span> {item['code']}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Catégorie:&nbsp; </span>{productsCategories.get(item['id'])}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Date de création:&nbsp; </span>  {item['created_at']}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Dernière modification:&nbsp; </span>  {item['update_at']}
+                                    </div>
                                 </div>
-                                <div className="row">
-                                    <span className="bold">Code:&nbsp; </span> {item['code']}
+
+                                <div className="col-6 not-display-on-small-screens-portrait">
+                                    <div className="row">
+                                        <span className="bold">Nom:&nbsp; </span> {item['name']}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Code:&nbsp; </span> {item['code']}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Catégorie:&nbsp; </span>{productsCategories.get(item['id'])}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Date de création:&nbsp; </span>  {item['created_at']}
+                                    </div>
+                                    <div className="row">
+                                        <span className="bold">Dernière modification:&nbsp; </span>  {item['update_at']}
+                                    </div>
                                 </div>
-                                <div className="row">
-                                    <span className="bold">Catégorie:&nbsp; </span>{productsCategories.get(item['id'])}
-                                </div>
-                                <div className="row">
-                                    <span className="bold">Date de création:&nbsp; </span>  {item['created_at']}
-                                </div>
-                                <div className="row">
-                                    <span className="bold">Dernière modification:&nbsp; </span>  {item['update_at']}
-                                </div>
-                            </div>
+                            </Fragment>
                         </div>
 
                         <div className="section">
@@ -799,27 +863,49 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                             <hr></hr>
                             {
                                 showProductDetails &&
+                                <Fragment>
+                                    <div className="display-on-small-screens-portrait" style={{marginLeft:"20px"}}>
+                                        <div className="row">
+                                            <span className="bold">Modèle:&nbsp;&nbsp; </span>{productDetails['model']}
+                                        </div>
+                                        <div className="row">
+                                            <span className="bold">Marque:&nbsp;&nbsp; </span>{productDetails['mark']}
+                                        </div>
+                                        <div className="row">
+                                            <span className="bold">Poids:&nbsp;&nbsp; </span>{productDetails['weight']}
+                                        </div>
+                                        <div className="row">
+                                            <span className="bold">Conservation:&nbsp;&nbsp; </span>{productDetails['conservation']}
+                                        </div>
+                                        <div className="row">
+                                            <span className="bold">Origine:&nbsp;&nbsp; </span>{productDetails['origin']}
+                                        </div>
+                                        <div className="row">
+                                            <span className="bold">Composition:&nbsp;&nbsp; </span>{productDetails['composition']}
+                                        </div>
+                                    </div>
 
-                                <div style={{marginLeft:"40px"}}>
-                                    <div className="row">
-                                        <span className="bold">Modèle:&nbsp;&nbsp; </span>{productDetails['model']}
+                                    <div className="not-display-on-small-screens-portrait"style={{marginLeft:"40px"}}>
+                                        <div className="row">
+                                            <span className="bold">Modèle:&nbsp;&nbsp; </span>{productDetails['model']}
+                                        </div>
+                                        <div className="row">
+                                            <span className="bold">Marque:&nbsp;&nbsp; </span>{productDetails['mark']}
+                                        </div>
+                                        <div className="row">
+                                            <span className="bold">Poids:&nbsp;&nbsp; </span>{productDetails['weight']}
+                                        </div>
+                                        <div className="row">
+                                            <span className="bold">Conservation:&nbsp;&nbsp; </span>{productDetails['conservation']}
+                                        </div>
+                                        <div className="row">
+                                            <span className="bold">Origine:&nbsp;&nbsp; </span>{productDetails['origin']}
+                                        </div>
+                                        <div className="row">
+                                            <span className="bold">Composition:&nbsp;&nbsp; </span>{productDetails['composition']}
+                                        </div>
                                     </div>
-                                    <div className="row">
-                                        <span className="bold">Marque:&nbsp;&nbsp; </span>{productDetails['mark']}
-                                    </div>
-                                    <div className="row">
-                                        <span className="bold">Poids:&nbsp;&nbsp; </span>{productDetails['weight']}
-                                    </div>
-                                    <div className="row">
-                                        <span className="bold">Conservation:&nbsp;&nbsp; </span>{productDetails['conservation']}
-                                    </div>
-                                    <div className="row">
-                                        <span className="bold">Origine:&nbsp;&nbsp; </span>{productDetails['origin']}
-                                    </div>
-                                    <div className="row">
-                                        <span className="bold">Composition:&nbsp;&nbsp; </span>{productDetails['composition']}
-                                    </div>
-                                </div>
+                                </Fragment>
                             }
                         </div>
                         
@@ -837,7 +923,7 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                 showDescriptions && <div className="d-flex flex-wrap">
                                     {
                                         productDescriptions.map((description) => (
-                                            <div className="card col-3" key={description['id']} style={{marginRight:"4vw", marginBottom:"15px", paddingLeft:"25px"}}>
+                                            <div className="card col-12 col-md-3" key={description['id']} style={{marginRight:"4vw", marginBottom:"15px", paddingLeft:"25px"}}>
                                                 <div className="row">
                                                     <span className="bold">Description:&nbsp; </span> {description['description']}
                                                 </div><br/>
@@ -865,10 +951,10 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                             </div>
                             <hr></hr>
                             {
-                                showPurchaseConditionings && <div className="d-flex flex-wrap">
+                                showPurchaseConditionings && <div className="d-flex flex-wrap card-section-small-screens-portrait">
                                     {
                                         productPurchaseConditionings.map((conditioning) => (
-                                            <div className="card cardLink" key={conditioning['id']} style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
+                                            <div className="card cardLink card-display" key={conditioning['id']} onClick={() =>{
                                                 setVisitedItems([...visitedItems, {
                                                     item: item,
                                                     type: itemType
@@ -880,9 +966,9 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                                
                                             }}>
                                                 
-                                                <img className="card-img-top" src={conditioningsIllustrations.get(conditioning['id'])} alt="image" style={{height:"20vh"}}/>
+                                                <img className="card-img-top card-image" src={conditioningsIllustrations.get(conditioning['id'])} alt="image"/>
                                                 <div className="card-body">
-                                                    <span className="bold">{conditioning['name']}</span>
+                                                    <span className="bold card-text-small-screens">{conditioning['name']}</span>
                                                 </div>
                                             </div>
                                         ))
@@ -902,10 +988,10 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                             </div>
                             <hr></hr>
                             {
-                                showSaleConditionings && <div className="d-flex flex-wrap">
+                                showSaleConditionings && <div className="d-flex flex-wrap card-section-small-screens-portrait">
                                     {
                                         productSaleConditionings.map((conditioning) => (
-                                            <div className="card cardLink" key={conditioning['id']} style={{marginRight:"3vw", marginBottom:"15px", width:"14vw"}} onClick={() =>{
+                                            <div className="card cardLink card-display" key={conditioning['id']} onClick={() =>{
                                                 setVisitedItems([...visitedItems, {
                                                     item: item,
                                                     type: itemType
@@ -917,9 +1003,9 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                                
                                             }}>
                                                 
-                                                <img className="card-img-top" src={conditioningsIllustrations.get(conditioning['id'])} alt="image" style={{height:"20vh"}}/>
+                                                <img className="card-img-top card-image" src={conditioningsIllustrations.get(conditioning['id'])} alt="image"/>
                                                 <div className="card-body">
-                                                    <span className="bold">{conditioning['name']}</span>
+                                                    <span className="bold card-text-small-screens">{conditioning['name']}</span>
                                                 </div>
                                             </div>
                                         ))
@@ -927,7 +1013,6 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
                                 </div>
                             }
                         </div>
-
                     </div>
                 )
                 break;
@@ -939,10 +1024,10 @@ function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem,
              <div className="row headSection" style={{fontSize:"large"}}>
                 {
                 isASearchResult ? <h4>Résultats de la recherche</h4> :
-                <h4 className="col-6">{titleType}</h4>
+                <h4 className="col-12 col-md-6 title-small-screens">{titleType}</h4>
                 }
                         
-                <div className="col-6 d-flex justify-content-end vertical-center hover-pointer">
+                <div className="col-12 col-md-6 d-flex justify-content-end vertical-center hover-pointer">
                     <div className="col-7 d-flex justify-content-end vertical-center hover-pointer">
                         <a style={{color:"black", fontSize:"larger"}} onClick={() => {
                             if(visitedItems.length == 0){

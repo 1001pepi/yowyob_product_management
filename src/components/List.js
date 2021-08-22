@@ -22,7 +22,9 @@ function List({ data, setData,
 
     categoriesRequestURL, conditioningsRequestURL, languagesRequestURL, productsRequestURL,
 
-    userName, passWord
+    userName, passWord,
+
+    packagingsList, setPackagingsList, packagingsRequestURL
 }){
 
     //languages request url
@@ -584,6 +586,36 @@ function List({ data, setData,
             if(requestStatus === 200){
                //la requête a réussi
                productsCategories.set(product['id'], response['name'])
+            }
+        }
+    }
+
+    //fonction permettant de récupérer les packagings
+    function getPackagings(requestURL, tmpList){
+        //création de la requête
+        var request = new XMLHttpRequest();
+        
+        request.open('GET', requestURL);
+        request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+        request.responseType = 'json';
+        request.send();
+
+        request.onload = function(){
+            var response = request.response;
+            var requestStatus = request.status
+
+            if(requestStatus === 200){
+                var next = response['next']
+    
+                tmpList = tmpList.concat(response['results'])
+
+                setPackagingsList(tmpList)
+
+                if(next != null){
+                    tmpList = getPackagings(next, tmpList)
+                }else{
+                    console.log("packagings loaded")
+                }
             }
         }
     }
@@ -1299,6 +1331,7 @@ function List({ data, setData,
                                 break;
     
                             case 'products':
+                                getPackagings(packagingsRequestURL, [])
                                 getProducts(productsRequestURL, [])
                                 break;
                         }  

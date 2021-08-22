@@ -1,4 +1,4 @@
-@media all and (max-device-width: 767px) {
+@media all and (max-width: 768px) {
 
     /*mise en forme des formulaires*/
     .description-form{
@@ -40,7 +40,11 @@
         width: 89vw;
     }
 
-
+    /*mise en forme des détails*/
+    .details-small-screen{
+        margin-left: -30px;
+        width: 100vw;
+    }
 
     .searchbar-smallDisplay, .param-button-smallDisplay{
         margin-top: 10px;
@@ -55,11 +59,19 @@
         margin-left: -40px;
     }
 
-    
-
     /*mise en forme du bouton refresh*/
     .refresh-small-screens{
         margin-left: 20px;
+    }
+
+    /*mise en forme des titres sur les petits écrans*/
+    .title-small-screens{
+        font-size: large;
+    }
+
+    /*mise en forme des textes des cards sur les petits écrans*/
+    .card-text-small-screens{
+        font-size: small;
     }
 
     /*mise en forme des boutons de fermeture des menus de description*/
@@ -81,10 +93,114 @@
         transition: 0.3s; /* 0.5 second transition effect to slide in the sidebar */
         box-shadow: 2px 2px 0px 0px rgb(211, 208, 208);
     }
+
+     
+}
+
+/*style pour les petits écrans en mode portrait*/
+@media all and (max-device-width: 768px) and (orientation: portrait){
+    /*éléments devant être affichés sur les petits écrans*/
+    .display-on-small-screens-portrait{
+        display:block;
+    } 
+
+    /*éléments à ne pas afficher sur les petits écrans en mode portrait*/
+    .not-display-on-small-screens-portrait{
+        display: none;
+    }
+
+    /*mise en forme de la section des cards sur les petits écrans en mode portrait*/
+    .card-section-small-screens-portrait{
+        margin-left: -15px;
+        margin-right: -20px;
+    }
+
+    /*mise en forme des cards sur les petits écrans en mode portrait*/
+    .card-small-screen-portrait{
+        width: 100px;
+    }
+
+    /*éléments devant être affichés sur les petits écrans en mode paysage*/
+    .display-on-small-screens-paysage{
+        display: none;
+    }
+
+    /*affichage des cards sur les grands écrans*/
+    .card-display{
+        margin-right: 1vw;
+        margin-left: 3vw;
+        margin-bottom: 15px;
+        width: 40vw;
+    }
+
+    /*affichage des images des cards sur les grands écrans*/
+    .card-image{
+        height: 20vh;
+    }
+
+    /*affichage de l'illustration des détails sur les petits écrans en mode portrait*/
+    .div-details-illustration-small-screens-portrait{
+        width: 10px;
+    }
+
+    /*affichage des illustrations des produits*/
+    .div-illustration-product-details{
+        height: 35vh;
+        margin-left: 8vw;
+        margin-bottom: 10px;
+    }
+
+    /*affichage des images des illustrations des produits*/
+    .img-illustration-product-details{
+        height: 34vh;
+        width: 100%;
+    }
+}
+
+/*style pour les petits écrans en mode paysage*/
+@media all and (max-device-width: 768px) and (orientation: landscape){
+    /*éléments devant être affichés sur les petits écrans en mode paysage*/
+    .display-on-small-screens-portrait{
+        display: none;
+    } 
+
+    /*éléments devant être affichés sur les petits écrans en mode paysage*/
+    .display-on-small-screens-paysage{
+        display: block;
+    }
+    
+    /*éléments à ne pas afficher sur les petits écrans en mode paysage*/
+    .not-display-on-small-screens-paysage{
+        display: none;
+    }
+
+    /*affichage des cards sur les grands écrans*/
+    .card-display{
+        margin-right: 1vw;
+        margin-left: 3vw;
+        margin-bottom: 15px;
+        width: 25vw;
+    }
+
+    /*affichage des images des cards sur les grands écrans*/
+    .card-image{
+        height: 35vh;
+    }
+
+    /*affichage des illustrations des produits*/
+    .div-illustration-product-details{
+        height: 40vh;
+    }
+
+    /*affichage des images des illustrations des produits*/
+    .img-illustration-product-details{
+        height: 39vh;
+        width: 100%;
+    }
 }
 
 
-  
+
   /* The sidebar links */
   .sidebar a {
     padding: 8px 8px 8px 32px;

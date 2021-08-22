@@ -1,6 +1,8 @@
 import '../styles/Menu.css'
 import '../styles/smallDisplay.css'
 
+import React, {Fragment} from 'react'
+
 function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDeleteCategory, updateCategoriesList, setUpdateCategoriesList,
 
     conditioningsList, setConditioningsList, canDeleteConditioning, setCanDeletCconditioning, updateConditioningsList, setUpdateConditioningsList,
@@ -427,7 +429,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
     }
 
     return(
-        <div className="col-12 col-md-2">
+        <Fragment>
             <div className="row d-flex justify-content-center" 
                     style={{marginBottom:"15px", marginTop:"15px"}}>
                 <button className="col-12 menu-button" onClick={() => {
@@ -519,9 +521,8 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                         closeNav();
                     }}><i className="fa fa-money link-item" ></i>Taxes</button>
             </div>
-        </div> 
-  );
-
+        </Fragment>
+    );
 }
 
 export default Menu

@@ -1,4 +1,4 @@
-@media all and (min-device-width: 768px) {
+@media all and (min-width: 768px){
     /*mise en forme des formulaires*/
     .description-close-button{
         margin-right: 100px;
@@ -22,4 +22,40 @@
         bottom: 50px;
         left: 10px;
     }
+
+    /*éléments devant être affichés sur les petits écrans en portrait*/
+    .display-on-small-screens-portrait{
+        display:none;
+    }
+
+    /*éléments devant être affichés sur les petits écrans en mode paysage*/
+    .display-on-small-screens-paysage{
+        display: none;
+    } 
+
+    /*affichage des cards sur les grands écrans*/
+    .card-display{
+        margin-right: 1vw;
+        margin-left: 3vw;
+        margin-bottom: 15px;
+        width: 200px;
+    }
+
+    /*affichage des images des cards sur les grands écrans*/
+    .card-image{
+        height: 150px;
+    }
+
+    /*affichage des illustrations des produits*/
+    .div-illustration-product-details{
+        height: 30vh;
+    }
+
+    /*affichage des images des illustrations des produits*/
+    .img-illustration-product-details{
+        height: 29vh;
+        width: 100%;
+    }
 }
+
+

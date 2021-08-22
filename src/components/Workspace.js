@@ -494,9 +494,11 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                 itemType={itemType} setItemType={setItemType}
                 item={item} setItem={setItem} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
 
-                categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL}
+                categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL} packagingsRequestURL={packagingsRequestURL}
 
                 userName={userName} passWord={passWord}
+
+                packagingsList={packagingsList} setPackagingsList={setPackagingsList}
                 />
             );
             break;
@@ -538,19 +540,30 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             switch(itemType){
                 case 'categories':
                     return(
-                        <Details itemType={itemType} setItemType={setItemType} item={item} setItem={setItem} data={categoriesList} setData={setCategoriesList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={canDeleteCategory} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}/>
+                        <Details itemType={itemType} setItemType={setItemType} item={item} setItem={setItem} data={categoriesList} setData={setCategoriesList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={canDeleteCategory} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
+                        
+                        categoriesRequestURL={categoriesRequestURL}
+
+                        userName={userName} passWord={passWord}
+                        />
                     );
                     break
 
                 case 'conditionings':
                     return(
-                        <Details itemType={itemType} setItemType={setItemType} item={item} setItem={setItem} data={conditioningsList} setData={setConditioningsList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={canDeleteConditioning} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} packagingsList={packagingsList} setPackagingsList={setPackagingsList}/>
+                        <Details itemType={itemType} setItemType={setItemType} item={item} setItem={setItem} data={conditioningsList} setData={setConditioningsList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={canDeleteConditioning} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} packagingsList={packagingsList} setPackagingsList={setPackagingsList}
+                        
+                        userName={userName} passWord={passWord}
+                        />
                     );
                     break
                 
                 case 'products':
                     return(
-                        <Details itemType={itemType} setItemType={setItemType} item={item} setItem={setItem} data={productsList} setData={setProductsList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={new Map()} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} packagingsList={packagingsList} setPackagingsList={setPackagingsList} productsCategories={productsCategories}/>
+                        <Details itemType={itemType} setItemType={setItemType} item={item} setItem={setItem} data={productsList} setData={setProductsList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={new Map()} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} packagingsList={packagingsList} setPackagingsList={setPackagingsList} productsCategories={productsCategories}
+                        
+                        userName={userName} passWord={passWord}
+                        />
                     );
                     break
                 
