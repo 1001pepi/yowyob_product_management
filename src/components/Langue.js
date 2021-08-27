@@ -6,9 +6,6 @@ function Langue(){
     return(
         <div className="col vertical-center not-display-on-small-screens">
             <div className="row  no-gutters">
-                <div className="col-4 vertical-center">
-                    <p className="vertical-center">Langue</p>
-                </div>
                 <div className="col-5">
                     <select className="form-control select-input">
                         <option selected>Fr</option>

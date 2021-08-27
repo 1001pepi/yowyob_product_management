@@ -927,7 +927,8 @@ function List({ data, setData,
                                             if(document.getElementById(getUpdateButtonId(language))){
                                                 document.getElementById(getUpdateButtonId(language)).style.visibility = "hidden"
                                             }  
-                                        }}>
+                                        }} 
+                                        >
                                             <td className="col-1 not-display-on-small-screens" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
                                                 <span>
                                                     {
@@ -1041,7 +1042,9 @@ function List({ data, setData,
                                            
                                         }}>
                                             <td className="col-1 not-display-on-small-screens" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
-                                               
+                                                <svg width="20" height="20" className="pricing-indicator">
+                                                    <rect rx="5" ry="5" width="15" height="15" style={{fill:"rgba(234, 137, 41, 0.4)"}}/>
+                                                </svg> 
                                             </td>
                                             <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{product['name']}</span></td>
                                             <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{product['code']}</span></td>
@@ -1062,7 +1065,7 @@ function List({ data, setData,
                                     ))
                                 }
                             </tbody>
-                        </table>    
+                        </table>   
                     </div>
                 </div>
             </div>
@@ -1373,6 +1376,7 @@ function List({ data, setData,
                         case 'products':
                             setSpaceName('createProduct')
                             break;
+                        
                     }
                 }
                 } title={addButtonTitle}>

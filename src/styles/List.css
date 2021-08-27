@@ -52,4 +52,16 @@ display: inline-block;
     padding-top: 0px;
 }
 
+tbody tr:hover{
+    border-radius: 5px;
+    cursor: pointer;
+    border-style: ridge;
+    border-width: 2px 1px 2px 1px;
+   
+}
+
+.pricing-indicator{
+    margin-left: 10px;
+}
+
 

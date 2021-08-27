@@ -1,16 +1,19 @@
-.disconnect-button-div{
-    margin-left: auto;
-    margin-top: auto;
+.profil-button{
+    height: 45px;
+    width: 45px;  
+    font-size: x-large;
+    border-radius: 48%;
+    background-color:rgba(234, 137, 41, 0.3);
+    color: black;
+    cursor: pointer;
+    border:none;
+    margin-right: 0px;
 }
 
-.name-div{
-    margin-top: auto;
-    margin-bottom: 5px;
+.profil-button:hover{
+    border: solid #EA8929 1px;
 }
 
-.disconnect-button{
-    border-radius: 6px;
-    border: none;
-    background-color: rgb(245, 243, 243);
-    box-shadow: 4px 4px #F1F3F4;
+.help-button:hover{
+    cursor:pointer;
 }

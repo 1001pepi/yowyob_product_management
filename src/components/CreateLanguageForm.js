@@ -7,17 +7,15 @@ import React, {useState} from 'react'
 function CreateLanguageForm({setSpaceName, setDisplaySuccessAlert, 
    setLanguagesList, languagesList, canDeleteLanguage, setCanDeleteLanguage, update, setUpdate, itemToUpdate, setItemToUpdate,
 
-   languagesRequestURL
+   languagesRequestURL,
+
+   userName, passWord
 }){
     //etat pour contrôler l'affichage du message d'alerte pour le bon remplissage du formulaire
     const [displayAlert, setDisplayAlert] = useState(false)
 
     //etat contenant le message d'alerte à afficher pour le remplissage des formulaires
     const [alertMsg, setAlertMsg] = useState('')
-
-    //paramètres de connexion à l'API
-    var userName = "zang";
-    var passWord = "harazangsuperuser";
 
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
