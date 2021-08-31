@@ -16,13 +16,17 @@ function SearchBar({findInCategories, findInConditionings, findInLanguages, find
 
     productsList, setProductsList, packagingsList, setPackagingsList, updatePackagings, setUpdatePackagings, canDeleteProduct, setCanDeleteProduct, productsResult, setProductsResult, productsCategories, setProductsCategories, updateProductsList, setUpdateProductsList,
 
+    taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList,
+
     categoriesRequestURL, conditioningsRequestURL, languagesRequestURL, productsRequestURL, packagingsRequestURL,
 
     userName, passWord,
 
     displaySuccessAlert, setDisplaySuccessAlert,
 
-    spaceName, setSpaceName, stringToSearch,   taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList, setStringToSearch, searchType, setSearchType
+    spaceName, setSpaceName, stringToSearch, setStringToSearch, searchType, setSearchType, searchResults, setSearchResults,
+
+    listTypes, listType, setListType, searching, setSearching
 }){
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
@@ -95,7 +99,27 @@ function SearchBar({findInCategories, findInConditionings, findInLanguages, find
 
     //fonction pour effectuer la recherche
     function handleDefaultSearch(toSearch){
+        switch (listType){
+            case listTypes.categories:
+                setSearchResults(categoriesList.filter(category => (category['name'].includes(toSearch.toUpperCase()) || category['code'].includes(toSearch.toUpperCase()) || category['created_at'].includes(toSearch)) || category['update_at'].includes(toSearch) ))
+                break;
+            
+            case listTypes.conditionings:
+                setSearchResults(conditioningsList.filter(conditioning => (conditioning['name'].includes(toSearch.toUpperCase()) || conditioning['description'].includes(toSearch.toUpperCase()) || conditioning['created_at'].includes(toSearch)) || conditioning['update_at'].includes(toSearch)))
+                break;
 
+            case listTypes.languages:
+                setSearchResults(languagesList.filter(language => (language['name'].toUpperCase().includes(toSearch.toUpperCase()) || language['code'].toUpperCase().includes(toSearch.toUpperCase()) || language['created_at'].includes(toSearch)) || language['update_at'].includes(toSearch)))
+                break;
+
+            case listTypes.products:
+                setSearchResults(productsList.filter(product => (product['name'].includes(toSearch.toUpperCase()) || product['code'].includes(toSearch.toUpperCase()) || productsCategories.get(product['id']).includes(toSearch.toUpperCase()) || product['created_at'].includes(toSearch)) || product['update_at'].includes(toSearch)))
+                break;
+
+            case listTypes.taxes:
+                setSearchResults(taxesList.filter(taxe => (taxe['label'].includes(toSearch.toUpperCase()) || taxe['value'].includes(toSearch.toUpperCase()) || taxe['description'].includes(toSearch.toUpperCase()) || taxe['created_at'].includes(toSearch)) || taxe['update_at'].includes(toSearch)))
+                break;
+        }
        
     }
 
@@ -154,7 +178,12 @@ productsList={productsList} setProductsList={setProductsList} packagingsList={pa
                             //appel de la fonction de gestion de la recherche
                             setStringToSearch(event.target.value)
                             if(searchType === "defaultSearch"){
-                                handleDefaultSearch(stringToSearch)
+                                if(event.target.value){
+                                    setSearching(true);
+                                    handleDefaultSearch(event.target.value)
+                                }else{
+                                    setSearching(false)
+                                }
                             }
                         }} placeholder=" Search..." />
                 </div>

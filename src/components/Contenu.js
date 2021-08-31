@@ -15,13 +15,17 @@ function Contenu({findInCategories, findInConditionings, findInLangues, findInPr
 
     productsList, setProductsList, packagingsList, setPackagingsList, updatePackagings, setUpdatePackagings, canDeleteProduct, setCanDeleteProduct, productsResult, setProductsResult, productsCategories, setProductsCategories, updateProductsList, setUpdateProductsList,
 
+    taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList,
+
     categoriesRequestURL, categoriesDescriptionsRequestURL, conditioningsRequestURL, languagesRequestURL, productsRequestURL, packagingsRequestURL, productsDetailsRequestURL, productsDescriptionsRequestURL,  productsPackaginsRequestURL, productsIllustrationsRequestURL,
 
     userName, passWord,
 
     displaySuccessAlert, setDisplaySuccessAlert,
 
-    spaceName, setSpaceName, stringToSearch,   taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList
+    listTypes, listType, setListType, searching, setSearching, searchResults, setSearchResults,
+
+    spaceName, setSpaceName, stringToSearch 
 }){
     
     return(
@@ -57,14 +61,17 @@ function Contenu({findInCategories, findInConditionings, findInLangues, findInPr
 
                 productsList={productsList} setProductsList={setProductsList} packagingsList={packagingsList} setPackagingsList={setPackagingsList} productsCategories={productsCategories} setProductsCategories={setProductsCategories} updateProductsList={updateProductsList} setUpdateProductsList={setUpdateProductsList} canDeleteProduct={canDeleteProduct} setCanDeleteProduct={setCanDeleteProduct} productsResult={productsResult} setProductsResult={setProductsResult}
 
+                taxesList={taxesList} setTaxesList={setTaxesList} updateTaxesList={updateTaxesList}  setUpdateTaxesList={setUpdateTaxesList}
+
                 categoriesRequestURL={categoriesRequestURL} categoriesDescriptionsRequestURL={categoriesDescriptionsRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL} packagingsRequestURL={packagingsRequestURL} productsDetailsRequestURL={productsDetailsRequestURL} productsDescriptionsRequestURL={productsDescriptionsRequestURL} productsPackaginsRequestURL={productsPackaginsRequestURL} productsIllustrationsRequestURL={productsIllustrationsRequestURL}
 
                 userName={userName} passWord={passWord}
 
                 spaceName={spaceName} setSpaceName={setSpaceName} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert}
+
+                listTypes={listTypes} listType={listType} setListType={setListType} searching={searching} setSearching = {setSearching} searchResults={searchResults} setSearchResults={setSearchResults}
                 
-                
-                 taxesList={taxesList} setTaxesList={setTaxesList} updateTaxesList={updateTaxesList}  setUpdateTaxesList={setUpdateTaxesList} 
+                  
                     
                 stringToSearch={stringToSearch}
                 />

@@ -1078,22 +1078,22 @@ function List({ data, setData,
             <div>
                 <div className="row">
                     <div class="table-responsive">
-                        <table className="table">
+                        <table className="table text not-display-on-small-screens">
                             <thead>
                                 <tr className="no-gutters">
                                     <th className="col-1 text bold" style={{paddingLeft:"15px"}}>
                                             <input type="checkbox" id="selectAll" title="tout sélectionner" value="1" onClick={selectAll}></input>
                                     </th>
                                     <th class="col-2 text bold">
-                                        <span>Libellé de la taxe</span>
+                                        <span>Libellé</span>
                                     </th>
                                     <th class="col-1 text bold">
                                         <span>Valeur</span>
                                     </th>
-                                    <th class="col-3 text bold">
+                                    <th class="col-2 text bold">
                                         <span>Description</span>
                                     </th>
-                                    <th class="col-2 text bold">
+                                    <th class="col-3 text bold">
                                         <span>Date de création</span>
                                     </th>
                                     <th class="col-2 text bold">
@@ -1109,7 +1109,7 @@ function List({ data, setData,
 
                 <div className="row overflow-auto form-div" style={{height:"60vh"}}>
                     <div class="table-responsive">
-                        <table className="table">
+                        <table className="table list-small-screen">
                             <tbody>
                                 {
                                     data.map((taxe) => (
@@ -1131,17 +1131,17 @@ function List({ data, setData,
                                             }
                                         
                                         }}>
-                                            <td className="col-1" style={{paddingLeft:"15px"}}>
+                                            <td className="col-1 not-display-on-small-screens" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
                                                 <span>
                                                 <input type="checkbox" id={getCheckboxId(taxe)} onClick={(event)=>handleCheckboxClick(event)}></input>
                                                 </span>
                                             </td>
-                                            <td className="col-2 text"><span>{taxe['label']}</span></td>
-                                            <td className="col-1 text"><span>{taxe['value']}</span></td>
-                                            <td className="col-3 text"><span>{taxe['description']}</span></td>
-                                            <td className="col-2 text"><span>{taxe['created_at']}</span></td>
-                                            <td className="col-2 text"><span>{taxe['update_at']}</span></td>
-                                            <td className="col-1">
+                                            <td className="col-2 text" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{taxe['label']}</span></td>
+                                            <td className="col-1 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{taxe['value']}</span></td>
+                                            <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{taxe['description']}</span></td>
+                                            <td className="col-3 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{taxe['created_at']}</span></td>
+                                            <td className="col-2 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}><span>{taxe['update_at']}</span></td>
+                                            <td className="col-1 text not-display-on-small-screens" style={{paddingTop:"2px", paddingBottom:"2px"}}>
                                                 <a className="item-delete" id={getDeleteButtonId(taxe)} title="supprimer" onClick={(event) =>{
                                                     //on vide la liste des checkbox sélectionnés
                                                     setCheckedItems([])

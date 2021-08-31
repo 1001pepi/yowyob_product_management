@@ -1,5 +1,3 @@
-import logo from '../assets/logo.png';
-
 import '../styles/App.css';
 import '../styles/Common.css';
 
@@ -57,7 +55,6 @@ function App() {
   const [findInLanguages, setFindInLanguages] = useState(true)
   const [findInProducts, setFindInProducts] = useState(true)
   const [findInTaxes, setFindInTaxes] = useState(true)
-
 
   //etat contenant la liste des catégories
   const [categoriesList, setCategoriesList] = useState([])
@@ -120,6 +117,13 @@ function App() {
   const [productsCategories, setProductsCategories] = useState(new Map())
 
 
+  //etat contenant la liste des taxes
+  const [taxesList, setTaxesList] = useState([]) 
+
+  //etat indiquant une mise à jour de la liste des taxes
+  const [updateTaxesList, setUpdateTaxesList] = useState(true)
+
+
   //etat indiquant l'espace de travail à afficher
   const [spaceName, setSpaceName] = useState('listCategories')
 
@@ -132,13 +136,24 @@ function App() {
   //etat pour l'affichage de l'alerte de confirmation de l'ajout d'une catégorie
   const [displaySuccessAlert, setDisplaySuccessAlert] = useState(false)
 
-  
+  //objet contenant les types de liste
+  const listTypes = {
+    categories: "categories",
+    conditionings: "conditionings",
+    languages: "languages",
+    products: "products",
+    taxes: "taxes"
+  }
 
-  //etat contenant la liste des taxes
-  const [taxesList, setTaxesList] = useState([]) 
+  //état contenant le type de la liste affichée dans le contenu de l'application
+  const [listType, setListType] = useState(listTypes.categories)
 
-  //etat indiquant une mise à jour de la liste des taxes
-  const [updateTaxesList, setUpdateTaxesList] = useState(true)
+  //état indiquant qu'on est entrain de faire une recherche
+  const [searching, setSearching] = useState(false);
+
+  //état contenant les résultats de la recherche
+  const [searchResults, setSearchResults] = useState([]);
+
 
   
   //fonction permettant de cocher une option de recherche//
@@ -173,6 +188,8 @@ function App() {
 
         productsList={productsList} setProductsList={setProductsList} packagingsList={packagingsList} setPackagingsList={setPackagingsList} updatePackagings={updatePackagings} setUpdatePackagings={setUpdatePackagings} productsResult={productsResult} setProductsResult={setProductsResult} canDeleteProduct={canDeleteProduct} setCanDeleteProduct={setCanDeleteProduct} updateProductsList={updateProductsList} setUpdateProductsList={setUpdateProductsList} productsCategories={productsCategories} setProductsCategories={setProductsCategories}
 
+        taxesList={taxesList} setTaxesList={setTaxesList} updateTaxesList={updateTaxesList}  setUpdateTaxesList={setUpdateTaxesList}
+
         categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL} packagingsRequestURL={packagingsRequestURL}
 
         userName={userName} passWord={passWord}
@@ -180,6 +197,8 @@ function App() {
         displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert}
 
         setSpaceName={setSpaceName} stringToSearch={stringToSearch} setStringToSearch={setStringToSearch} searchType={searchType} setSearchType={setSearchType}
+
+        listTypes={listTypes} listType={listType} setListType={setListType} searching={searching} setSearching = {setSearching} searchResults={searchResults} setSearchResults={setSearchResults}
         />
 
         <Contenu findInCategories={findInCategories} findInConditionings={findInConditionings} findInLanguages={findInLanguages} findInProducts={findInProducts} findInTaxes={findInTaxes}
@@ -196,9 +215,13 @@ function App() {
 
         productsList={productsList} setProductsList={setProductsList} packagingsList={packagingsList} setPackagingsList={setPackagingsList} updatePackagings={updatePackagings} setUpdatePackagings={setUpdatePackagings} productsResult={productsResult} setProductsResult={setProductsResult} canDeleteProduct={canDeleteProduct} setCanDeleteProduct={setCanDeleteProduct} updateProductsList={updateProductsList} setUpdateProductsList={setUpdateProductsList} productsCategories={productsCategories} setProductsCategories={setProductsCategories}
 
+        taxesList={taxesList} setTaxesList={setTaxesList} updateTaxesList={updateTaxesList}  setUpdateTaxesList={setUpdateTaxesList}
+
         displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert}
 
-          taxesList={taxesList} setTaxesList={setTaxesList} updateTaxesList={updateTaxesList}  setUpdateTaxesList={setUpdateTaxesList}    spaceName={spaceName} setSpaceName={setSpaceName} stringToSearch={stringToSearch}
+        listTypes={listTypes} listType={listType} setListType={setListType} searching={searching} setSearching = {setSearching} searchResults={searchResults} setSearchResults={setSearchResults}
+
+              spaceName={spaceName} setSpaceName={setSpaceName} stringToSearch={stringToSearch}
         />
       </div>
 
@@ -211,7 +234,7 @@ function App() {
                 <hr></hr>
 
                 <div>
-                  <input type="radio" id="searchChoice1" name="searchChoice" value="defaultSearch"></input>
+                  <input type="radio" id="searchChoice1" name="searchChoice" value="defaultSearch" checked></input>
                   <label for="searchChoice1">&nbsp;Paramètres par défaut</label>
                   <p>(Recherche dans la liste courante)</p>
                 </div>

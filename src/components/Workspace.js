@@ -18,14 +18,18 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
 
     productsList, setProductsList, packagingsList, setPackagingsList,  productsCategories, setProductsCategories, updateProductsList, setUpdateProductsList, canDeleteProduct, setCanDeleteProduct, productsResult, setProductsResult,
 
+    taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList,
+
     categoriesRequestURL, categoriesDescriptionsRequestURL, conditioningsRequestURL, languagesRequestURL, productsRequestURL, packagingsRequestURL, productsDetailsRequestURL, productsDescriptionsRequestURL,  productsPackaginsRequestURL, productsIllustrationsRequestURL,
 
     userName, passWord,
     
     spaceName, setSpaceName, displaySuccessAlert, setDisplaySuccessAlert,
+
+    listTypes, listType, setListType, searching, setSearching, searchResults, setSearchResults,
     
    
-    taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList,
+    
     stringToSearch
 }){
 
@@ -47,6 +51,7 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
     //état permettant d'indiquer si l'update vient de la liste ou du détail pour savoir où aller lorsqu'on clique sur la flèche de retour
     const [updateFromDetails, setUpdateFromDetails] = useState(false)
 
+    
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
         var token = user + ":" + password;
@@ -358,9 +363,11 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                 categoriesList.sort((a, b) => (a['name'] > b['name'] ? 1 : (b['name'] > a['name'] ? -1 : 0)))
             }
 
+            setListType(listTypes.categories);
+
             return(
-                <List  data={categoriesList} setData={setCategoriesList} canDeleteCategory={canDeleteCategory} setCanDeleteCategory={setCanDeleteCategory}
-                listType={"categories"} 
+                <List  data={searching? searchResults : categoriesList} setData={setCategoriesList} canDeleteCategory={canDeleteCategory} setCanDeleteCategory={setCanDeleteCategory}
+                listType={listTypes.categories}
                 displaySuccessAlert={displaySuccessAlert}
                 spaceName={spaceName} setSpaceName={setSpaceName}
                 itemType={itemType} setItemType={setItemType}
@@ -401,9 +408,11 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                 conditioningsList.sort((a, b) => (a['name'] > b['name'] ? 1 : (b['name'] > a['name'] ? -1 : 0)))
             }
 
+            setListType(listTypes.conditionings);
+
             return(
-                <List data={conditioningsList} setData={setConditioningsList} canDeleteConditioning={canDeleteConditioning} setCanDeleteConditioning={setCanDeleteConditioning}
-                listType={"conditionings"} 
+                <List data={searching? searchResults : conditioningsList} setData={setConditioningsList} canDeleteConditioning={canDeleteConditioning} setCanDeleteConditioning={setCanDeleteConditioning}
+                listType={listTypes.conditionings} 
                 displaySuccessAlert={displaySuccessAlert}
                 spaceName={spaceName} setSpaceName={setSpaceName}
                 itemType={itemType} setItemType={setItemType}
@@ -439,9 +448,11 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                 languagesList.sort((a, b) => (a['name'] > b['name'] ? 1 : (b['name'] > a['name'] ? -1 : 0)))
             }
 
+            setListType(listTypes.languages);
+
             return(
-                <List data={languagesList} setData={setLanguagesList} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage}
-                listType={"languages"} 
+                <List data={searching? searchResults : languagesList} setData={setLanguagesList} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage}
+                listType={listTypes.languages} 
                 displaySuccessAlert={displaySuccessAlert}
                 spaceName={spaceName} setSpaceName={setSpaceName}
                 itemType={itemType} setItemType={setItemType}
@@ -489,9 +500,11 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                 productsList.sort((a, b) => (a['name'] > b['name'] ? 1 : (b['name'] > a['name'] ? -1 : 0)))
             }
 
+            setListType(listTypes.products);
+
             return(
-                <List listType={"products"} displaySuccessAlert={displaySuccessAlert}
-                data={productsList} setData={setProductsList} productsCategories={productsCategories} setProductsCategories={setProductsCategories}
+                <List listType={listTypes.products} displaySuccessAlert={displaySuccessAlert}
+                data={searching? searchResults : productsList} setData={setProductsList} productsCategories={productsCategories} setProductsCategories={setProductsCategories}
                 spaceName={spaceName} setSpaceName={setSpaceName}
                 itemType={itemType} setItemType={setItemType}
                 item={item} setItem={setItem} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
@@ -528,12 +541,15 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             break;
 
         case 'listTaxes':
+
+            setListType(listTypes.taxes);
+
             return(
-                <List listType={"taxes"} displaySuccessAlert={displaySuccessAlert}
-                data={taxesList} setData={setTaxesList}
+                <List listType={listTypes.taxes} displaySuccessAlert={displaySuccessAlert}
+                data={searching? searchResults : taxesList} setData={setTaxesList}
                 spaceName={spaceName} setSpaceName={setSpaceName}
                 itemType={itemType} setItemType={setItemType}
-                item={item} setItem={setItem}
+                item={item} setItem={setItem} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
             />
             );
             break;
