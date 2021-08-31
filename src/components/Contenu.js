@@ -46,6 +46,8 @@ function Contenu({findInCategories, findInConditionings, findInLangues, findInPr
 
                 displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} smallScreen={false}
 
+                searching={searching} setSearching = {setSearching}
+
                 taxesList={taxesList} setTaxesList={setTaxesList} updateTaxesList={updateTaxesList}  setUpdateTaxesList={setUpdateTaxesList}   spaceName={spaceName} setSpaceName={setSpaceName}
                 />
             </div>

@@ -1254,7 +1254,7 @@ function List({ data, setData,
             break;
         
         case 'taxes':
-            listTitle = "Liste des taxes"
+            listTitle = "Taxes"
             addButtonTitle = "Créer une nouvelle taxe"
             successfulCreatedMsg = "Taxe enregistrée!"
             break;

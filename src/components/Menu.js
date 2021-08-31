@@ -16,6 +16,8 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
     userName, passWord,
     
     displaySuccessAlert, setDisplaySuccessAlert, smallScreen,
+
+    searching, setSearching,
     
      taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList,  spaceName, setSpaceName
 }){    
@@ -444,6 +446,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                             
                         }
                         
+                        setSearching(false)
                         setDisplaySuccessAlert(false)
                         setSpaceName("listCategories")
 
@@ -462,6 +465,8 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                             getPackagings(packagingsRequestURL, [])
                             setUpdatePackagings(false)
                         }
+
+                        setSearching(false)
                         setDisplaySuccessAlert(false)
                         setSpaceName("listConditionings")
                         closeNav();
@@ -476,6 +481,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                             setUpdateLanguagesList(false)
                         }
 
+                        setSearching(false)
                         setDisplaySuccessAlert(false)
                         setSpaceName("listLanguages")
                         closeNav();
@@ -502,6 +508,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                             setUpdateProductsList(false)
                         }
 
+                        setSearching(false)
                         setDisplaySuccessAlert(false)
                         setSpaceName("listProducts")
                         closeNav();
@@ -516,6 +523,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                             setUpdateTaxesList(false)
                         }
                         
+                        setSearching(false)
                         setDisplaySuccessAlert(false)
                         setSpaceName("listTaxes")
                         closeNav();
