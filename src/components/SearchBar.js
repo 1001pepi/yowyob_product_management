@@ -148,6 +148,8 @@ productsList={productsList} setProductsList={setProductsList} packagingsList={pa
 
                         displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} smallScreen={true}
 
+                        searching={searching} setSearching = {setSearching}
+
     taxesList={taxesList} setTaxesList={setTaxesList} updateTaxesList={updateTaxesList}  setUpdateTaxesList={setUpdateTaxesList}   spaceName={spaceName} setSpaceName={setSpaceName}
                         />
                         
