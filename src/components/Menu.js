@@ -25,8 +25,6 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
     //languages request url
     var taxesRequestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/taxes/'
 
-    const breakPoint = 767;
-
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
         var token = user + ":" + password;
@@ -430,13 +428,22 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
             document.getElementById("main").style.marginLeft = "0";
     }
 
+    //changer la couleur de fond du bouton sélectionné
+    function changeBackgroundColor(event){
+        for(var i = 0; i < 5; i++){
+            document.getElementById("button-" + i).style.backgroundColor = "white";
+        }
+
+        var  button = document.getElementById(event.target.id);
+        button.style.backgroundColor = "rgba(41, 44, 234, 0.2)";
+    }
+
     return(
         <Fragment>
-            <div className="row d-flex justify-content-center" 
+            <div className="row d-flex justify-content-center"
                     style={{marginBottom:"15px", marginTop:"15px"}}>
-                <button className="col-12 menu-button" onClick={() => {
+                <button className="col-12 menu-button" id="button-0" onClick={(event) => {
                         if(updateLanguagesList){
-                            console.log("hi")
                             getLanguages(languagesRequestURL, [])
                             setUpdateLanguagesList(false)
                         }
@@ -446,6 +453,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                             
                         }
                         
+                        changeBackgroundColor(event)
                         setSearching(false)
                         setDisplaySuccessAlert(false)
                         setSpaceName("listCategories")
@@ -456,7 +464,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
 
             <div className="row d-flex justify-content-center" 
                     style={{marginBottom:"15px", marginTop:"15px"}}>
-                <button className="col-12 menu-button" onClick={() => {
+                <button className="col-12 menu-button" id="button-1" onClick={(event) => {
                         if(updateConditioningsList){
                             getConditionings(conditioningsRequestURL, [])
                             setUpdateConditioningsList(false)
@@ -466,6 +474,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                             setUpdatePackagings(false)
                         }
 
+                        changeBackgroundColor(event)
                         setSearching(false)
                         setDisplaySuccessAlert(false)
                         setSpaceName("listConditionings")
@@ -475,12 +484,13 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
 
             <div className="row d-flex justify-content-center" 
                     style={{marginBottom:"15px", marginTop:"15px"}}>
-                <button className="col-12 menu-button" onClick={() => {
+                <button className="col-12 menu-button" id="button-2" onClick={(event) => {
                         if(updateLanguagesList){
                             getLanguages(languagesRequestURL, [])
                             setUpdateLanguagesList(false)
                         }
 
+                        changeBackgroundColor(event)
                         setSearching(false)
                         setDisplaySuccessAlert(false)
                         setSpaceName("listLanguages")
@@ -490,7 +500,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
 
             <div className="row d-flex justify-content-center" 
                     style={{marginBottom:"15px", marginTop:"15px"}}>
-                <button className="col-12 menu-button" onClick={() => {
+                <button className="col-12 menu-button" id="button-3" onClick={(event) => {
                         if(updateLanguagesList){
                             getLanguages(languagesRequestURL, [])
                             setUpdateLanguagesList(false)
@@ -508,6 +518,7 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
                             setUpdateProductsList(false)
                         }
 
+                        changeBackgroundColor(event)
                         setSearching(false)
                         setDisplaySuccessAlert(false)
                         setSpaceName("listProducts")
@@ -517,15 +528,16 @@ function Menu({categoriesList, setCategoriesList, canDeleteCategory, setCanDelet
 
             <div className="row d-flex justify-content-left" 
                     style={{marginBottom:"15px", marginTop:"15px"}}>
-                <button className="col-12 menu-button" onClick={() => {
+                <button className="col-12 menu-button" id="button-4" onClick={(event) => {
                         if(updateTaxesList){
                             getTaxes(taxesRequestURL, [])
                             setUpdateTaxesList(false)
                         }
                         
+                        changeBackgroundColor(event)
                         setSearching(false)
                         setDisplaySuccessAlert(false)
-                        setSpaceName("listTaxes")
+                        setSpaceName("listTaxations")
                         closeNav();
                     }}><i className="fa fa-money link-item" ></i>Taxes</button>
             </div>

@@ -1,6 +1,7 @@
 import '../styles/Contenu.css'
 import '../styles/bigDisplay.css'
 import '../styles/smallDisplay.css'
+import '../styles/Common.css'
 
 import Workspace from './Workspace'
 import Menu from './Menu'
@@ -31,7 +32,8 @@ function Contenu({findInCategories, findInConditionings, findInLangues, findInPr
     return(
         <div className="row flex-grow-1 contenu-small-screen">
             
-            <div className="col-12 col-md-2 not-display-on-small-screens">
+            
+            <div className="col-12 col-md-2 not-display-on-small-screens right-border">
                 <Menu categoriesList={categoriesList} setCategoriesList={setCategoriesList} canDeleteCategory={canDeleteCategory} setCanDeleteCategory={setCanDeleteCategory} updateCategoriesList={updateCategoriesList} setUpdateCategoriesList={setUpdateCategoriesList}
 
                 conditioningsList={conditioningsList} setConditioningsList={setConditioningsList} canDeleteConditioning={canDeleteConditioning} setCanDeletCconditioning={setCanDeleteConditioning} updateConditioningsList={updateConditioningsList} setUpdateConditioningsList={setUpdateConditioningsList}

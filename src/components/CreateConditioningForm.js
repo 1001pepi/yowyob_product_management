@@ -166,10 +166,7 @@ function CreateConditioningForm({setSpaceName, setDisplaySuccessAlert,
     return(
         <div className="container">
             <div className="row headSection">
-                {
-                    update ? <h4>Editer le conditionnement {itemToUpdate['name']}</h4> : <h4>Nouveau conditionnement</h4> 
-                }
-                <div className="col-7 d-flex justify-content-end vertical-center hover-pointer">
+                <div className="col-1 vertical-center hover-pointer">
                     <a id="delete" style={{color:"black", fontSize:"larger"}} onClick={() => {
                         setUpdate(false)
                         setDisplaySuccessAlert(false)
@@ -181,11 +178,14 @@ function CreateConditioningForm({setSpaceName, setDisplaySuccessAlert,
                         }else{
                             setSpaceName('listConditionings')
                         }
-                    }}
-                    style={{marginRight:"150px"}}>
+                    }}>
                         <span style={{color:"black", fontSize:"larger"}} className="fa fa-arrow-left" title="Retour à la liste"></span>
                     </a>
                 </div> 
+
+                {
+                    update ? <h4>Editer le conditionnement {itemToUpdate['name']}</h4> : <h4 className="title-small-screens">Nouveau conditionnement</h4> 
+                }
             </div>
 
             <div className="overflow-auto form-div contenu-form-small-screen" style={{height:"76vh"}}>

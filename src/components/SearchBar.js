@@ -133,7 +133,7 @@ function SearchBar({findInCategories, findInConditionings, findInLanguages, find
                     </div>
                     <img src={logo} alt="yowyob" className="logo" style={{width:"180px"}}/>
 
-                    <div className="col-12 col-md-2">
+                    <div className="col-12 col-md-2 right-border">
                         <Menu categoriesList={categoriesList} setCategoriesList={setCategoriesList} canDeleteCategory={canDeleteCategory} setCanDeleteCategory={setCanDeleteCategory} updateCategoriesList={updateCategoriesList} setUpdateCategoriesList={setUpdateCategoriesList}
 
 conditioningsList={conditioningsList} setConditioningsList={setConditioningsList} canDeleteConditioning={canDeleteConditioning} setCanDeletCconditioning={setCanDeleteConditioning} updateConditioningsList={updateConditioningsList} setUpdateConditioningsList={setUpdateConditioningsList}
@@ -152,7 +152,6 @@ productsList={productsList} setProductsList={setProductsList} packagingsList={pa
 
     taxesList={taxesList} setTaxesList={setTaxesList} updateTaxesList={updateTaxesList}  setUpdateTaxesList={setUpdateTaxesList}   spaceName={spaceName} setSpaceName={setSpaceName}
                         />
-                        
                     </div>
                 </div>
 

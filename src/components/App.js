@@ -142,7 +142,7 @@ function App() {
     conditionings: "conditionings",
     languages: "languages",
     products: "products",
-    taxes: "taxes"
+    taxes: "taxations"
   }
 
   //état contenant le type de la liste affichée dans le contenu de l'application

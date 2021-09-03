@@ -178,7 +178,7 @@ function List({ data, setData,
                 case 'products':
                         requestURL = productsRequestURL + itemId + "/"
                     break;
-                case 'taxes':
+                case 'taxations':
                     requestURL = taxesRequestURL + itemId + "/"
                     break;       
             }
@@ -653,7 +653,7 @@ function List({ data, setData,
                     </div>
                 </div>
 
-                <div className="row overflow-auto form-div" style={{height:"60vh"}}>
+                <div className="row overflow-auto form-div" style={{height:"60vh", marginTop:"0px"}}>
                     <div class="table-responsive">
                         <table className="table list-small-screen">
                             <tbody>
@@ -694,7 +694,11 @@ function List({ data, setData,
                                             <td className="col-1 not-display-on-small-screens" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
                                                 <span>
                                                     {
-                                                        canDeleteCategory.get(category['id']) ? <input type="checkbox" id={getCheckboxId(category)} onClick={(event)=>handleCheckboxClick(event, category['id'])}></input> : null
+                                                        canDeleteCategory.get(category['id']) ? <input type="checkbox" id={getCheckboxId(category)} onClick={(event)=>handleCheckboxClick(event, category['id'])}></input> : 
+
+                                                        <svg width="20" height="20">
+                                                            <rect rx="5" ry="5" width="15" height="15" style={{fill:"rgba(204, 70, 76, 0.4)"}}/>
+                                                        </svg> 
                                                     }
                                                 </span>
                                             </td>
@@ -779,7 +783,7 @@ function List({ data, setData,
                     </div>
                 </div>
 
-                <div className="row overflow-auto form-div" style={{height:"60vh"}}>
+                <div className="row overflow-auto form-div" style={{height:"60vh", marginTop:"0px"}}>
                     <div class="table-responsive">
                         <table className="table list-small-screen">
                             <tbody>
@@ -820,7 +824,11 @@ function List({ data, setData,
                                             <td className="col-1 not-display-on-small-screens" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
                                                 <span>
                                                     {
-                                                        canDeleteConditioning.get(conditioning['id']) ? <input type="checkbox" id={getCheckboxId(conditioning)} onClick={(event)=>handleCheckboxClick(event, conditioning['id'])}></input> : null
+                                                        canDeleteConditioning.get(conditioning['id']) ? <input type="checkbox" id={getCheckboxId(conditioning)} onClick={(event)=>handleCheckboxClick(event, conditioning['id'])}></input> : 
+
+                                                        <svg width="20" height="20">
+                                                            <rect rx="5" ry="5" width="15" height="15" style={{fill:"rgba(204, 70, 76, 0.4)"}}/>
+                                                        </svg> 
                                                     }
                                                 </span>
                                             </td>
@@ -902,7 +910,7 @@ function List({ data, setData,
                     </div>
                 </div>
 
-                <div className="row overflow-auto form-div" style={{height:"60vh"}}>
+                <div className="row overflow-auto form-div" style={{height:"60vh", marginTop:"0px"}}>
                     <div class="table-responsive">
                         <table className="table list-small-screen">
                             <tbody>
@@ -932,7 +940,11 @@ function List({ data, setData,
                                             <td className="col-1 not-display-on-small-screens" style={{paddingLeft:"15px", paddingTop:"2px", paddingBottom:"2px"}}>
                                                 <span>
                                                     {
-                                                        canDeleteLanguage.get(language['id']) ? <input type="checkbox" id={getCheckboxId(language)} onClick={(event)=>handleCheckboxClick(event, language['id'])}></input> : null
+                                                        canDeleteLanguage.get(language['id']) ? <input type="checkbox" id={getCheckboxId(language)} onClick={(event)=>handleCheckboxClick(event, language['id'])}></input> : 
+
+                                                        <svg width="20" height="20">
+                                                            <rect rx="5" ry="5" width="15" height="15" style={{fill:"rgba(204, 70, 76, 0.4)"}}/>
+                                                        </svg> 
                                                     }
                                                 </span>
                                             </td>
@@ -1017,7 +1029,7 @@ function List({ data, setData,
                     </div>
                 </div>
 
-                <div className="row overflow-auto form-div" style={{height:"60vh"}}>
+                <div className="row overflow-auto form-div" style={{height:"60vh", marginTop:"0px"}}>
                     <div class="table-responsive">
                         <table className="table list-small-screen">
                             <tbody>
@@ -1072,13 +1084,13 @@ function List({ data, setData,
         );
     }
 
-    //fonction d'affichage de la liste des langues//
+    //fonction d'affichage de la liste des taxes//
     function displayTaxesList(){
         return(
             <div>
                 <div className="row">
                     <div class="table-responsive">
-                        <table className="table text not-display-on-small-screens">
+                        <table className="table not-display-on-small-screens">
                             <thead>
                                 <tr className="no-gutters">
                                     <th className="col-1 text bold" style={{paddingLeft:"15px"}}>
@@ -1107,7 +1119,7 @@ function List({ data, setData,
                     </div>
                 </div>
 
-                <div className="row overflow-auto form-div" style={{height:"60vh"}}>
+                <div className="row overflow-auto form-div" style={{height:"60vh", marginTop:"0px"}}>
                     <div class="table-responsive">
                         <table className="table list-small-screen">
                             <tbody>
@@ -1188,7 +1200,7 @@ function List({ data, setData,
                 return displayProductsList()
                 break;
 
-            case 'taxes':
+            case 'taxations':
                 return displayTaxesList()
                 break;
         }
@@ -1253,7 +1265,7 @@ function List({ data, setData,
             successfulCreatedMsg = "Produit enregistré!"
             break;
         
-        case 'taxes':
+        case 'taxations':
             listTitle = "Taxes"
             addButtonTitle = "Créer une nouvelle taxe"
             successfulCreatedMsg = "Taxe enregistrée!"
@@ -1340,7 +1352,7 @@ function List({ data, setData,
                         }  
                     }}></span>
 
-                    <div className="not-display-on-small-screens">
+                    <div className="not-display-on-small-screens bold-text">
                         Trier par &nbsp;
                         <select className="select-sort-input" defaultValue="1" style={{marginRight:"20px"}} id="select-sort-criterion">
                             <option value="1">Nom</option>
@@ -1348,7 +1360,7 @@ function List({ data, setData,
                         </select>
                     </div>
 
-                    <div  className="not-display-on-small-screens">
+                    <div  className="not-display-on-small-screens bold-text">
                         Ordre &nbsp;
                         <select className="select-sort-input" defaultValue="1" style={{marginRight:"20px"}} id="select-sort-order">
                             <option value="1">Croissant</option>
@@ -1358,7 +1370,7 @@ function List({ data, setData,
                 </div>
             </div>
 
-            <div className="d-flex flex-row-reverse" style={{marginTop:"10px"}}>
+            <div className="d-flex flex-row-reverse" style={{marginTop:"10px", marginRight: "3vw", fontSize:"xx-large"}}>
                 <button className="add-button" onClick={() =>{
                     switch(listType){
                         case 'categories':
@@ -1376,11 +1388,15 @@ function List({ data, setData,
                         case 'products':
                             setSpaceName('createProduct')
                             break;
+
+                        case 'taxations':
+                            setSpaceName('createTaxation')
+                            break;
                         
                     }
                 }
                 } title={addButtonTitle}>
-                    <span className="fa fa-plus fa-2x form-control-feedback font-weight-bold"></span>
+                    <span className="fa fa-plus form-control-feedback font-weight-bold"></span>
                 </button>
             </div>
 

@@ -15,8 +15,9 @@
     border-radius: 10px;
 }
 
-.menu-button:focus{
-    background-color:#F1F3F4;
-    border-radius: 10px;
+/*mise en forme du menu*/
+/*insertion de la bordure gauche*/
+.right-border{
+    border-right: solid #F1F3F4;
 }
 

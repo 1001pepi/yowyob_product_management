@@ -64,4 +64,10 @@ tbody tr:hover{
     margin-left: 10px;
 }
 
+/*mise en forme du menu de sélection pour le tri*/
+.select-sort-input{
+    border: solid 2px;
+    border-radius: 5px;
+}
+
 

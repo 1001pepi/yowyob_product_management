@@ -2,6 +2,7 @@ import CreateCategoryForm from './CreateCategoryForm'
 import CreateConditioningForm from './CreateConditioningForm'
 import CreateLanguageForm from './CreateLanguageForm'
 import CreateProductForm from './CreateProductForm'
+import CreateTaxation from './CreateTaxation'
 import List from './List'
 import Details from './Details'
 import SearchResults from './SearchResults'
@@ -540,7 +541,7 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             );
             break;
 
-        case 'listTaxes':
+        case 'listTaxations':
 
             setListType(listTypes.taxes);
 
@@ -551,6 +552,13 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                 itemType={itemType} setItemType={setItemType}
                 item={item} setItem={setItem} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
             />
+            );
+            break;
+
+        case 'createTaxation':
+                return(
+                    <CreateTaxation setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert}  item={item} setItem={setItem} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
+                    />
             );
             break;
 

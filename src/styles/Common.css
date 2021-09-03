@@ -118,3 +118,13 @@
     color: #351FBC;
     font-weight: bold;
 }
+
+.add-button:hover{
+    background-color: rgba(126, 127, 194, 0.3);
+    border-radius: 30%;
+}
+
+/*mise en forme de texte*/
+.bold-text{
+    font-weight: bold;
+}

@@ -17,24 +17,6 @@
     box-shadow: none;
 }
 
-/*mise en forme du menu de sélection pour le tri*/
-.select-sort-input{
-    border: solid 1px;
-}
-
-/*mise en forme du bouton d'ajout*/
-.add-button{
-    background-color: white;
-    border: none;
-    color: #351FBC;
-    font-weight: bold;
-}
-
-.add-button:hover{
-    background-color: #F1F3F4;
-    border-radius: 5px;
-}
-
 /*mise en forme du bouton pour l'enregistrement*/
 .save-button{
     background-color: #341fbc1e;
