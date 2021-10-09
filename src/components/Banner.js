@@ -8,6 +8,14 @@ import '../styles/Logo.css'
 import '../styles/Banner.css'
 import '../styles/smallDisplay.css'
 
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 function Banner({findInCategories, findInConditionings, findInLanguages, findInProducts, findInTaxes,
 
     categoriesList, setCategoriesList, canDeleteCategory, setCanDeleteCategory, categoriesResult, setCategoriesResult, updateCategoriesList, setUpdateCategoriesList,
@@ -20,20 +28,20 @@ function Banner({findInCategories, findInConditionings, findInLanguages, findInP
 
     taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList,
 
-    categoriesRequestURL, conditioningsRequestURL, languagesRequestURL, productsRequestURL, packagingsRequestURL,
+    links,
 
-    userName, passWord,
+    userName, password,
 
     displaySuccessAlert, setDisplaySuccessAlert,
 
-    spaceName, setSpaceName, stringToSearch, setStringToSearch, searchType, setSearchType, searchResults, setSearchResults,
+    spaceName, setSpaceName, stringToSearch, setStringToSearch, searchType, setSearchType, searchResults, setSearchResults, advancedSearchResults, setAdvancedSearchResults,
 
-    listTypes, listType, setListType, searching, setSearching
+    listTypes, listType, setListType, searching, setSearching, isSearchResults, setIsSearchResults
 }){
     return(
         <div className="row banner">
             <div className="col not-display-on-small-screens">
-                <a className="navbar-brand" href="..."><img src={logo} alt="yowyob" className="logo"/></a>
+                <a href="/"><img src={logo} alt="yowyob" className="logo"/></a>
             </div>
 
             <SearchBar  findInCategories={findInCategories} findInConditionings={findInConditionings} findInLanguages={findInLanguages} findInProducts={findInProducts} findInTaxes={findInTaxes} 
@@ -50,11 +58,11 @@ productsList={productsList} setProductsList={setProductsList} packagingsList={pa
 
 displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert}
 
-            categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL} packagingsRequestURL={packagingsRequestURL}
+            links={links}
 
-            userName={userName} passWord={passWord}
+            userName={userName} password={password}
 
-            listTypes={listTypes} listType={listType} setListType={setListType} searching={searching} setSearching = {setSearching} searchResults={searchResults} setSearchResults={setSearchResults}
+            listTypes={listTypes} listType={listType} setListType={setListType} searching={searching} setSearching = {setSearching} isSearchResults={isSearchResults} setIsSearchResults={setIsSearchResults} searchResults={searchResults} setSearchResults={setSearchResults} advancedSearchResults={advancedSearchResults} setAdvancedSearchResults={setAdvancedSearchResults}
 
 setSpaceName={setSpaceName} stringToSearch={stringToSearch} setStringToSearch={setStringToSearch} searchType={searchType} setSearchType={setSearchType}
             />

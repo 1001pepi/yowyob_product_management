@@ -1,0 +1,31 @@
+/*mise en forme du popup pour les paramètres de la barre de recherche*/
+.search-settings{
+    top: 30px;
+    left: 0px;
+    right:0px;
+    width: 50vw;
+    background-color: white;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+    position: fixed;
+    border-radius: 10px;
+    transition: all 0.5s ease-in-out;
+    visibility: hidden;
+    order: -1;
+    opacity: 0;
+}
+
+.search-settings:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+/*mise en forme des menus de sélection*/
+.select-input{
+    border:none;
+}
+
+.select-input:focus{
+    border:none;
+    box-shadow: none;
+}
+

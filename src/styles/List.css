@@ -70,4 +70,10 @@ tbody tr:hover{
     border-radius: 5px;
 }
 
+/*mise en forme de l'affichage du message de la liste vide*/
+.emptyList{
+    color: rgba(247, 125, 3, 0.658);
+    text-align: center;
+    padding-top: 10vh;
+}
 

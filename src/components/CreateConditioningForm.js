@@ -9,9 +9,9 @@ import React, {useState} from 'react'
 function CreateConditioningForm({setSpaceName, setDisplaySuccessAlert, 
     conditioningsList, setConditioningsList, update, setUpdate, itemToUpdate, setItemToUpdate, canDeleteConditioning, updateFromDetails, setUpdateFromDetails, item, setItem,
 
-    conditioningsRequestURL,
+    links,
 
-    userName, passWord
+    userName, password
 }){
     
     //etat pour contrôler l'affichage du message d'alerte pour le bon remplissage du formulaire
@@ -89,10 +89,10 @@ function CreateConditioningForm({setSpaceName, setDisplaySuccessAlert,
             if(update){
                 //dans le cas d'une mise à jour
                 //création de la requête
-                var requestURL = conditioningsRequestURL + itemToUpdate['id'] + "/";
+                var requestURL = links.conditioningsRequestURL + itemToUpdate['id'] + "/";
             
                 request.open('PATCH', requestURL);
-                request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                request.setRequestHeader("Authorization", authenticateUser(userName, password));
                 request.responseType = 'json';
     
                 request.send(formData);
@@ -121,9 +121,9 @@ function CreateConditioningForm({setSpaceName, setDisplaySuccessAlert,
                 //dans le cas de la création d'un nouveau conditionnement
                 //construction de l'objet à envoyer            
                 //création de la requête
-                requestURL = conditioningsRequestURL
+                requestURL = links.conditioningsRequestURL
                 request.open('POST', requestURL);
-                request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                request.setRequestHeader("Authorization", authenticateUser(userName, password));
                 request.responseType = 'json';
 
                 request.send(formData);

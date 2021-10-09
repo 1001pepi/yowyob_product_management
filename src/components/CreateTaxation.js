@@ -15,7 +15,7 @@ function CreateTaxation({setSpaceName, setDisplaySuccessAlert,
 
     //paramètres de connexion à l'API
     var userName = "zang";
-    var passWord = "harazangsuperuser";
+    var password = "harazangsuperuser";
 
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
@@ -89,7 +89,7 @@ function CreateTaxation({setSpaceName, setDisplaySuccessAlert,
                  var requestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/taxes/' + itemToUpdate['id'] + "/";
                  var request = new XMLHttpRequest();
                  request.open('PATCH', requestURL);
-                 request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                 request.setRequestHeader("Authorization", authenticateUser(userName, password));
                  request.responseType = 'json';
  
                  request.send(formData);
@@ -128,7 +128,7 @@ function CreateTaxation({setSpaceName, setDisplaySuccessAlert,
             var requestURL = 'https://yowyob-apps-api.herokuapp.com/product-api/taxes/';
             var request = new XMLHttpRequest();
             request.open('POST', requestURL);
-            request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+            request.setRequestHeader("Authorization", authenticateUser(userName, password));
             request.responseType = 'json';
 
             request.send(formData);

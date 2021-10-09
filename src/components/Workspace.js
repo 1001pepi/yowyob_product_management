@@ -8,26 +8,41 @@ import Details from './Details'
 import SearchResults from './SearchResults'
 
 import {useState} from 'react'
+import React, {useEffect} from 'react'
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    Redirect,
+    useParams
+  } from "react-router-dom";
 
 function Workspace({findInCategories, findInConditionings, findInLanguages, findInProducts, findInTaxes,
     
-    categoriesList, setCategoriesList,  canDeleteCategory, setCanDeleteCategory, updateCategoriesList, setUpdateCategoriesList, categoriesResult, setCategoriesResult,
+    categoriesList, setCategoriesList,  canDeleteCategory, setCanDeleteCategory, updateCategoriesList, setUpdateCategoriesList, categoriesResult, setCategoriesResult, getCategories,
 
-    conditioningsList, setConditioningsList, canDeleteConditioning, setCanDeleteConditioning, updateConditioningsList, setUpdateConditioningsList, conditioningResult, setConditioningResult,
+    conditioningsList, setConditioningsList, canDeleteConditioning, setCanDeleteConditioning, updateConditioningsList, setUpdateConditioningsList, conditioningResult, setConditioningResult, getConditionings,
 
-    languagesList, setLanguagesList, canDeleteLanguage, setCanDeleteLanguage, updateLanguagesList, setUpdateLanguagesList, languagesResult, setLanguagesResult,
+    languagesList, setLanguagesList, canDeleteLanguage, setCanDeleteLanguage, updateLanguagesList, setUpdateLanguagesList, languagesResult, setLanguagesResult, getLanguages,
 
-    productsList, setProductsList, packagingsList, setPackagingsList,  productsCategories, setProductsCategories, updateProductsList, setUpdateProductsList, canDeleteProduct, setCanDeleteProduct, productsResult, setProductsResult,
+    productsList, setProductsList, packagingsList, setPackagingsList,  productsCategories, setProductsCategories, updateProductsList, setUpdateProductsList, canDeleteProduct, setCanDeleteProduct, productsResult, setProductsResult, getProducts, getPackagings,
 
-    taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList,
+    taxesList, setTaxesList, updateTaxesList, setUpdateTaxesList, getTaxes,
 
-    categoriesRequestURL, categoriesDescriptionsRequestURL, conditioningsRequestURL, languagesRequestURL, productsRequestURL, packagingsRequestURL, productsDetailsRequestURL, productsDescriptionsRequestURL,  productsPackaginsRequestURL, productsIllustrationsRequestURL,
+    links,
 
-    userName, passWord,
+    userName, password,
     
-    spaceName, setSpaceName, displaySuccessAlert, setDisplaySuccessAlert,
+    spaceName, setSpaceName, spaceNameValues,
+    
+    displayLoadingModal, setDisplayLoadingModal,
+    
+    displaySuccessAlert, setDisplaySuccessAlert,
 
-    listTypes, listType, setListType, searching, setSearching, searchResults, setSearchResults,
+    listTypes, listType, setListType, 
+    
+    searching, setSearching, isSearchResults, setIsSearchResults, searchResults, setSearchResults, advancedSearchResults, setAdvancedSearchResults, handleSearch,
     
    
     
@@ -36,9 +51,6 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
 
     //etat définissant le type d'élément à afficher dans la fenêtre des détails
     const [itemType, setItemType] = useState('')
-
-    //etat contenant l'élément à afficher dans détails
-    const [item, setItem] = useState({})
 
     //etat indiquant si on doit charger les formulaires pour un update ou pas
     const [update, setUpdate] = useState(false)
@@ -52,7 +64,12 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
     //état permettant d'indiquer si l'update vient de la liste ou du détail pour savoir où aller lorsqu'on clique sur la flèche de retour
     const [updateFromDetails, setUpdateFromDetails] = useState(false)
 
-    
+    //état définissant l'élément à afficher
+    const [item, setItem] = useState({});
+
+    //récupérer l'élément à afficher
+    let{spaceNameParam, itemParam} = useParams();
+
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
         var token = user + ":" + password;
@@ -62,13 +79,13 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
         return "Basic " + hash;
     }
 
-    //fonction permettantt de récupérer la liste des catégories//
-    function getCategories(requestURL, tmpList){
+    //fonction permettant de récupérer l'élément à afficher au niveau de l'API
+    function getItem(requestURL){
         //création de la requête
         var request = new XMLHttpRequest();
         
         request.open('GET', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+        request.setRequestHeader("Authorization", authenticateUser(userName, password)); 
         request.responseType = 'json';
         request.send();
 
@@ -77,66 +94,18 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             var requestStatus = request.status
 
             if(requestStatus === 200){
-                var next = response['next']
-    
-                tmpList = tmpList.concat(response['results'])
-
-                //tri de la liste récupérée dans l'ordre croissant
-                tmpList.sort((a, b) => (a['name'] > b['name'] ? 1 : (b['name'] > a['name'] ? -1 : 0)))
-
-                //on vérifie si on peut supprimer les éléments récupérés
-                response['results'].forEach((category) => checkCanDeleteCategory(category))
-            
-                setCategoriesList(tmpList)
-
-                if(next != null){
-                    tmpList = getCategories(next, tmpList)
-                }
-            }
-        } 
-    }
-
-    //fonction permettantt de récupérer la liste des taxes//
-    function getConditionings(requestURL, tmpList){
-        //création de la requête
-        var request = new XMLHttpRequest();
-        
-        request.open('GET', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
-        request.responseType = 'json';
-        request.send();
-
-        request.onload = function(){
-            var response = request.response;
-            var requestStatus = request.status
-            
-            if(requestStatus === 200){
-                var next = response['next']
-    
-                tmpList = tmpList.concat(response['results'])
-
-                //tri de la liste récupérée dans l'ordre croissant
-                tmpList.sort((a, b) => (a['name'] > b['name'] ? 1 : (b['name'] > a['name'] ? -1 : 0)))
-
-                //on vérifie si on peut supprimer les éléments récupérés
-                response['results'].forEach((conditioning) => checkCanDeleteConditioning(conditioning))
-                
-                setConditioningsList(tmpList)
-                
-                if(next != null){
-                    tmpList = getConditionings(next, tmpList)
-                }
+                if(!item['id']) setItem(response);
             }
         }
     }
 
-    //fonction permettant de récupérer la liste des langues disponibles//
-    function getLanguages(requestURL, tmpList){
+    //fonction permettant de récupérer l'élément à mettre à jour au niveau de l'API
+    function getItemToUpdate(requestURL){
         //création de la requête
         var request = new XMLHttpRequest();
         
         request.open('GET', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+        request.setRequestHeader("Authorization", authenticateUser(userName, password)); 
         request.responseType = 'json';
         request.send();
 
@@ -145,218 +114,22 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             var requestStatus = request.status
 
             if(requestStatus === 200){
-                var next = response['next']
-    
-                tmpList = tmpList.concat(response['results'])
-
-                //tri de la liste récupérée dans l'ordre croissant
-                tmpList.sort((a, b) => (a['name'] > b['name'] ? 1 : (b['name'] > a['name'] ? -1 : 0)))
-
-                //on vérifie si on peut supprimer les éléments récupérés
-                response['results'].forEach((language) => checkCanDeleteLanguage(language))
-
-                setLanguagesList(tmpList)
                 
-                if(next != null){
-                    tmpList = getLanguages(next, tmpList)
-                }
-            }
-        }
-    }
-
-    //fonction permettant de récupérer la liste des prodduits
-    function getProducts(requestURL, tmpList){
-        //création de la requête
-        var request = new XMLHttpRequest();
-        
-        request.open('GET', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
-        request.responseType = 'json';
-        request.send();
-
-        request.onload = function(){
-            var response = request.response;
-            var requestStatus = request.status
-
-            if(requestStatus === 200){
-                //tri de la liste récupérée dans l'ordre croissant
-                tmpList.sort((a, b) => (a['name'] > b['name'] ? 1 : (b['name'] > a['name'] ? -1 : 0)))
-    
-                tmpList = tmpList.concat(response['results'])
-                
-                setProductsList(tmpList)
-               
-                var next = response['next']
-
-                if(next){
-                    tmpList = getProducts(next, tmpList)
-                }
-            }
-        }   
-    }
-
-    //fonction permettant de savoir si on peut supprimer une catégorie
-    function checkCanDeleteCategory(category){
-        //on commmence par vérifier le nombre de produits dans la catégorie
-        //création de la requête
-        const requestURL = category['list_of_products_in_a_category']
-
-        var request = new XMLHttpRequest();
-        
-        request.open('GET', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
-        request.responseType = 'json';
-        request.send();
-
-        request.onload = function(){
-            var response = request.response;
-            var requestStatus = request.status
-
-            if(requestStatus === 200){
-                //la requête a réussi
-                //nombre de produits dans la catégorie
-                const nbProducts = response.length
-
-                if(nbProducts > 0){
-                    canDeleteCategory.set(category['id'], false)
-
-                }else{
-                    //on vérifie le nombre de sous catégories de la catégorie
-                    //création de la requête
-                    const requestURL2 = category['list_of_subcategories']
-
-                    var request2 = new XMLHttpRequest();
-                    
-                    request2.open('GET', requestURL2);
-                    request2.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
-                    request2.responseType = 'json';
-                    request2.send();
-
-                    request2.onload = function(){
-                        var response2 = request2.response;
-                        var requestStatus2 = request2.status
-
-                        if(requestStatus2 === 200){
-                            //la requête a réussi
-                            //nombre de produits dans la catégorie
-                            const nbSubCategories = response2.length
-
-                            if(nbSubCategories > 0){
-                                canDeleteCategory.set(category['id'], false)
-
-                            }else{
-                                
-                                canDeleteCategory.set(category['id'], true)
-                            }
-                        }
-                    }
-                    
-                }
-            }
-        }
-    }
-
-    //fonction permettant de savoir si on peut supprimer un conditiionnement
-    function checkCanDeleteConditioning(conditioning){
-        //on vérifie s'il existe des produits utilisant le conditionnement
-        //création de la requête
-        const requestURL = conditioning['packaged_products']
-
-        var request = new XMLHttpRequest();
-        
-        request.open('GET', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
-        request.responseType = 'json';
-        request.send();
-
-        request.onload = function(){
-            var response = request.response;
-            var requestStatus = request.status
-
-            if(requestStatus === 200){
-                //la requête a réussi
-                //nombre de produits utilisant le conditionnement
-                const nbProducts = response.length
-
-                if(nbProducts > 0){
-                    canDeleteConditioning.set(conditioning['id'], false)
-
-                }else{
-                    canDeleteConditioning.set(conditioning['id'], true)
-                }
-            }
-        }
-    }
-
-    //fonction permettant de savoir si on peut supprimer une langue
-    function checkCanDeleteLanguage(language){
-        //on commmence par vérifier le nombre de descriptions de produit utilsant la langue
-        //création de la requête
-        const requestURL = language['list_of_products_described_in_a_language']
-
-        var request = new XMLHttpRequest();
-        
-        request.open('GET', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
-        request.responseType = 'json';
-        request.send();
-
-        request.onload = function(){
-            var response = request.response;
-            var requestStatus = request.status
-
-            if(requestStatus === 200){
-                //la requête a réussi
-                //nombre de descriptions de produits utiliisatnt la langue
-                const nbProductDescriptions = response.length
-
-                if(nbProductDescriptions > 0){
-                    canDeleteLanguage.set(language['id'], false)
-                    
-
-                }else{
-                    //on vérifie le nombre de descriptions de catégorie utilisant la langue
-                    //création de la requête
-                    const requestURL2 = language['list_of_categories_described_in_a_language']
-
-                    var request2 = new XMLHttpRequest();
-                    
-                    request2.open('GET', requestURL2);
-                    request2.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
-                    request2.responseType = 'json';
-                    request2.send();
-
-                    request2.onload = function(){
-                        var response2 = request2.response;
-                        var requestStatus2 = request2.status
-
-                        if(requestStatus2 === 200){
-                            //la requête a réussi
-                            //nombre de descriptions de catégorie utilisant la langue
-                            const nbCategoryDescriptions = response2.length
-
-                            if(nbCategoryDescriptions > 0){
-                                canDeleteLanguage.set(language['id'], false)
-
-                            }else{
-                                
-                                canDeleteLanguage.set(language['id'], true)
-                            }
-                        }
-                    } 
-                }
+                if(!itemToUpdate['id']) setItemToUpdate(response)
+                setUpdate(true)
             }
         }
     }
 
     switch(spaceName){
-        case 'listCategories':
+        case spaceNameValues.listCategories:
+    
             if(updateLanguagesList){
-                getLanguages(languagesRequestURL, [])
+                getLanguages(links.languagesRequestURL, [])
                 setUpdateLanguagesList(false)
             }
             if(updateCategoriesList){
-                getCategories(categoriesRequestURL, [])
+                getCategories(links.categoriesRequestURL, [])
                 setUpdateCategoriesList(false)
             }else{
 
@@ -367,23 +140,34 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             setListType(listTypes.categories);
 
             return(
-                <List  data={searching? searchResults : categoriesList} setData={setCategoriesList} canDeleteCategory={canDeleteCategory} setCanDeleteCategory={setCanDeleteCategory}
+                <List  data={searching? searchResults : (isSearchResults ? advancedSearchResults : categoriesList)} setData={searching? setSearchResults : (isSearchResults? setAdvancedSearchResults : setCategoriesList)} canDeleteCategory={canDeleteCategory} setCanDeleteCategory={setCanDeleteCategory}
                 listType={listTypes.categories}
                 displaySuccessAlert={displaySuccessAlert}
                 spaceName={spaceName} setSpaceName={setSpaceName}
-                itemType={itemType} setItemType={setItemType}
-                item={item} setItem={setItem} 
+                itemType={itemType} setItemType={setItemType} item={item} setItem={setItem}
                 update={update} setUpdate={setUpdate} 
                 itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
 
-                categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL}
+                links={links}
 
-                userName={userName} passWord={passWord}
+                userName={userName} password={password}
+
+                displayLoadingModal={displayLoadingModal} setDisplayLoadingModal={setDisplayLoadingModal}
+
+                searching={searching} setSearching={setSearching} isSearchResults={isSearchResults} setIsSearchResults={setIsSearchResults} handleSearch={handleSearch}
+
+                getCategories={getCategories}
                 />
             );
             break;
             
         case 'createCategory':
+            //construction de la requête pour récupérer la catégorie à mettre à jour au niveau de l'API à partir de son id
+            if(itemParam){
+                var requestURL = links[spaceNameParam+"RequestURL"] + itemParam + "/"
+                getItemToUpdate(requestURL)
+            }
+
             //tri de la liste des catégories dans l'ordre croissant
             categoriesList.sort((a, b) => (a['name'] > b['name'] ? 1 : (b['name'] > a['name'] ? -1 : 0)))
 
@@ -391,18 +175,19 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             languagesList.sort((a, b) => (a['name'] > b['name'] ? 1 : (b['name'] > a['name'] ? -1 : 0)))
 
             return(
-                    <CreateCategoryForm setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert} categoriesList={categoriesList} setCategoriesList={setCategoriesList} canDeleteCategory={canDeleteCategory} setCanDeleteCategory={setCanDeleteCategory} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage} languagesList={languagesList} setLanguagesList={setLanguagesList} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} item={item} setItem={setItem}
+                    <CreateCategoryForm setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert} categoriesList={categoriesList} setCategoriesList={setCategoriesList} canDeleteCategory={canDeleteCategory} setCanDeleteCategory={setCanDeleteCategory} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage} languagesList={languagesList} setLanguagesList={setLanguagesList} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
                     
-                    categoriesDescriptionsRequestURL={categoriesDescriptionsRequestURL} categoriesRequestURL={categoriesRequestURL}
+                    links={links}
 
-                    userName={userName} passWord={passWord}
+                    userName={userName} password={password}
                     />
             );
             break;
 
         case 'listConditionings':
+
             if(updateConditioningsList){
-                getConditionings(conditioningsRequestURL, [])
+                getConditionings(links.conditioningsRequestURL, [])
                 setUpdateConditioningsList(false)
             }else{
                 //tri des conditionnements dans l'odre croissant
@@ -412,36 +197,41 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             setListType(listTypes.conditionings);
 
             return(
-                <List data={searching? searchResults : conditioningsList} setData={setConditioningsList} canDeleteConditioning={canDeleteConditioning} setCanDeleteConditioning={setCanDeleteConditioning}
+                <List data={searching? searchResults : conditioningsList} setData={searching ? setSearchResults : setConditioningsList} canDeleteConditioning={canDeleteConditioning} setCanDeleteConditioning={setCanDeleteConditioning}
                 listType={listTypes.conditionings} 
                 displaySuccessAlert={displaySuccessAlert}
                 spaceName={spaceName} setSpaceName={setSpaceName}
-                itemType={itemType} setItemType={setItemType}
-                item={item} setItem={setItem} 
+                itemType={itemType} setItemType={setItemType} item={item} setItem={setItem}
                 update={update} setUpdate={setUpdate} 
                 itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
 
-                categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL}
+                links={links}
 
-                userName={userName} passWord={passWord}
+                userName={userName} password={password}
+
+                isSearchResults={isSearchResults} setIsSearchResults={setIsSearchResults}
+
+                displayLoadingModal={displayLoadingModal} setDisplayLoadingModal={setDisplayLoadingModal}
+
+                getConditionings={getConditionings}
             />
             );
             break;
 
         case 'createConditioning':
             return(
-                <CreateConditioningForm setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert} conditioningsList={conditioningsList} setConditioningsList={setConditioningsList} canDeleteConditioning={canDeleteConditioning} setCanDeleteConditioning={setCanDeleteConditioning} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} canDeleteConditioning={canDeleteConditioning} setCanDeleteConditioning={setCanDeleteConditioning} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} item={item} setItem={setItem}
+                <CreateConditioningForm setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert} conditioningsList={conditioningsList} setConditioningsList={setConditioningsList} canDeleteConditioning={canDeleteConditioning} setCanDeleteConditioning={setCanDeleteConditioning} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} canDeleteConditioning={canDeleteConditioning} setCanDeleteConditioning={setCanDeleteConditioning} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
 
-                conditioningsRequestURL={conditioningsRequestURL}
+                links={links}
 
-                userName={userName} passWord={passWord}
+                userName={userName} password={password}
                 /> 
             );
             break;
         
         case 'listLanguages':
             if(updateLanguagesList){
-                getLanguages(languagesRequestURL, [])
+                getLanguages(links.languagesRequestURL, [])
                 setUpdateLanguagesList(false)
 
             }else{
@@ -452,18 +242,23 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             setListType(listTypes.languages);
 
             return(
-                <List data={searching? searchResults : languagesList} setData={setLanguagesList} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage}
+                <List data={searching? searchResults : languagesList} setData={searching ? setSearchResults : setLanguagesList} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage}
                 listType={listTypes.languages} 
                 displaySuccessAlert={displaySuccessAlert}
                 spaceName={spaceName} setSpaceName={setSpaceName}
-                itemType={itemType} setItemType={setItemType}
-                item={item} setItem={setItem} 
+                itemType={itemType} setItemType={setItemType} item={item} setItem={setItem}
                 update={update} setUpdate={setUpdate} 
                 itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
 
-                categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL}
+                links={links}
 
-                userName={userName} passWord={passWord}
+                userName={userName} password={password}
+
+                isSearchResults={isSearchResults} setIsSearchResults={setIsSearchResults}
+
+                displayLoadingModal={displayLoadingModal} setDisplayLoadingModal={setDisplayLoadingModal}
+
+                getLanguages={getLanguages}
             />
             );
             break;
@@ -472,9 +267,9 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             return(
                 <CreateLanguageForm languagesList={languagesList} setLanguagesList={setLanguagesList} canDeleteLanguage={canDeleteLanguage} setCanDeleteLanguage={setCanDeleteLanguage} setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert}  update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate}
                 
-                languagesRequestURL={languagesRequestURL}
+                links={links}
 
-                userName={userName} passWord={passWord}
+                userName={userName} password={password}
                 />
             );
             break;
@@ -482,19 +277,19 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
 
         case 'listProducts':
             if(updateLanguagesList){
-                getLanguages(languagesRequestURL, [])
+                getLanguages(links.languagesRequestURL, [])
                 setUpdateLanguagesList(false)
             }
             if(updateCategoriesList){
-                getCategories(categoriesRequestURL, [])
+                getCategories(links.categoriesRequestURL, [])
                 setUpdateCategoriesList(false)
             }
             if(updateConditioningsList){
-                getConditionings(conditioningsRequestURL, [])
+                getConditionings(links.conditioningsRequestURL, [])
                 setUpdateConditioningsList(false)
             }
             if(updateProductsList){
-                getProducts(productsRequestURL, [])
+                getProducts(links.productsRequestURL, [])
                 setUpdateProductsList(false)
             }else{
                 //tri de la liste des catégories dans l'ordre croissant
@@ -504,17 +299,25 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
             setListType(listTypes.products);
 
             return(
-                <List listType={listTypes.products} displaySuccessAlert={displaySuccessAlert}
-                data={searching? searchResults : productsList} setData={setProductsList} productsCategories={productsCategories} setProductsCategories={setProductsCategories}
+                <List listType={listTypes.products} displaySuccessAlert={displaySuccessAlert} data={searching? searchResults : (isSearchResults ? advancedSearchResults : productsList)}
+                setData={searching ? setSearchResults : (isSearchResults ? setAdvancedSearchResults : setProductsList)} categoriesList={categoriesList}
                 spaceName={spaceName} setSpaceName={setSpaceName}
-                itemType={itemType} setItemType={setItemType}
-                item={item} setItem={setItem} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
+                itemType={itemType} setItemType={setItemType} item={item} setItem={setItem}
+                update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
 
-                categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL} packagingsRequestURL={packagingsRequestURL}
+                links={links}
 
-                userName={userName} passWord={passWord}
+                userName={userName} password={password}
+
+                searching={searching} setSearching={setSearching} isSearchResults={isSearchResults} setIsSearchResults={setIsSearchResults}
 
                 packagingsList={packagingsList} setPackagingsList={setPackagingsList}
+
+                searching={searching} setSearching={setSearching} isSearchResults={isSearchResults} setIsSearchResults={setIsSearchResults} handleSearch={handleSearch}
+
+                displayLoadingModal={displayLoadingModal} setDisplayLoadingModal={setDisplayLoadingModal}
+
+                getProducts={getProducts} getPackagings={getPackagings}
                 />
             );
             break;
@@ -534,64 +337,78 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
                     productsList={productsList} setProducsList={setProductsList} packagingsList={packagingsList} setPackagingsList={setPackagingsList} productsCategories={productsCategories} setProductsCategories={setProductsCategories}
                     update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
 
-                    productsRequestURL={productsRequestURL} productsDetailsRequestURL={productsDetailsRequestURL} productsDescriptionsRequestURL={productsDescriptionsRequestURL} productsPackaginsRequestURL={productsPackaginsRequestURL} productsIllustrationsRequestURL={productsIllustrationsRequestURL}
+                    links={links}
 
-                    userName={userName} passWord={passWord}
+                    userName={userName} password={password}
                     />
             );
             break;
 
-        case 'listTaxations':
+        case 'listTaxes':
 
             setListType(listTypes.taxes);
 
             return(
                 <List listType={listTypes.taxes} displaySuccessAlert={displaySuccessAlert}
-                data={searching? searchResults : taxesList} setData={setTaxesList}
+                data={searching? searchResults : taxesList} setData={searching ? setSearchResults : setTaxesList}
                 spaceName={spaceName} setSpaceName={setSpaceName}
-                itemType={itemType} setItemType={setItemType}
-                item={item} setItem={setItem} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
+                itemType={itemType} setItemType={setItemType} item={item} setItem={setItem}
+                updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
+
+                isSearchResults={isSearchResults} setIsSearchResults={setIsSearchResults}
+
+                searching={searching} setSearching={setSearching} isSearchResults={isSearchResults} setIsSearchResults={setIsSearchResults}
+
+                displayLoadingModal={displayLoadingModal} setDisplayLoadingModal={setDisplayLoadingModal}
+
+                getTaxes={getTaxes}
+
+                links={links}
             />
             );
             break;
 
         case 'createTaxation':
                 return(
-                    <CreateTaxation setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert}  item={item} setItem={setItem} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
+                    <CreateTaxation setSpaceName={setSpaceName} setDisplaySuccessAlert={setDisplaySuccessAlert} update={update} setUpdate={setUpdate} itemToUpdate={itemToUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
                     />
             );
             break;
 
         case 'details':
-            switch(itemType){
+            //construction de la requête pour récupérer l'élément à afficher au niveau de l'API à partir de son id
+            var requestURL = links[spaceNameParam+"RequestURL"] + itemParam + "/"
+            getItem(requestURL)
+
+            switch(spaceNameParam){
                 case 'categories':
                     return(
-                        <Details itemType={itemType} setItemType={setItemType} item={item} setItem={setItem} data={categoriesList} setData={setCategoriesList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={canDeleteCategory} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
+                        <Details itemType={spaceNameParam} item={item} setItem={setItem} data={categoriesList} setData={setCategoriesList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={canDeleteCategory} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails}
                         
-                        categoriesRequestURL={categoriesRequestURL}
+                        links={links}
 
-                        userName={userName} passWord={passWord}
+                        userName={userName} password={password}
                         />
                     );
                     break
 
                 case 'conditionings':
                     return(
-                        <Details itemType={itemType} setItemType={setItemType} item={item} setItem={setItem} data={conditioningsList} setData={setConditioningsList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={canDeleteConditioning} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} packagingsList={packagingsList} setPackagingsList={setPackagingsList}
+                        <Details item={item} setItem={setItem} itemType={spaceNameParam} setItemType={setItemType} data={conditioningsList} setData={setConditioningsList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={canDeleteConditioning} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} packagingsList={packagingsList} setPackagingsList={setPackagingsList}
                         
-                        userName={userName} passWord={passWord}
+                        userName={userName} password={password}
                         />
                     );
                     break
                 
                 case 'products':
                     return(
-                        <Details itemType={itemType} setItemType={setItemType} item={item} setItem={setItem} data={productsList} setData={setProductsList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={new Map()} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} packagingsList={packagingsList} setPackagingsList={setPackagingsList} productsCategories={productsCategories}
+                        <Details item={item} setItem={setItem} itemType={spaceNameParam} setItemType={setItemType} data={productsList} setData={setProductsList} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult} spaceName={spaceName} setSpaceName={setSpaceName} languagesList={languagesList} displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} canDeleteItem={new Map()} setUpdate={setUpdate} setItemToUpdate={setItemToUpdate} updateFromDetails={updateFromDetails} setUpdateFromDetails={setUpdateFromDetails} packagingsList={packagingsList} setPackagingsList={setPackagingsList} productsCategories={productsCategories}
                         
-                        userName={userName} passWord={passWord}
+                        userName={userName} password={password}
                         />
                     );
-                    break
+                    break;
                 
             }
            
@@ -599,7 +416,7 @@ function Workspace({findInCategories, findInConditionings, findInLanguages, find
 
         case 'searchResults':
             return(
-                <SearchResults findInCategories={findInCategories} findInConditionings={findInConditionings} findInLanguages={findInLanguages} findInProducts={findInProducts} findInTaxes={findInTaxes} stringToSearch={stringToSearch} item={item} setItem={setItem} spaceName={spaceName} setSpaceName={setSpaceName} itemType={itemType} setItemType={setItemType} categoriesList={categoriesList} setCategoriesList={setCategoriesList} upadateCategoriesList={updateCategoriesList} setUpdateCategoriesList={setUpdateCategoriesList} categoriesResult={categoriesResult} setCategoriesResult={setCategoriesResult} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult}/>
+                <SearchResults findInCategories={findInCategories} findInConditionings={findInConditionings} findInLanguages={findInLanguages} findInProducts={findInProducts} findInTaxes={findInTaxes} stringToSearch={stringToSearch} spaceName={spaceName} setSpaceName={setSpaceName} itemType={itemType} setItemType={setItemType} categoriesList={categoriesList} setCategoriesList={setCategoriesList} upadateCategoriesList={updateCategoriesList} setUpdateCategoriesList={setUpdateCategoriesList} categoriesResult={categoriesResult} setCategoriesResult={setCategoriesResult} isASearchResult={isASearchResult} setIsASearchResult={setIsASearchResult}/>
             );
     }
 

@@ -27,7 +27,7 @@ function SearchResults({findInCategories, findInConditionnements, findInLangues,
 
     //paramètres de connexion à l'API
     var userName = "zang";
-    var passWord = "harazangsuperuser";
+    var password = "harazangsuperuser";
 
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
@@ -113,7 +113,7 @@ function SearchResults({findInCategories, findInConditionnements, findInLangues,
             var request = new XMLHttpRequest();
         
             request.open('DELETE', requestURL);
-            request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+            request.setRequestHeader("Authorization", authenticateUser(userName, password)); 
             request.responseType = 'json';
             request.send();
 
@@ -340,7 +340,7 @@ function SearchResults({findInCategories, findInConditionnements, findInLangues,
         var request = new XMLHttpRequest();
         
         request.open('DELETE', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+        request.setRequestHeader("Authorization", authenticateUser(userName, password)); 
         request.responseType = 'json';
         request.send();
 

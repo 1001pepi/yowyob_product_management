@@ -7,9 +7,9 @@ import React, {useState} from 'react'
 function CreateLanguageForm({setSpaceName, setDisplaySuccessAlert, 
    setLanguagesList, languagesList, canDeleteLanguage, setCanDeleteLanguage, update, setUpdate, itemToUpdate, setItemToUpdate,
 
-   languagesRequestURL,
+   links,
 
-   userName, passWord
+   userName, password
 }){
     //etat pour contrôler l'affichage du message d'alerte pour le bon remplissage du formulaire
     const [displayAlert, setDisplayAlert] = useState(false)
@@ -77,9 +77,9 @@ function CreateLanguageForm({setSpaceName, setDisplaySuccessAlert,
 
             if(update){
                 //dans le cas d'une mise à jour
-                requestURL = languagesRequestURL + itemToUpdate['id'] + "/"
+                requestURL = links.languagesRequestURL + itemToUpdate['id'] + "/"
                 request.open('PATCH', requestURL);
-                request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                request.setRequestHeader("Authorization", authenticateUser(userName, password));
                 request.responseType = 'json';
 
                 request.send(formData);
@@ -118,10 +118,10 @@ function CreateLanguageForm({setSpaceName, setDisplaySuccessAlert,
 
             }else{
                 //dans le cas de la création d'une nouvelle langue
-                requestURL = languagesRequestURL
+                requestURL = links.languagesRequestURL
 
                 request.open('POST', requestURL);
-                request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                request.setRequestHeader("Authorization", authenticateUser(userName, password));
                 request.responseType = 'json';
 
                 request.send(formData);

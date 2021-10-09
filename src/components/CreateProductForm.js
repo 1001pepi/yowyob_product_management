@@ -3,6 +3,7 @@ import '../styles/smallDisplay.css'
 import '../styles/bigDisplay.css'
 
 import React, {useState} from 'react'
+import { useHistory } from "react-router-dom";
 
 import ProductDescriptionForm from './ProductDescriptionForm'
 import Conditioning from './Conditioning'
@@ -14,9 +15,9 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
     productsList, setProducsList, packagingsList, setPackagingsList,  productsCategories, setProductsCategories,
     setDisplaySuccessAlert, update, setUpdate, itemToUpdate, setItemToUpdate, updateFromDetails,
 
-    productsRequestURL, productsDetailsRequestURL, productsDescriptionsRequestURL, productsPackaginsRequestURL, productsIllustrationsRequestURL,
+    links,
 
-    userName, passWord
+    userName, password
 }){
     //liste des clés des descriptions de produits
     const [descriptionsKeys, setDescriptionsKeys] = useState([])
@@ -66,6 +67,9 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
     var saleConditioningsData = []
     var illustrationsData = []
 
+    //informations utiles pour le routage
+    const history = useHistory();
+
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
         var token = user + ":" + password;
@@ -86,7 +90,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
         var requestURL = itemToUpdate['product_detail']
         var request = new XMLHttpRequest();
         request.open('GET', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+        request.setRequestHeader("Authorization", authenticateUser(userName, password));
         request.responseType = 'json';
 
         request.send();
@@ -104,7 +108,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                 requestURL = itemToUpdate['product_description_list']
                 var request2 = new XMLHttpRequest();
                 request2.open('GET', requestURL);
-                request2.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                request2.setRequestHeader("Authorization", authenticateUser(userName, password));
                 request2.responseType = 'json';
 
                 request2.send()
@@ -138,7 +142,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                         
                         var request3 = new XMLHttpRequest();
                         request3.open('GET', requestURL);
-                        request3.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                        request3.setRequestHeader("Authorization", authenticateUser(userName, password));
                         request3.responseType = 'json';
 
                         request3.send()
@@ -204,7 +208,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                                 
                                 var request4 = new XMLHttpRequest();
                                 request4.open('GET', requestURL);
-                                request4.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                                request4.setRequestHeader("Authorization", authenticateUser(userName, password));
                                 request4.responseType = 'json';
 
                                 request4.send()
@@ -367,7 +371,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
             var requestURL = details['url']
             productId = itemToUpdate['id']
         }else{
-            var requestURL = productsDetailsRequestURL
+            var requestURL = links.productsDetailsRequestURL
         }
 
         var request = new XMLHttpRequest();
@@ -376,7 +380,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
         }else{
             request.open('POST', requestURL);
         }
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+        request.setRequestHeader("Authorization", authenticateUser(userName, password));
         request.responseType = 'json';
 
         request.send(formData);
@@ -402,11 +406,11 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
 
     //fonction pour supprimer les détails d'un produit
     function deleteProductDetails(){
-        var requestURL = productsDetailsRequestURL + detailsId + "/"
+        var requestURL = links.productsDetailsRequestURL + detailsId + "/"
         var request = new XMLHttpRequest();
             
         request.open('DELETE', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+        request.setRequestHeader("Authorization", authenticateUser(userName, password)); 
         request.responseType = 'json';
         request.send();
 
@@ -428,12 +432,12 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
     //fonction pour supprimer une description à partir de son index dans la liste des ids des descriptions de produits enregistrées
     function deleteDescription(index){
         if(index < descriptionsIds.length){
-            var requestURL = productsDescriptionsRequestURL + descriptionsIds[index] + "/"
+            var requestURL = links.productsDescriptionsRequestURL + descriptionsIds[index] + "/"
 
             var request = new XMLHttpRequest();
                 
             request.open('DELETE', requestURL);
-            request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+            request.setRequestHeader("Authorization", authenticateUser(userName, password)); 
             request.responseType = 'json';
             request.send();
 
@@ -468,7 +472,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                 productId = itemToUpdate['id']
                 requestURL = item['descriptionItem']['url']
             }else{
-                requestURL = productsDescriptionsRequestURL
+                requestURL = links.productsDescriptionsRequestURL
             }
 
             var formData = new FormData()
@@ -491,7 +495,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                 request.open('POST', requestURL)
             }
             
-            request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+            request.setRequestHeader("Authorization", authenticateUser(userName, password));
             request.responseType = 'json';
 
             request.send(formData)
@@ -541,7 +545,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                 productId = itemToUpdate['id']
                 requestURL = item['packagingItem']['url']
             }else{
-                requestURL = productsPackaginsRequestURL
+                requestURL = links.productsPackaginsRequestURL
             }
 
             var formData = new FormData()
@@ -565,7 +569,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                 request.open('POST', requestURL)
             }
             
-            request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+            request.setRequestHeader("Authorization", authenticateUser(userName, password));
             request.responseType = 'json';
 
             request.send(formData)
@@ -609,14 +613,14 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
 
     function saveSaleConditioning(productId, index){
         if(index < saleConditioningsData.length){
-            var requestURL = productsPackaginsRequestURL
+            var requestURL = links.productsPackaginsRequestURL
 
             const item = saleConditioningsData[index]
 
             if(item['packagingItem']){
                 requestURL = item['packagingItem']['url']
             }else{
-                requestURL = productsPackaginsRequestURL
+                requestURL = links.productsPackaginsRequestURL
             }
 
             var formData = new FormData()
@@ -639,7 +643,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                 request.open('POST', requestURL)
             }
 
-            request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+            request.setRequestHeader("Authorization", authenticateUser(userName, password));
             request.responseType = 'json';
 
             request.send(formData)
@@ -706,7 +710,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                 requestURL = item['illustrationItem']['url']
 
             }else{
-                requestURL = productsIllustrationsRequestURL
+                requestURL = links.productsIllustrationsRequestURL
             }
 
             var request = new XMLHttpRequest();
@@ -718,7 +722,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                 request.open('POST', requestURL);
             }
            
-            request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+            request.setRequestHeader("Authorization", authenticateUser(userName, password));
             request.responseType = 'json';
     
             request.send(formData);
@@ -897,10 +901,10 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                 
                     
                     //création de la requête
-                    var requestURL = productsRequestURL
+                    var requestURL = links.productsRequestURL
                     var request = new XMLHttpRequest();
                     request.open('POST', requestURL);
-                    request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                    request.setRequestHeader("Authorization", authenticateUser(userName, password));
                     request.responseType = 'json';
 
                     request.send(formData);
@@ -960,13 +964,7 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
                     <a id="delete" style={{color:"black", fontSize:"larger"}} onClick={() => {
                         setUpdate(false)
                         setDisplaySuccessAlert(false)
-                        if(updateFromDetails){
-                            //on retourne sur la liste des détails
-                            setSpaceName('details')
-
-                        }else{
-                            setSpaceName('listProducts')
-                        }
+                        history.goBack();
                     }}>
                         <span style={{color:"black", fontSize:"larger"}} className="fa fa-arrow-left" title="Retour à la liste"></span>
                     </a>
@@ -1155,3 +1153,4 @@ function CreateProductForm({setSpaceName, setDisplaySuccessAlertProduct, categor
 }
 
 export default CreateProductForm
+

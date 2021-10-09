@@ -3,14 +3,23 @@ import "../styles/Common.css"
 import "../styles/smallDisplay.css"
 
 import React, {useState} from 'react'
+import { useHistory } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useParams,
+    useRouteMatch
+  } from "react-router-dom";
 
 import CategoryDescriptionForm from './CategoryDescriptionForm'
 
 function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesList, setCategoriesList, canDeleteCategory, setCanDeleteCategory, canDeleteLanguage, setCanDeleteLanguage, languagesList, setLanguagesList, update, setUpdate, itemToUpdate, setItemToUpdate, updateFromDetails, setUpdateFromDetails, item, setItem,
 
-    categoriesDescriptionsRequestURL, categoriesRequestURL,
+    links,
 
-    userName, passWord
+    userName, password
 }){     
     //liste des clés des descriptions
     const [descriptionsKeys, setDescriptionsKeys] = useState([])
@@ -32,6 +41,9 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
 
     //liste des descriptions enregistrées
     var descriptionsIds = []
+
+    //informations utiles pour le routage
+    const history = useHistory();
 
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
@@ -81,7 +93,7 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
         var requestURL = itemToUpdate['list_of_category_descriptions']
         var request = new XMLHttpRequest();
         request.open('GET', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+        request.setRequestHeader("Authorization", authenticateUser(userName, password));
         request.responseType = 'json';
 
         request.send();
@@ -121,12 +133,12 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
     //la variable 'spécification' indique la spécification déjà utilisée ayant provoqué l'erreur dans le formulaire
     function deleteDescription(index, specification){
         if(index < descriptionsIds.length){
-            var requestURL = categoriesDescriptionsRequestURL + descriptionsIds[index] + "/"
+            var requestURL = links.categoriesDescriptionsRequestURL + descriptionsIds[index] + "/"
 
             var request = new XMLHttpRequest();
                 
             request.open('DELETE', requestURL);
-            request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+            request.setRequestHeader("Authorization", authenticateUser(userName, password)); 
             request.responseType = 'json';
             request.send();
 
@@ -135,8 +147,6 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
     
                 if(requestStatus === 204){
                     //succès de la suppression
-                    console.log("category description deleted")
-
                     //on supprime la description suivante
                     deleteDescription(index + 1, specification)
                 }
@@ -169,7 +179,7 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
                 requestURL = item['descriptionItem']['url']
                 request3.open('PATCH', requestURL)
 
-                request3.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                request3.setRequestHeader("Authorization", authenticateUser(userName, password));
                 request3.responseType = 'json';
 
                 request3.send(formData)
@@ -185,12 +195,12 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
 
             }else{
                 //il s'agit de la création d'une nouvelle catégorie
-                requestURL = categoriesDescriptionsRequestURL
+                requestURL = links.categoriesDescriptionsRequestURL
 
                 formData.append("category", category['id'])
 
                 request3.open('POST', requestURL)
-                request3.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                request3.setRequestHeader("Authorization", authenticateUser(userName, password));
                 request3.responseType = 'json';
 
                 request3.send(formData)
@@ -229,8 +239,10 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
 
             //on retourne à la liste des catégories
             setDisplaySuccessAlert(true)
-            setSpaceName('listCategories')
 
+            history.push(`/categories`);
+            history.push(`/categories`);
+            history.goBack();
         }
     }
 
@@ -325,7 +337,7 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
                 var requestURL = itemToUpdate['url'];
                 var request = new XMLHttpRequest();
                 request.open('PATCH', requestURL);
-                request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                request.setRequestHeader("Authorization", authenticateUser(userName, password));
                 request.responseType = 'json';
 
                 request.send(formData);
@@ -371,10 +383,10 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
                 }
                 
                 //création de la requête
-                var requestURL = categoriesRequestURL;
+                var requestURL = links.categoriesRequestURL;
                 var request = new XMLHttpRequest();
                 request.open('POST', requestURL);
-                request.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                request.setRequestHeader("Authorization", authenticateUser(userName, password));
                 request.responseType = 'json';
 
                 request.send(formData);
@@ -420,14 +432,8 @@ function CreateCategoryForm({setSpaceName, setDisplaySuccessAlert, categoriesLis
                     <a id="delete" style={{color:"black", fontSize:"larger"}} onClick={() => {
                         setUpdate(false)
                         setDisplaySuccessAlert(false)
-                        if(updateFromDetails){
-                            //on retourne sur la liste des détails
-                            setItem(itemToUpdate)
-                            setSpaceName('details')
-
-                        }else{
-                            setSpaceName('listCategories')
-                        }
+                        
+                        history.goBack();
                     }}>
                         <span style={{color:"black", fontSize:"larger"}} className="fa fa-arrow-left" title="Retour à la liste"></span>
                     </a>

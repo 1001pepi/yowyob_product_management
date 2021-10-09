@@ -20,52 +20,15 @@ function SearchBar({findInCategories, findInConditionings, findInLanguages, find
 
     categoriesRequestURL, conditioningsRequestURL, languagesRequestURL, productsRequestURL, packagingsRequestURL,
 
-    userName, passWord,
+    userName, password,
 
     displaySuccessAlert, setDisplaySuccessAlert,
 
-    spaceName, setSpaceName, stringToSearch, setStringToSearch, searchType, setSearchType, searchResults, setSearchResults,
+    spaceName, setSpaceName, stringToSearch, setStringToSearch, searchType, setSearchType, searchResults, setSearchResults, advancedSearchResults, setAdvancedSearchResults,
 
-    listTypes, listType, setListType, searching, setSearching
+    listTypes, listType, setListType, searching, setSearching, isSearchResults, setIsSearchResults
 }){
-    //fonction d'encodage des paramètres de connexion à l'API//
-    function authenticateUser(user, password){
-        var token = user + ":" + password;
-
-        var hash = btoa(token); 
-
-        return "Basic " + hash;
-    }
-
-    //fonction permettantt de récupérer la liste des catégories//
-    function getCategories(requestURL, tmpList, toSearch){
-        //création de la requête
-        var request = new XMLHttpRequest();
-        
-        request.open('GET', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
-        request.responseType = 'json';
-        request.send();
-
-        request.onload = function(){
-            var response = request.response;
-            var requestStatus = request.status
-
-            if(requestStatus === 200){
-                var next = response['next']
     
-                tmpList = tmpList.concat(response['results'])
-
-                findInCategories(tmpList, toSearch)
-                setCategoriesList(tmpList)
-
-                if(next != null){
-                    getCategories(next, tmpList, toSearch)
-                }
-            }
-        }
-    }
-
     //fonction pour filtrer les éléments dans une liste de catégories
     function findInCategories(list, toSearch){
         const tmpList = list.filter(function(item, index, arr){
@@ -99,9 +62,13 @@ function SearchBar({findInCategories, findInConditionings, findInLanguages, find
 
     //fonction pour effectuer la recherche
     function handleDefaultSearch(toSearch){
+
         switch (listType){
+            
             case listTypes.categories:
-                setSearchResults(categoriesList.filter(category => (category['name'].includes(toSearch.toUpperCase()) || category['code'].includes(toSearch.toUpperCase()) || category['created_at'].includes(toSearch)) || category['update_at'].includes(toSearch) ))
+                var tmpList = isSearchResults ? advancedSearchResults : categoriesList
+                
+                setSearchResults(tmpList.filter(category => (category['name'].includes(toSearch.toUpperCase()) || category['code'].includes(toSearch.toUpperCase()) || category['created_at'].includes(toSearch)) || category['update_at'].includes(toSearch) ))
                 break;
             
             case listTypes.conditionings:
@@ -113,7 +80,15 @@ function SearchBar({findInCategories, findInConditionings, findInLanguages, find
                 break;
 
             case listTypes.products:
-                setSearchResults(productsList.filter(product => (product['name'].includes(toSearch.toUpperCase()) || product['code'].includes(toSearch.toUpperCase()) || productsCategories.get(product['id']).includes(toSearch.toUpperCase()) || product['created_at'].includes(toSearch)) || product['update_at'].includes(toSearch)))
+                var tmpList = isSearchResults ? advancedSearchResults : productsList
+
+                setSearchResults(tmpList.filter(product => (product['name'].includes(toSearch.toUpperCase()) || product['code'].includes(toSearch.toUpperCase()) || (categoriesList.filter(
+                    (category) => {
+                        return category['id'] === product['category']
+                    })[0] ? categoriesList.filter(
+                        (category) => {
+                            return category['id'] === product['category']
+                        })[0]['name'].includes(toSearch.toUpperCase()) : "") || product['created_at'].includes(toSearch)) || product['update_at'].includes(toSearch)))
                 break;
 
             case listTypes.taxes:
@@ -144,7 +119,7 @@ productsList={productsList} setProductsList={setProductsList} packagingsList={pa
 
                         categoriesRequestURL={categoriesRequestURL} conditioningsRequestURL={conditioningsRequestURL} languagesRequestURL={languagesRequestURL} productsRequestURL={productsRequestURL} packagingsRequestURL={packagingsRequestURL}
 
-                        userName={userName} passWord={passWord}
+                        userName={userName} password={password}
 
                         displaySuccessAlert={displaySuccessAlert} setDisplaySuccessAlert={setDisplaySuccessAlert} smallScreen={true}
 
@@ -178,14 +153,15 @@ productsList={productsList} setProductsList={setProductsList} packagingsList={pa
                         }} onChange={(event) =>{
                             //appel de la fonction de gestion de la recherche
                             setStringToSearch(event.target.value)
-                            if(searchType === "defaultSearch"){
-                                if(event.target.value){
-                                    setSearching(true);
-                                    handleDefaultSearch(event.target.value)
-                                }else{
-                                    setSearching(false)
-                                }
+                            
+                            if(event.target.value){
+                                setSearching(true);
+                                handleDefaultSearch(event.target.value)
+
+                            }else{
+                                setSearching(false);
                             }
+                        
                         }} placeholder=" Search..." />
                 </div>
 

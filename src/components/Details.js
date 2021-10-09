@@ -7,12 +7,22 @@ import image_not_found from '../assets/image_not_found.png'
 
 import {useState} from 'react'
 import React, {useEffect, Fragment} from 'react'
+import { useHistory } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useParams,
+    useRouteMatch,
+    Redirect
+  } from "react-router-dom";
 
 function Details({spaceName, setSpaceName, itemType, setItemType, item, setItem, data, setData, isASearchResult, setIsASearchResult, languagesList, displaySuccessAlert, setDisplaySuccessAlert, canDeleteItem, setUpdate, setItemToUpdate, updateFromDetails, setUpdateFromDetails, packagingsList, setPackagingsList, productsCategories,
 
-categoriesRequestURL,
+links,
 
-userName, passWord
+userName, password
 }){
     //informations relatives à l'affichage en détails d'une catégorie
     var [category_parent, setCategory_parent] = useState({})
@@ -78,6 +88,9 @@ userName, passWord
     //définition du titre de l'espace de travail
     let titleType
 
+    //informations utiles pour le routage
+    const history = useHistory();
+
     //fonction d'encodage des paramètres de connexion à l'API//
     function authenticateUser(user, password){
         var token = user + ":" + password;
@@ -88,7 +101,7 @@ userName, passWord
 
         return "Basic " + hash;
     }
-
+   
     //fonction pour réinitialiser les variables d'état des détails
     function resetData(){
         setCategory_parent({})
@@ -132,6 +145,11 @@ userName, passWord
         setUpdateFromDetails(true)
     }, [])
 
+    //fonction pour formater les dates de façon plus lisible
+    function formatDate(date){
+        if(date) return(date.split('.')[0])
+    }
+
     //fonction permettant de supprimer un élément//
     function deleteItem(){
         
@@ -141,7 +159,7 @@ userName, passWord
         var request = new XMLHttpRequest();
         
         request.open('DELETE', requestURL);
-        request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+        request.setRequestHeader("Authorization", authenticateUser(userName, password)); 
         request.responseType = 'json';
         request.send();
 
@@ -194,7 +212,7 @@ userName, passWord
     
             var request = new XMLHttpRequest();
             request.open('GET', requestURL);
-            request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+            request.setRequestHeader("Authorization", authenticateUser(userName, password)); 
             request.responseType = 'json';
             request.send();
 
@@ -225,11 +243,11 @@ userName, passWord
                    
                     //on récupère la catégorie parent de l'élément
                     //création de la requête
-                    var requestURL = categoriesRequestURL + item['category_parent'] + "/"
+                    var requestURL = links.categoriesRequestURL + item['category_parent'] + "/"
                     var request = new XMLHttpRequest();
                     
                     request.open('GET', requestURL);
-                    request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+                    request.setRequestHeader("Authorization", authenticateUser(userName, password)); 
                     request.responseType = 'json';
                     request.send();
 
@@ -242,7 +260,7 @@ userName, passWord
                             requestURL = item['list_of_category_descriptions']
                             var request2 = new XMLHttpRequest();
                             request2.open('GET', requestURL);
-                            request2.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+                            request2.setRequestHeader("Authorization", authenticateUser(userName, password)); 
                             request2.responseType = 'json';
                             request2.send();
 
@@ -257,7 +275,7 @@ userName, passWord
                                     
                                     var request3 = new XMLHttpRequest();
                                     request3.open('GET', requestURL);
-                                    request3.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+                                    request3.setRequestHeader("Authorization", authenticateUser(userName, password)); 
                                     request3.responseType = 'json';
                                     request3.send();
 
@@ -271,7 +289,7 @@ userName, passWord
                                     
                                             var request4 = new XMLHttpRequest();
                                             request4.open('GET', requestURL);
-                                            request4.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+                                            request4.setRequestHeader("Authorization", authenticateUser(userName, password)); 
                                             request4.responseType = 'json';
                                             request4.send();
         
@@ -315,10 +333,10 @@ userName, passWord
                                     <span className="bold">Catégorie parent:&nbsp; </span>{category_parent['name']}
                                 </div>
                                 <div className="row">
-                                    <span className="bold">Date de création:&nbsp; </span>  {item['created_at']}
+                                    <span className="bold">Date de création:&nbsp; </span>  {formatDate(item['created_at'])}
                                 </div>
                                 <div className="row">
-                                    <span className="bold">Dernière modification:&nbsp; </span>  {item['update_at']}
+                                    <span className="bold">Dernière modification:&nbsp; </span>  {formatDate(item['update_at'])}
                                 </div>
                             </div>
 
@@ -333,10 +351,10 @@ userName, passWord
                                     <span className="bold">Catégorie parent:&nbsp; </span>{category_parent['name']}
                                 </div>
                                 <div className="row">
-                                    <span className="bold">Date de création:&nbsp; </span>  {item['created_at']}
+                                    <span className="bold">Date de création:&nbsp; </span>  {formatDate(item['created_at'])}
                                 </div>
                                 <div className="row">
-                                    <span className="bold">Dernière modification:&nbsp; </span>  {item['update_at']}
+                                    <span className="bold">Dernière modification:&nbsp; </span>  {formatDate(item['update_at'])}
                                 </div>
                             </div>
                         </div>
@@ -457,7 +475,7 @@ userName, passWord
                     var request = new XMLHttpRequest();
                 
                     request.open('GET', requestURL);
-                    request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+                    request.setRequestHeader("Authorization", authenticateUser(userName, password)); 
                     request.responseType = 'json';
                     request.send();
 
@@ -494,7 +512,7 @@ userName, passWord
                             var request2 = new XMLHttpRequest();
                 
                             request2.open('GET', requestURL);
-                            request2.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+                            request2.setRequestHeader("Authorization", authenticateUser(userName, password)); 
                             request2.responseType = 'json';
                             request2.send();
 
@@ -534,6 +552,7 @@ userName, passWord
 
                 return(
                     <div className="container overflow-auto details-small-screen" style={{marginTop: "10px", height:"80vh"}}>
+
                         <div style={{marginLeft:"40px"}}>
                             <div className="row">
                                 <span className="bold">Nom :&nbsp; </span> {item['name']}
@@ -545,10 +564,10 @@ userName, passWord
                                 <span className="bold">Quantité:&nbsp; </span> {item['quantity']}
                             </div>
                             <div className="row">
-                                <span className="bold">Date de création:&nbsp; </span>  {item['created_at']}
+                                <span className="bold">Date de création:&nbsp; </span>  {formatDate(item['created_at'])}
                             </div>
                             <div className="row">
-                                <span className="bold">Dernière modification:&nbsp; </span>  {item['update_at']}
+                                <span className="bold">Dernière modification:&nbsp; </span>  {formatDate(item['update_at'])}
                             </div>
                         </div>
                         <div className="section">
@@ -638,7 +657,7 @@ userName, passWord
             
                     var request = new XMLHttpRequest();
                     request.open('GET', requestURL);
-                    request.setRequestHeader("Authorization", authenticateUser(userName, passWord)); 
+                    request.setRequestHeader("Authorization", authenticateUser(userName, password)); 
                     request.responseType = 'json';
                     request.send();
 
@@ -652,7 +671,7 @@ userName, passWord
                             requestURL = item['product_detail']
                             var request2 = new XMLHttpRequest();
                             request2.open('GET', requestURL);
-                            request2.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                            request2.setRequestHeader("Authorization", authenticateUser(userName, password));
                             request2.responseType = 'json';
 
                             request2.send();
@@ -670,7 +689,7 @@ userName, passWord
                                     requestURL = item['product_description_list']
                                     var request3 = new XMLHttpRequest();
                                     request3.open('GET', requestURL);
-                                    request3.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                                    request3.setRequestHeader("Authorization", authenticateUser(userName, password));
                                     request3.responseType = 'json';
 
                                     request3.send();
@@ -688,7 +707,7 @@ userName, passWord
                                             requestURL = item['conditionnings_list']
                                             var request4 = new XMLHttpRequest();
                                             request4.open('GET', requestURL);
-                                            request4.setRequestHeader("Authorization", authenticateUser(userName, passWord));
+                                            request4.setRequestHeader("Authorization", authenticateUser(userName, password));
                                             request4.responseType = 'json';
         
                                             request4.send();
@@ -847,10 +866,10 @@ userName, passWord
                                         <span className="bold">Catégorie:&nbsp; </span>{productsCategories.get(item['id'])}
                                     </div>
                                     <div className="row">
-                                        <span className="bold">Date de création:&nbsp; </span>  {item['created_at']}
+                                        <span className="bold">Date de création:&nbsp; </span>  {formatDate(item['created_at'])}
                                     </div>
                                     <div className="row">
-                                        <span className="bold">Dernière modification:&nbsp; </span>  {item['update_at']}
+                                        <span className="bold">Dernière modification:&nbsp; </span>  {formatDate(item['update_at'])}
                                     </div>
                                 </div>
                             </Fragment>
@@ -1027,40 +1046,26 @@ userName, passWord
     return(
         <div className="container">
              <div className="row headSection" style={{fontSize:"large"}}>
+                <div className="col-1 vertical-center hover-pointer">
+                    <a style={{color:"black", fontSize:"larger"}} onClick={() => {
+                        history.goBack();
+                        
+                        resetData();
+                    }}
+                    
+                    style={{marginRight:"30px"}}>
+                        <span style={{color:"black", fontSize:"larger"}} className="fa fa-arrow-left"></span>
+                    </a>
+                </div>  
+
                 {
                 isASearchResult ? <h4>Résultats de la recherche</h4> :
                 <h4 className="col-12 col-md-6 title-small-screens">{titleType}</h4>
                 }
                         
-                <div className="col-12 col-md-6 d-flex justify-content-end vertical-center hover-pointer">
+                <div className="col-12 col-md-5 d-flex justify-content-end vertical-center hover-pointer">
                     <div className="col-7 d-flex justify-content-end vertical-center hover-pointer">
-                        <a style={{color:"black", fontSize:"larger"}} onClick={() => {
-                            if(visitedItems.length == 0){
-                                //on est au premier élément visité. On retourne à la liste
-                                setDisplaySuccessAlert(false)
-                                switch(itemType){
-                                    case "categories":
-                                        setSpaceName('listCategories')
-                                        break
-                                    case "conditionings":
-                                        setSpaceName("listConditionings")
-                                        break
-                                    case "products":
-                                        setSpaceName("listProducts")
-                                        break
-                                }
-                            }else{
-                                //on a déjà visité plusieurs élément. On se positionne sur l'élément précédent
-                                resetData()
-                                const lastVisitedItem = visitedItems.pop()
-                                setItemType(lastVisitedItem.type)
-                                setItem(lastVisitedItem.item)
-                            }
                         
-                        }}
-                        style={{marginRight:"30px"}}>
-                            <span style={{color:"black", fontSize:"larger"}} className="fa fa-arrow-left"></span>
-                        </a>
 
                         {
                                 canDeleteItem.get(item['id']) ? 
